@@ -7,7 +7,7 @@ const Policy = (props) => {
       <div className={styles.section}>
         <h3>1. Lorem Ipsum</h3>
         <p>
-          Delaware limited liability company (The Sydney) collects personal
+          Delaware limited liability company (The Velvet) collects personal
           information that you voluntarily provide when applying or registering
           for an account with The Upside or making a purchase on The Upside
           website; www.theupside.com (the Website).
