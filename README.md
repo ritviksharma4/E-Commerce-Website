@@ -1,2 +1,2 @@
 # E-Commerce-Website
-Building an E-Commerce Website using Java, SpringBoot, Python, AIML and React
+Building an E-Commerce Website using Python and React, Hosted Live on AWS.
