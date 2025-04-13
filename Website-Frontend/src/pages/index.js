@@ -17,6 +17,8 @@ import * as styles from './index.module.css';
 import { Link, navigate } from 'gatsby';
 import { toOptimizedImage } from '../helpers/general';
 
+const currentYear = new Date().getFullYear();
+
 const IndexPage = () => {
   const newArrivals = generateMockProductData(3, 'shirt');
   const blogData = generateMockBlogData(3);
@@ -32,16 +34,16 @@ const IndexPage = () => {
         maxWidth={'500px'}
         image={'/banner1.png'}
         title={'Essentials for a cold winter'}
-        subtitle={'Discover Autumn Winter 2021'}
+        subtitle={`Discover Autumn Winter ${currentYear}`}
         ctaText={'shop now'}
         ctaAction={goToShop}
       />
 
-      {/* Message Container */}
+      Message Container
       <div className={styles.messageContainer}>
         <p>
-          This is a demonstration of the Sydney theme for verse by{' '}
-          <span className={styles.gold}>matter design.</span>
+          This E-Commerce Website is a work of{' '}
+          <span className={styles.gold}>Ritvk Sharma.</span>
         </p>
         <p>
           wear by <span className={styles.gold}>sunspel</span> and{' '}
