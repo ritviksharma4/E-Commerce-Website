@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import * as styles from './t-shirts-and-shirts.module.css';
 
 import Banner from '../../../components/Banner';
@@ -10,22 +10,90 @@ import Icon from '../../../components/Icons/Icon';
 import Layout from '../../../components/Layout';
 import LayoutOption from '../../../components/LayoutOption';
 import ProductCardGrid from '../../../components/ProductCardGrid';
-import { generateMockProductData } from '../../../helpers/mock';
 import Button from '../../../components/Button';
 import Config from '../../../config.json';
 
-const TShirtsShirtsMenPage = (props) => {
+import {
+  CognitoIdentityClient
+} from '@aws-sdk/client-cognito-identity';
+import {
+  fromCognitoIdentityPool
+} from '@aws-sdk/credential-provider-cognito-identity';
+import {
+  DynamoDBClient,
+  ScanCommand
+} from '@aws-sdk/client-dynamodb';
+import { unmarshall } from '@aws-sdk/util-dynamodb';
+
+const TShirtsShirtsMenPage = () => {
   const [showFilter, setShowFilter] = useState(false);
-  const data = generateMockProductData(7, 'woman');
+  const [products, setProducts] = useState([]);
+
+  const REGION = "ap-south-1";
+  const IDENTITY_POOL_ID = "ap-south-1:80e0265b-923c-4d60-bb08-a471ac99f431";
+  const TABLE_NAME = "velvet-e-commerce-website-product-data";
+  const S3_BUCKET = "velvet-e-commerce-website-images";
+
+  // Wrap fetchProducts in useCallback to memoize the function
+  const fetchProducts = useCallback(async () => {
+    try {
+      const credentials = fromCognitoIdentityPool({
+        client: new CognitoIdentityClient({ region: REGION }),
+        identityPoolId: IDENTITY_POOL_ID,
+      });
+
+      const client = new DynamoDBClient({
+        region: REGION,
+        credentials,
+      });
+
+      const command = new ScanCommand({
+        TableName: TABLE_NAME,
+        FilterExpression: 'begins_with(productId, :prefix1) OR begins_with(productId, :prefix2)',
+        ExpressionAttributeValues: {
+          ':prefix1': { S: 'M-SHRT-' },
+          ':prefix2': { S: 'M-TSHRT-' },
+        },
+      });
+
+      console.log('DynamoDB Command:', command);
+      console.log("REGION: ", REGION);
+      console.log("IDENTITY_POOL_ID: ", IDENTITY_POOL_ID);
+      console.log("TABLE_NAME: ", TABLE_NAME);
+      console.log("S3_BUCKET: ", S3_BUCKET);
+
+      const response = await client.send(command);
+      console.log('DynamoDB Response:', response);
+
+      if (!response.Items || response.Items.length === 0) {
+        console.error('No items found in DynamoDB.');
+        return;
+      }
+
+      const items = response.Items.map((item) => {
+        const data = unmarshall(item);
+        console.log('Unmarshalled Data:', data);
+
+        data.imageUrl = `https://${S3_BUCKET}.s3.${REGION}.amazonaws.com/Men/t-shirts-and-shirts/${data.productId}/display.jpg`;
+        console.log(`S3 Image URL: ${data.imageUrl}`);
+
+        return data;
+      });
+
+      setProducts(items);
+    } catch (error) {
+      console.error('Error fetching products:', error);
+    }
+  }, [REGION, IDENTITY_POOL_ID, TABLE_NAME, S3_BUCKET]);
 
   useEffect(() => {
     window.addEventListener('keydown', escapeHandler);
+    fetchProducts();
     return () => window.removeEventListener('keydown', escapeHandler);
-  }, []);
+  }, [fetchProducts]);  // Add fetchProducts to the dependency array
 
   const escapeHandler = (e) => {
-    if (e?.keyCode === undefined) return;
-    if (e.keyCode === 27) setShowFilter(false);
+    if (e?.keyCode === 27) setShowFilter(false);
   };
 
   return (
@@ -51,7 +119,7 @@ const TShirtsShirtsMenPage = (props) => {
         />
         <Container size={'large'} spacing={'min'}>
           <div className={styles.metaContainer}>
-            <span className={styles.itemCount}>476 items</span>
+            <span className={styles.itemCount}>{products.length} items</span>
             <div className={styles.controllerContainer}>
               <div
                 className={styles.iconContainer}
@@ -79,18 +147,19 @@ const TShirtsShirtsMenPage = (props) => {
             <Chip name={'S'} />
           </div>
           <div className={styles.productContainer}>
-            <span className={styles.mobileItemCount}>476 items</span>
-            <ProductCardGrid data={data}></ProductCardGrid>
+            <span className={styles.mobileItemCount}>
+              {products.length} items
+            </span>
+            <ProductCardGrid data={products} />
           </div>
           <div className={styles.loadMoreContainer}>
-            <span>6 of 456</span>
+            <span>{products.length} shown</span>
             <Button fullWidth level={'secondary'}>
               LOAD MORE
             </Button>
           </div>
         </Container>
       </div>
-
       <LayoutOption />
     </Layout>
   );

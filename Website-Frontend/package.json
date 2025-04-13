@@ -17,6 +17,11 @@
     "plop": "plop"
   },
   "dependencies": {
+    "@aws-sdk/client-cognito-identity": "^3.787.0",
+    "@aws-sdk/client-dynamodb": "^3.788.0",
+    "@aws-sdk/credential-provider-cognito-identity": "^3.787.0",
+    "@aws-sdk/util-dynamodb": "^3.788.0",
+    "aws-sdk": "^2.1692.0",
     "gatsby": "^5.13.3",
     "gatsby-adapter-netlify": "^1.1.3",
     "react": "^18.2.0",
