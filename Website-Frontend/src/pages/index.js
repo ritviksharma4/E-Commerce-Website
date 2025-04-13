@@ -39,7 +39,7 @@ const IndexPage = () => {
         ctaAction={goToShop}
       />
 
-      Message Container
+      {/* Message Container */}
       <div className={styles.messageContainer}>
         <p>
           This E-Commerce Website is a work of{' '}

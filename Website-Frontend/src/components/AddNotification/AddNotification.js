@@ -48,13 +48,13 @@ const AddNotification = (props) => {
 
       <div className={styles.actionContainer}>
         <Button onClick={props.openCart} level={'secondary'}>
-          view my bag (1)
+          View My Bag (1)
         </Button>
         <Button level="primary" href="/cart">
-          checkout
+          Checkout
         </Button>
         <div className={styles.linkContainer}>
-          <Link to={'/shop'}>continue shopping</Link>
+          <Link to={'/shop'}>Continue Shopping</Link>
         </div>
       </div>
     </div>
