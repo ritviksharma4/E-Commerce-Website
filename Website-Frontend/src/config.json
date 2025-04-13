@@ -64,23 +64,19 @@
       "menuLink": "/shop",
       "category": [
         {
-          "categoryLabel": "woman",
+          "categoryLabel": "women",
           "submenu": [
             {
-              "menuLabel": "All clothing",
-              "menuLink": "/shop"
+              "menuLabel": "dresses",
+              "menuLink": "/women/dresses"
             },
             {
-              "menuLabel": "sweatshirts & hoodies",
-              "menuLink": "/shop"
+              "menuLabel": "sweaters & cardigans",
+              "menuLink": "/women/sweaters-and-cardigans"
             },
             {
-              "menuLabel": "jackets",
-              "menuLink": "/shop"
-            },
-            {
-              "menuLabel": "trousers",
-              "menuLink": "/shop"
+              "menuLabel": "jackets & blazers",
+              "menuLink": "/women/jackets-and-blazers"
             }
           ]
         },
@@ -88,24 +84,20 @@
           "categoryLabel": "men",
           "submenu": [
             {
-              "menuLabel": "All clothing",
-              "menuLink": "/shop"
-            },
-            {
               "menuLabel": "sweatshirts & hoodies",
-              "menuLink": "/shop"
+              "menuLink": "/men/sweatshirts-and-hoodies"
             },
             {
               "menuLabel": "jackets",
-              "menuLink": "/shop"
+              "menuLink": "/men/jackets"
+            },
+            {
+              "menuLabel": "t-shirts & shirts",
+              "menuLink": "/men/t-shirts-and-shirts"
             },
             {
               "menuLabel": "trousers",
-              "menuLink": "/shop"
-            },
-            {
-              "menuLabel": "pants",
-              "menuLink": "/shop"
+              "menuLink": "/men/trousers"
             }
           ]
         },
@@ -114,11 +106,11 @@
           "submenu": [
             {
               "menuLabel": "caps & scarves",
-              "menuLink": "/shop"
+              "menuLink": "/shop/caps-and-scarves"
             },
             {
               "menuLabel": "bags",
-              "menuLink": "/shop"
+              "menuLink": "/shop/bags"
             }
           ]
         }
