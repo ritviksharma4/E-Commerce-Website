@@ -17,6 +17,33 @@
     display: grid !important;
 }
 
+.cardWrapper {
+  position: relative;
+}
+
+.cardLink {
+  display: block;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.quickViewBtn {
+  position: absolute;
+  bottom: 15px;
+  left: 15px;
+  padding: 8px 15px;
+  background-color: rgba(0, 0, 0, 0.7);
+  color: white;
+  font-size: 14px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.quickViewBtn:hover {
+  background-color: rgba(0, 0, 0, 0.9);
+}
+
 @media (max-width: 800px) {
     .mobileSlider {
         display: block;

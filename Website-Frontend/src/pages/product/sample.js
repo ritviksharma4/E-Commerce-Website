@@ -20,7 +20,7 @@ import { navigate } from 'gatsby';
 
 import AddItemNotificationContext from '../../context/AddItemNotificationProvider';
 
-const ProductPage = (props) => {
+const SampleProductPage = (props) => {
   const ctxAddItemNotification = useContext(AddItemNotificationContext);
   const showNotification = ctxAddItemNotification.showNotification;
   const sampleProduct = generateMockProductData(1, 'sample')[0];
@@ -165,4 +165,4 @@ const ProductPage = (props) => {
   );
 };
 
-export default ProductPage;
+export default SampleProductPage;
