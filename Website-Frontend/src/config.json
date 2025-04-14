@@ -113,8 +113,16 @@
           "categoryLabel": "accessories",
           "submenu": [
             {
+              "menuLabel": "all accessories",
+              "menuLink": "/shop/accessories"
+            },
+            {
               "menuLabel": "caps & scarves",
               "menuLink": "/shop/accessories/caps-and-scarves"
+            },
+            {
+              "menuLabel": "ear-rings & bracelets",
+              "menuLink": "/shop/accessories/ear-rings-and-bracelets"
             },
             {
               "menuLabel": "bags",

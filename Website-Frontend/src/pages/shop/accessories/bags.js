@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import * as styles from './bags.module.css';
 
 import Banner from '../../../components/Banner';
@@ -10,22 +10,77 @@ import Icon from '../../../components/Icons/Icon';
 import Layout from '../../../components/Layout';
 import LayoutOption from '../../../components/LayoutOption';
 import ProductCardGrid from '../../../components/ProductCardGrid';
-import { generateMockProductData } from '../../../helpers/mock';
 import Button from '../../../components/Button';
 import Config from '../../../config.json';
 
-const BagsAccessoriesPage = (props) => {
+import {
+  CognitoIdentityClient
+} from '@aws-sdk/client-cognito-identity';
+import {
+  fromCognitoIdentityPool
+} from '@aws-sdk/credential-provider-cognito-identity';
+import {
+  DynamoDBClient,
+  ScanCommand
+} from '@aws-sdk/client-dynamodb';
+import { unmarshall } from '@aws-sdk/util-dynamodb';
+
+const BagsAccessoriesPage = () => {
   const [showFilter, setShowFilter] = useState(false);
-  const data = generateMockProductData(7, 'woman');
+  const [products, setProducts] = useState([]);
+
+  const REGION = process.env.GATSBY_APP_AWS_REGION;
+  const IDENTITY_POOL_ID = process.env.GATSBY_APP_COGNITO_IDENTITY_POOL_ID;
+  const S3_BUCKET = process.env.GATSBY_APP_S3_BUCKET_NAME;
+  const TABLE_NAME = process.env.GATSBY_APP_DYNAMODB_TABLE;
+
+  const fetchProducts = useCallback(async () => {
+    try {
+      const credentials = fromCognitoIdentityPool({
+        client: new CognitoIdentityClient({ region: REGION }),
+        identityPoolId: IDENTITY_POOL_ID,
+      });
+
+      const client = new DynamoDBClient({
+        region: REGION,
+        credentials,
+      });
+
+      const command = new ScanCommand({
+        TableName: TABLE_NAME,
+        FilterExpression: 'begins_with(productCode, :prefix)',
+        ExpressionAttributeValues: {
+          ':prefix': { S: 'AC-BAG-' },
+        },
+      });
+
+      const response = await client.send(command);
+
+      if (!response.Items || response.Items.length === 0) {
+        console.error('No items found in DynamoDB.');
+        return;
+      }
+
+      const items = response.Items.map((item) => {
+        const data = unmarshall(item);
+        data.imageUrl = `https://${S3_BUCKET}.s3.${REGION}.amazonaws.com/Accessories/bags/${data.productCode}/display.jpg`;
+        return data;
+      });
+
+      setProducts(items);
+    } catch (error) {
+      console.error('Error fetching products:', error);
+    }
+  }, [REGION, IDENTITY_POOL_ID, TABLE_NAME, S3_BUCKET]);
 
   useEffect(() => {
     window.addEventListener('keydown', escapeHandler);
+    fetchProducts();
     return () => window.removeEventListener('keydown', escapeHandler);
-  }, []);
+  }, [fetchProducts]);
 
   const escapeHandler = (e) => {
-    if (e?.keyCode === undefined) return;
-    if (e.keyCode === 27) setShowFilter(false);
+    if (e?.keyCode === 27) setShowFilter(false);
   };
 
   return (
@@ -36,7 +91,7 @@ const BagsAccessoriesPage = (props) => {
             <Breadcrumbs
               crumbs={[
                 { link: '/', label: 'Home' },
-                { link: '/', label: 'Accessories' },
+                { link: '/shop/accessories', label: 'Accessories' },
                 { label: 'Bags' },
               ]}
             />
@@ -51,7 +106,7 @@ const BagsAccessoriesPage = (props) => {
         />
         <Container size={'large'} spacing={'min'}>
           <div className={styles.metaContainer}>
-            <span className={styles.itemCount}>476 items</span>
+            <span className={styles.itemCount}>{products.length} items</span>
             <div className={styles.controllerContainer}>
               <div
                 className={styles.iconContainer}
@@ -61,9 +116,7 @@ const BagsAccessoriesPage = (props) => {
                 <Icon symbol={'filter'} />
                 <span>Filters</span>
               </div>
-              <div
-                className={`${styles.iconContainer} ${styles.sortContainer}`}
-              >
+              <div className={`${styles.iconContainer} ${styles.sortContainer}`}>
                 <span>Sort by</span>
                 <Icon symbol={'caret'} />
               </div>
@@ -79,11 +132,13 @@ const BagsAccessoriesPage = (props) => {
             <Chip name={'S'} />
           </div>
           <div className={styles.productContainer}>
-            <span className={styles.mobileItemCount}>476 items</span>
-            <ProductCardGrid data={data}></ProductCardGrid>
+            <span className={styles.mobileItemCount}>
+              {products.length} items
+            </span>
+            <ProductCardGrid data={products} />
           </div>
           <div className={styles.loadMoreContainer}>
-            <span>6 of 456</span>
+            <span>{products.length} shown</span>
             <Button fullWidth level={'secondary'}>
               LOAD MORE
             </Button>

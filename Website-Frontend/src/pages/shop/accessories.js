@@ -1,17 +1,17 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import * as styles from './jackets.module.css';
+import * as styles from './accessories.module.css';
 
-import Banner from '../../../components/Banner';
-import Breadcrumbs from '../../../components/Breadcrumbs';
-import CardController from '../../../components/CardController';
-import Container from '../../../components/Container';
-import Chip from '../../../components/Chip';
-import Icon from '../../../components/Icons/Icon';
-import Layout from '../../../components/Layout';
-import LayoutOption from '../../../components/LayoutOption';
-import ProductCardGrid from '../../../components/ProductCardGrid';
-import Button from '../../../components/Button';
-import Config from '../../../config.json';
+import Banner from '../../components/Banner';
+import Breadcrumbs from '../../components/Breadcrumbs';
+import CardController from '../../components/CardController';
+import Container from '../../components/Container';
+import Chip from '../../components/Chip';
+import Icon from '../../components/Icons/Icon';
+import Layout from '../../components/Layout';
+import LayoutOption from '../../components/LayoutOption';
+import ProductCardGrid from '../../components/ProductCardGrid';
+import Button from '../../components/Button';
+import Config from '../../config.json';
 
 import {
   CognitoIdentityClient
@@ -25,7 +25,7 @@ import {
 } from '@aws-sdk/client-dynamodb';
 import { unmarshall } from '@aws-sdk/util-dynamodb';
 
-const JacketsMenPage = () => {
+const AllAccessoriesPage = () => {
   const [showFilter, setShowFilter] = useState(false);
   const [products, setProducts] = useState([]);
 
@@ -48,9 +48,9 @@ const JacketsMenPage = () => {
 
       const command = new ScanCommand({
         TableName: TABLE_NAME,
-        FilterExpression: 'begins_with(productCode, :prefix)',
+        FilterExpression: 'category = :category',
         ExpressionAttributeValues: {
-          ':prefix': { S: 'M-JKT-' },
+          ':category': { S: 'accessories' },
         },
       });
 
@@ -63,7 +63,7 @@ const JacketsMenPage = () => {
 
       const items = response.Items.map((item) => {
         const data = unmarshall(item);
-        data.imageUrl = `https://${S3_BUCKET}.s3.${REGION}.amazonaws.com/Men/jackets/${data.productCode}/display.jpg`;
+        data.imageUrl = `https://${S3_BUCKET}.s3.${REGION}.amazonaws.com/Accessories/${data.subCategory}/${data.productCode}/display.jpg`;
         return data;
       });
 
@@ -91,17 +91,17 @@ const JacketsMenPage = () => {
             <Breadcrumbs
               crumbs={[
                 { link: '/', label: 'Home' },
-                { link: '/shop/men', label: 'Men' },
-                { label: 'Jackets' },
+                { link: '/shop/accessories', label: 'Accessories' },
+                { label: 'All Accessories' },
               ]}
             />
           </div>
         </Container>
         <Banner
           maxWidth={'650px'}
-          name={`Men's Jackets`}
+          name={`All Accessories`}
           subtitle={
-            'Look to our men’s Jackets for modern takes on one-and-done dressing. From midis in bold prints to dramatic floor-sweeping styles and easy all-in-ones, our edit covers every mood.'
+            'Look to our Accessories\' Collection for modern takes on one-and-done dressing. From midis in bold prints to dramatic floor-sweeping styles and easy all-in-ones, our edit covers every mood.'
           }
         />
         <Container size={'large'} spacing={'min'}>
@@ -145,9 +145,10 @@ const JacketsMenPage = () => {
           </div>
         </Container>
       </div>
+
       <LayoutOption />
     </Layout>
   );
 };
 
-export default JacketsMenPage;
+export default AllAccessoriesPage;

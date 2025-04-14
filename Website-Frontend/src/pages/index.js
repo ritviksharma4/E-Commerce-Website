@@ -24,7 +24,7 @@ const IndexPage = () => {
   const blogData = generateMockBlogData(3);
 
   const goToShop = () => {
-    navigate('/shop');
+    navigate('/shop/women');
   };
 
   return (
@@ -84,7 +84,7 @@ const IndexPage = () => {
             title={'Luxury Knitwear'}
             description={`This soft lambswool jumper is knitted in Scotland, using yarn from one of the world's oldest spinners based in Fife`}
             textLink={'shop now'}
-            link={'/shop'}
+            link={'/shop/men'}
           />
         </Container>
       </div>
@@ -93,8 +93,8 @@ const IndexPage = () => {
       <div className={styles.promotionContainer}>
         <Hero image={toOptimizedImage('/banner2.png')} title={`-50% off \n All Essentials`} />
         <div className={styles.linkContainers}>
-          <Link to={'/shop'}>WOMAN</Link>
-          <Link to={'/shop'}>MAN</Link>
+          <Link to={'/shop/accessories'}>WOMEN</Link>
+          <Link to={'/shop/accessories'}>MEN</Link>
         </div>
       </div>
 

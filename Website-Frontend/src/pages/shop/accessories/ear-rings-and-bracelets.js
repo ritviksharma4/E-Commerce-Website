@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import * as styles from './jackets.module.css';
+import * as styles from './ear-rings-and-bracelets.module.css';
 
 import Banner from '../../../components/Banner';
 import Breadcrumbs from '../../../components/Breadcrumbs';
@@ -25,7 +25,7 @@ import {
 } from '@aws-sdk/client-dynamodb';
 import { unmarshall } from '@aws-sdk/util-dynamodb';
 
-const JacketsMenPage = () => {
+const EarRingsBraceletsAccessoriesPage = () => {
   const [showFilter, setShowFilter] = useState(false);
   const [products, setProducts] = useState([]);
 
@@ -48,9 +48,10 @@ const JacketsMenPage = () => {
 
       const command = new ScanCommand({
         TableName: TABLE_NAME,
-        FilterExpression: 'begins_with(productCode, :prefix)',
+        FilterExpression: 'begins_with(productCode, :prefix1) OR begins_with(productCode, :prefix2)',
         ExpressionAttributeValues: {
-          ':prefix': { S: 'M-JKT-' },
+          ':prefix1': { S: 'AC-BRCLT-' },
+          ':prefix2': { S: 'AC-ERRNG-' },
         },
       });
 
@@ -63,7 +64,7 @@ const JacketsMenPage = () => {
 
       const items = response.Items.map((item) => {
         const data = unmarshall(item);
-        data.imageUrl = `https://${S3_BUCKET}.s3.${REGION}.amazonaws.com/Men/jackets/${data.productCode}/display.jpg`;
+        data.imageUrl = `https://${S3_BUCKET}.s3.${REGION}.amazonaws.com/Accessories/ear-rings-and-bracelets/${data.productCode}/display.jpg`;
         return data;
       });
 
@@ -91,17 +92,17 @@ const JacketsMenPage = () => {
             <Breadcrumbs
               crumbs={[
                 { link: '/', label: 'Home' },
-                { link: '/shop/men', label: 'Men' },
-                { label: 'Jackets' },
+                { link: '/shop/accessories', label: 'Accessories' },
+                { label: 'Ear-Rings & Bracelets' },
               ]}
             />
           </div>
         </Container>
         <Banner
           maxWidth={'650px'}
-          name={`Men's Jackets`}
+          name={`Ear Rings & Bracelets`}
           subtitle={
-            'Look to our men’s Jackets for modern takes on one-and-done dressing. From midis in bold prints to dramatic floor-sweeping styles and easy all-in-ones, our edit covers every mood.'
+            'Look to our Ear Rings & Bracelets for modern takes on one-and-done dressing. From midis in bold prints to dramatic floor-sweeping styles and easy all-in-ones, our edit covers every mood.'
           }
         />
         <Container size={'large'} spacing={'min'}>
@@ -145,9 +146,10 @@ const JacketsMenPage = () => {
           </div>
         </Container>
       </div>
+
       <LayoutOption />
     </Layout>
   );
 };
 
-export default JacketsMenPage;
+export default EarRingsBraceletsAccessoriesPage;

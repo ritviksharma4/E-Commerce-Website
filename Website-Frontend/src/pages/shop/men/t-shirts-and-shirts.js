@@ -25,14 +25,15 @@ import {
 } from '@aws-sdk/client-dynamodb';
 import { unmarshall } from '@aws-sdk/util-dynamodb';
 
+
 const TShirtsShirtsMenPage = () => {
   const [showFilter, setShowFilter] = useState(false);
   const [products, setProducts] = useState([]);
 
-  const REGION = "ap-south-1";
-  const IDENTITY_POOL_ID = "ap-south-1:80e0265b-923c-4d60-bb08-a471ac99f431";
-  const TABLE_NAME = "velvet-e-commerce-website-product-data";
-  const S3_BUCKET = "velvet-e-commerce-website-images";
+  const REGION = process.env.GATSBY_APP_AWS_REGION;
+  const IDENTITY_POOL_ID = process.env.GATSBY_APP_COGNITO_IDENTITY_POOL_ID;
+  const S3_BUCKET = process.env.GATSBY_APP_S3_BUCKET_NAME;
+  const TABLE_NAME = process.env.GATSBY_APP_DYNAMODB_TABLE;
 
   // Wrap fetchProducts in useCallback to memoize the function
   const fetchProducts = useCallback(async () => {
@@ -49,18 +50,12 @@ const TShirtsShirtsMenPage = () => {
 
       const command = new ScanCommand({
         TableName: TABLE_NAME,
-        FilterExpression: 'begins_with(productId, :prefix1) OR begins_with(productId, :prefix2)',
+        FilterExpression: 'begins_with(productCode, :prefix1) OR begins_with(productCode, :prefix2)',
         ExpressionAttributeValues: {
           ':prefix1': { S: 'M-SHRT-' },
           ':prefix2': { S: 'M-TSHRT-' },
         },
       });
-
-      console.log('DynamoDB Command:', command);
-      console.log("REGION: ", REGION);
-      console.log("IDENTITY_POOL_ID: ", IDENTITY_POOL_ID);
-      console.log("TABLE_NAME: ", TABLE_NAME);
-      console.log("S3_BUCKET: ", S3_BUCKET);
 
       const response = await client.send(command);
       console.log('DynamoDB Response:', response);
@@ -72,9 +67,8 @@ const TShirtsShirtsMenPage = () => {
 
       const items = response.Items.map((item) => {
         const data = unmarshall(item);
-        console.log('Unmarshalled Data:', data);
 
-        data.imageUrl = `https://${S3_BUCKET}.s3.${REGION}.amazonaws.com/Men/t-shirts-and-shirts/${data.productId}/display.jpg`;
+        data.imageUrl = `https://${S3_BUCKET}.s3.${REGION}.amazonaws.com/Men/t-shirts-and-shirts/${data.productCode}/display.jpg`;
         console.log(`S3 Image URL: ${data.imageUrl}`);
 
         return data;
@@ -104,7 +98,7 @@ const TShirtsShirtsMenPage = () => {
             <Breadcrumbs
               crumbs={[
                 { link: '/', label: 'Home' },
-                { link: '/', label: 'Men' },
+                { link: '/shop/men', label: 'Men' },
                 { label: 'T-Shirts & Shirts' },
               ]}
             />
