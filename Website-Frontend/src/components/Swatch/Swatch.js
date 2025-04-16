@@ -2,12 +2,12 @@ import React from 'react';
 import * as styles from './Swatch.module.css';
 
 const Swatch = (props) => {
-  const { data, setActiveSwatch, isActive } = props;
+  const { data, isActive, onClick } = props;
 
   return (
     <button
-      className={`${styles.root} ${isActive === true ? styles.isActive : ''}`}
-      onClick={() => setActiveSwatch(data)}
+      className={`${styles.root} ${isActive ? styles.isActive : ''}`}
+      onClick={() => onClick && onClick(data)}
       aria-label="Swatch"
     >
       <div

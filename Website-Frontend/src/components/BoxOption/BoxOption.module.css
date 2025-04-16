@@ -3,10 +3,10 @@
     border: 1px solid var(--bg-light-gray);
     cursor: pointer;
     transition: all ease-in-out 0.3s;
-
     display: flex;
     align-items: center;
     justify-content: center;
+    position: relative; /* Keep it relative for positioning the cross */
 }
 
 .option {
@@ -16,7 +16,36 @@
     text-transform: uppercase;
 }
 
-.root:hover, .isActive {
+/* Styling for unavailable size */
+.root.isUnavailable {
+    position: relative;
+    cursor: not-allowed; /* Disable cursor when hovering over unavailable size */
+}
+
+/* Cross styling */
+.root.isUnavailable::before,
+.root.isUnavailable::after {
+    content: '';
+    position: absolute;
+    background-color: black;
+    width: 100%; /* Extend beyond the box width to make the cross stretch */
+    height: 1px; /* Thin line for the cross */
+    top: 50%; /* Position the cross in the middle */
+    left: 50%; /* Position the cross in the middle */
+    transform-origin: center center; /* Set the origin to the center */
+}
+
+.root.isUnavailable::before {
+    transform: translate(-50%, -50%) rotate(25deg); /* First diagonal line */
+}
+
+.root.isUnavailable::after {
+    transform: translate(-50%, -50%) rotate(-25deg); /* Second diagonal line */
+}
+
+/* Hover and active states only for available sizes */
+.root:not(.isUnavailable):hover,
+.root:not(.isUnavailable).isActive {
     color: var(--standard-white);
     background-color: var(--standard-gold);
 }

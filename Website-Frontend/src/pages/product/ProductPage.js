@@ -50,7 +50,6 @@ const ProductPage = ({ params }) => {
 
   const formatBreadcrumbLabel = (str) => {
     if (!str) return '';
-
     return str
       .split(/[\s-_]+/)
       .map(word => {
@@ -96,8 +95,14 @@ const ProductPage = ({ params }) => {
 
         const productData = unmarshall(response.Items[0]);
 
+        // Setting the product data
         setProduct(productData);
-        setActiveSwatch(productData.colorOptions?.[0]);
+
+        // Find the color that matches the current productCode
+        const initialSwatch = productData.colorOptions?.find(swatch => swatch.productCode === productCode);
+        setActiveSwatch(initialSwatch || productData.colorOptions?.[0]); // Fallback to the first color if no match found
+
+        // Set active size (fallback to first size option if none available)
         setActiveSize(productData.sizeOptions?.[0]);
       } catch (error) {
         console.error('Error fetching product:', error);
@@ -138,6 +143,15 @@ const ProductPage = ({ params }) => {
     fetchSuggestions();
   }, [product]);
 
+  const handleSwatchClick = (swatch) => {
+    if (!swatch || !swatch.productCode) return;
+    if (swatch.productCode === product.productCode) return;
+  
+    // Set the activeSwatch immediately and navigate to the product page
+    setActiveSwatch(swatch);  // Update the active swatch state here
+    navigate(`/product/${swatch.productCode}`);
+  };
+
   if (!product) return <LuxuryLoader />;
 
   return (
@@ -173,6 +187,7 @@ const ProductPage = ({ params }) => {
                 swatchList={product.colorOptions}
                 activeSwatch={activeSwatch}
                 setActiveSwatch={setActiveSwatch}
+                onSwatchClick={handleSwatchClick}
               />
 
               <div className={styles.sizeContainer}>
@@ -217,13 +232,13 @@ const ProductPage = ({ params }) => {
 
               <div className={styles.informationContainer}>
                 <Accordion type="plus" customStyle={styles} title="composition & care">
-                  <p className={styles.information}>{product.description}</p>
+                  <p className={styles.information}>{product.compositionAndCare}</p>
                 </Accordion>
                 <Accordion type="plus" customStyle={styles} title="delivery & returns">
-                  <p className={styles.information}>{product.description}</p>
+                  <p className={styles.information}>{product.deliveryAndReturns}</p>
                 </Accordion>
                 <Accordion type="plus" customStyle={styles} title="help">
-                  <p className={styles.information}>{product.description}</p>
+                  <p className={styles.information}>{product.help}</p>
                 </Accordion>
               </div>
             </div>
