@@ -25,15 +25,28 @@ import {
 } from '@aws-sdk/client-dynamodb';
 import { unmarshall } from '@aws-sdk/util-dynamodb';
 
+const ITEMS_PER_PAGE = 6;
+
 const CapsScarvesAccessoriesPage = () => {
   const [showFilter, setShowFilter] = useState(false);
-  const [products, setProducts] = useState([]);
+  const [allProducts, setAllProducts] = useState([]);
+  const [visibleProducts, setVisibleProducts] = useState([]);
+  const [totalCount, setTotalCount] = useState(0);
 
   const REGION = process.env.GATSBY_APP_AWS_REGION;
   const IDENTITY_POOL_ID = process.env.GATSBY_APP_COGNITO_IDENTITY_POOL_ID;
   const S3_BUCKET = process.env.GATSBY_APP_S3_BUCKET_NAME;
   const TABLE_NAME = process.env.GATSBY_APP_DYNAMODB_TABLE;
 
+  // Function to restore scroll position
+  const restoreScroll = () => {
+    const scrollY = sessionStorage.getItem('capsScarves_scrollY');
+    if (scrollY) {
+      window.scrollTo(0, parseInt(scrollY));
+    }
+  };
+
+  // Fetch products from DynamoDB and save them to state
   const fetchProducts = useCallback(async () => {
     try {
       const credentials = fromCognitoIdentityPool({
@@ -68,7 +81,14 @@ const CapsScarvesAccessoriesPage = () => {
         return data;
       });
 
-      setProducts(items);
+      setAllProducts(items);
+      setTotalCount(items.length);
+
+      // Get the number of loaded items from sessionStorage
+      const savedIndex = parseInt(sessionStorage.getItem('capsScarves_loadedItemCount')) || ITEMS_PER_PAGE;
+      setVisibleProducts(items.slice(0, savedIndex));
+
+      setTimeout(restoreScroll, 0);
     } catch (error) {
       console.error('Error fetching products:', error);
     }
@@ -83,6 +103,21 @@ const CapsScarvesAccessoriesPage = () => {
   const escapeHandler = (e) => {
     if (e?.keyCode === 27) setShowFilter(false);
   };
+
+  const handleLoadMore = () => {
+    const newCount = visibleProducts.length + ITEMS_PER_PAGE;
+    const updated = allProducts.slice(0, newCount);
+    setVisibleProducts(updated);
+    sessionStorage.setItem('capsScarves_loadedItemCount', newCount);
+  };
+
+  useEffect(() => {
+    const storeScroll = () => {
+      sessionStorage.setItem('capsScarves_scrollY', window.scrollY.toString());
+    };
+    window.addEventListener('scroll', storeScroll);
+    return () => window.removeEventListener('scroll', storeScroll);
+  }, []);
 
   return (
     <Layout>
@@ -107,7 +142,9 @@ const CapsScarvesAccessoriesPage = () => {
         />
         <Container size={'large'} spacing={'min'}>
           <div className={styles.metaContainer}>
-            <span className={styles.itemCount}>{products.length} items</span>
+            <span className={styles.itemCount}>
+              {visibleProducts.length}/{totalCount} items
+            </span>
             <div className={styles.controllerContainer}>
               <div
                 className={styles.iconContainer}
@@ -134,16 +171,18 @@ const CapsScarvesAccessoriesPage = () => {
           </div>
           <div className={styles.productContainer}>
             <span className={styles.mobileItemCount}>
-              {products.length} items
+              {visibleProducts.length}/{totalCount} items
             </span>
-            <ProductCardGrid data={products} />
+            <ProductCardGrid data={visibleProducts} />
           </div>
-          <div className={styles.loadMoreContainer}>
-            <span>{products.length} shown</span>
-            <Button fullWidth level={'secondary'}>
-              LOAD MORE
-            </Button>
-          </div>
+          {visibleProducts.length < totalCount && (
+            <div className={styles.loadMoreContainer}>
+              <span>{visibleProducts.length}/{totalCount} shown</span>
+              <Button fullWidth level={'secondary'} onClick={handleLoadMore}>
+                LOAD MORE
+              </Button>
+            </div>
+          )}
         </Container>
       </div>
 

@@ -25,17 +25,28 @@ import {
 } from '@aws-sdk/client-dynamodb';
 import { unmarshall } from '@aws-sdk/util-dynamodb';
 
+const ITEMS_PER_PAGE = 6;
 
 const TShirtsShirtsMenPage = () => {
   const [showFilter, setShowFilter] = useState(false);
-  const [products, setProducts] = useState([]);
+  const [allProducts, setAllProducts] = useState([]);
+  const [visibleProducts, setVisibleProducts] = useState([]);
+  const [totalCount, setTotalCount] = useState(0);
 
   const REGION = process.env.GATSBY_APP_AWS_REGION;
   const IDENTITY_POOL_ID = process.env.GATSBY_APP_COGNITO_IDENTITY_POOL_ID;
   const S3_BUCKET = process.env.GATSBY_APP_S3_BUCKET_NAME;
   const TABLE_NAME = process.env.GATSBY_APP_DYNAMODB_TABLE;
 
-  // Wrap fetchProducts in useCallback to memoize the function
+  // Function to restore scroll position
+  const restoreScroll = () => {
+    const scrollY = sessionStorage.getItem('tShirtsShirtsMen_scrollY');
+    if (scrollY) {
+      window.scrollTo(0, parseInt(scrollY));
+    }
+  };
+
+  // Fetch products from DynamoDB and save them to state
   const fetchProducts = useCallback(async () => {
     try {
       const credentials = fromCognitoIdentityPool({
@@ -58,7 +69,6 @@ const TShirtsShirtsMenPage = () => {
       });
 
       const response = await client.send(command);
-      console.log('DynamoDB Response:', response);
 
       if (!response.Items || response.Items.length === 0) {
         console.error('No items found in DynamoDB.');
@@ -67,14 +77,18 @@ const TShirtsShirtsMenPage = () => {
 
       const items = response.Items.map((item) => {
         const data = unmarshall(item);
-
         data.imageUrl = `https://${S3_BUCKET}.s3.${REGION}.amazonaws.com/Men/t-shirts-and-shirts/${data.productCode}/display.jpg`;
-        console.log(`S3 Image URL: ${data.imageUrl}`);
-
         return data;
       });
 
-      setProducts(items);
+      setAllProducts(items);
+      setTotalCount(items.length);
+
+      // Get the number of loaded items from sessionStorage
+      const savedIndex = parseInt(sessionStorage.getItem('tShirtsShirtsMen_loadedItemCount')) || ITEMS_PER_PAGE;
+      setVisibleProducts(items.slice(0, savedIndex));
+
+      setTimeout(restoreScroll, 0);
     } catch (error) {
       console.error('Error fetching products:', error);
     }
@@ -84,11 +98,26 @@ const TShirtsShirtsMenPage = () => {
     window.addEventListener('keydown', escapeHandler);
     fetchProducts();
     return () => window.removeEventListener('keydown', escapeHandler);
-  }, [fetchProducts]);  // Add fetchProducts to the dependency array
+  }, [fetchProducts]);
 
   const escapeHandler = (e) => {
     if (e?.keyCode === 27) setShowFilter(false);
   };
+
+  const handleLoadMore = () => {
+    const newCount = visibleProducts.length + ITEMS_PER_PAGE;
+    const updated = allProducts.slice(0, newCount);
+    setVisibleProducts(updated);
+    sessionStorage.setItem('tShirtsShirtsMen_loadedItemCount', newCount);
+  };
+
+  useEffect(() => {
+    const storeScroll = () => {
+      sessionStorage.setItem('tShirtsShirtsMen_scrollY', window.scrollY.toString());
+    };
+    window.addEventListener('scroll', storeScroll);
+    return () => window.removeEventListener('scroll', storeScroll);
+  }, []);
 
   return (
     <Layout>
@@ -113,7 +142,9 @@ const TShirtsShirtsMenPage = () => {
         />
         <Container size={'large'} spacing={'min'}>
           <div className={styles.metaContainer}>
-            <span className={styles.itemCount}>{products.length} items</span>
+            <span className={styles.itemCount}>
+              {visibleProducts.length}/{totalCount} items
+            </span>
             <div className={styles.controllerContainer}>
               <div
                 className={styles.iconContainer}
@@ -123,9 +154,7 @@ const TShirtsShirtsMenPage = () => {
                 <Icon symbol={'filter'} />
                 <span>Filters</span>
               </div>
-              <div
-                className={`${styles.iconContainer} ${styles.sortContainer}`}
-              >
+              <div className={`${styles.iconContainer} ${styles.sortContainer}`}>
                 <span>Sort by</span>
                 <Icon symbol={'caret'} />
               </div>
@@ -142,16 +171,18 @@ const TShirtsShirtsMenPage = () => {
           </div>
           <div className={styles.productContainer}>
             <span className={styles.mobileItemCount}>
-              {products.length} items
+              {visibleProducts.length}/{totalCount} items
             </span>
-            <ProductCardGrid data={products} />
+            <ProductCardGrid data={visibleProducts} />
           </div>
-          <div className={styles.loadMoreContainer}>
-            <span>{products.length} shown</span>
-            <Button fullWidth level={'secondary'}>
-              LOAD MORE
-            </Button>
-          </div>
+          {visibleProducts.length < totalCount && (
+            <div className={styles.loadMoreContainer}>
+              <span>{visibleProducts.length}/{totalCount} shown</span>
+              <Button fullWidth level={'secondary'} onClick={handleLoadMore}>
+                LOAD MORE
+              </Button>
+            </div>
+          )}
         </Container>
       </div>
       <LayoutOption />
