@@ -1,0 +1,38 @@
+.loaderContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 90vh;
+    background: linear-gradient(135deg, #f3f0f7, #d6cadd);
+    color: #3c2a4d;
+    font-family: 'Cormorant Garamond', serif;
+    text-align: center;
+  }
+  
+  .logo {
+    font-size: 3rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+  }
+  
+  .spinner {
+    border: 6px solid #e8e3ef;
+    border-top: 6px solid #3c2a4d;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    animation: spin 1.2s linear infinite;
+    margin-bottom: 1.2rem;
+  }
+  
+  .tagline {
+    font-size: 1.1rem;
+    opacity: 0.7;
+  }
+  
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }  

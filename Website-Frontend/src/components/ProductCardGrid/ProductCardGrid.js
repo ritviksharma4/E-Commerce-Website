@@ -36,12 +36,12 @@ const ProductCardGrid = (props) => {
           </Link>
           
           {/* Quick View button */}
-          <div 
+          {/* <div 
             onClick={() => setShowQuickView(true)} 
             className={styles.quickViewBtn}
           >
             Quick View
-          </div>
+          </div> */}
         </div>
       );
     });

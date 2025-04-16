@@ -1,28 +1,33 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { navigate } from 'gatsby';
-import * as styles from './productpage.module.css';
+import * as styles from './ProductPage.module.css';
 
-import Accordion from '../components/Accordion';
-import AdjustItem from '../components/AdjustItem';
-import Button from '../components/Button';
-import Breadcrumbs from '../components/Breadcrumbs';
-import Container from '../components/Container';
-import CurrencyFormatter from '../components/CurrencyFormatter';
-import Gallery from '../components/Gallery';
-import SizeList from '../components/SizeList';
-import Split from '../components/Split';
-import SwatchList from '../components/SwatchList';
-import Layout from '../components/Layout/Layout';
-import Icon from '../components/Icons/Icon';
-import ProductCardGrid from '../components/ProductCardGrid';
+import Accordion from '../../components/Accordion';
+import AdjustItem from '../../components/AdjustItem';
+import Button from '../../components/Button';
+import Breadcrumbs from '../../components/Breadcrumbs';
+import Container from '../../components/Container';
+import CurrencyFormatter from '../../components/CurrencyFormatter';
+import Gallery from '../../components/Gallery';
+import SizeList from '../../components/SizeList';
+import Split from '../../components/Split';
+import SwatchList from '../../components/SwatchList';
+import Layout from '../../components/Layout/Layout';
+import Icon from '../../components/Icons/Icon';
+import ProductCardGrid from '../../components/ProductCardGrid';
+import LuxuryLoader from '../../components/Loading/LuxuriousLoader';
 
-import AddItemNotificationContext from '../context/AddItemNotificationProvider';
+import AddItemNotificationContext from '../../context/AddItemNotificationProvider';
 
-import { CognitoIdentityClient } from '@aws-sdk/client-cognito-identity';
-import { fromCognitoIdentityPool } from '@aws-sdk/credential-provider-cognito-identity';
+import {
+  CognitoIdentityClient
+} from '@aws-sdk/client-cognito-identity';
+import {
+  fromCognitoIdentityPool
+} from '@aws-sdk/credential-provider-cognito-identity';
 import {
   DynamoDBClient,
-  GetItemCommand,
+  QueryCommand,
   ScanCommand,
 } from '@aws-sdk/client-dynamodb';
 import { unmarshall } from '@aws-sdk/util-dynamodb';
@@ -41,8 +46,29 @@ const ProductPage = ({ params }) => {
 
   const REGION = process.env.GATSBY_APP_AWS_REGION;
   const IDENTITY_POOL_ID = process.env.GATSBY_APP_COGNITO_IDENTITY_POOL_ID;
-  const S3_BUCKET = process.env.GATSBY_APP_S3_BUCKET_NAME;
   const TABLE_NAME = process.env.GATSBY_APP_DYNAMODB_TABLE;
+
+  const formatBreadcrumbLabel = (str) => {
+    if (!str) return '';
+
+    return str
+      .split(/[\s-_]+/)
+      .map(word => {
+        if (word.toLowerCase() === 'and' || word.toLowerCase() === 'n') return '&';
+        if (word.toLowerCase() === 'tshirts' || word.toLowerCase() === 'tshirt') return 'T-Shirts';
+        if (word.toLowerCase() === 'shirts') return 'Shirts';
+        if (word.toLowerCase() === 'hoodies') return 'Hoodies';
+        return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
+      })
+      .join(' ');
+  };
+
+  const shuffleArray = (array) => {
+    return array
+      .map((value) => ({ value, sort: Math.random() }))
+      .sort((a, b) => a.sort - b.sort)
+      .map(({ value }) => value);
+  };
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -52,88 +78,81 @@ const ProductPage = ({ params }) => {
           identityPoolId: IDENTITY_POOL_ID,
         });
 
-        const client = new DynamoDBClient({
-          region: REGION,
-          credentials,
-        });
+        const client = new DynamoDBClient({ region: REGION, credentials });
 
-        const command = new GetItemCommand({
+        const command = new QueryCommand({
           TableName: TABLE_NAME,
-          Key: {
-            productCode: { S: productCode },
+          KeyConditionExpression: "productCode = :pcode",
+          ExpressionAttributeValues: {
+            ":pcode": { S: productCode },
           },
         });
 
         const response = await client.send(command);
-        if (!response.Item) {
+        if (!response.Items || response.Items.length === 0) {
           console.error('Product not found');
           return;
         }
 
-        const productData = unmarshall(response.Item);
-        productData.imageUrl = `https://${S3_BUCKET}.s3.${REGION}.amazonaws.com/${productData.category}/${productData.subCategory}/${productData.productCode}/display.jpg`;
+        const productData = unmarshall(response.Items[0]);
 
         setProduct(productData);
         setActiveSwatch(productData.colorOptions?.[0]);
         setActiveSize(productData.sizeOptions?.[0]);
-
-        fetchSuggestions(productData.category, productData.subCategory, productData.productCode);
       } catch (error) {
         console.error('Error fetching product:', error);
-      }
-    };
-
-    const fetchSuggestions = async (category, subCategory, currentProductCode) => {
-      try {
-        const credentials = fromCognitoIdentityPool({
-          client: new CognitoIdentityClient({ region: REGION }),
-          identityPoolId: IDENTITY_POOL_ID,
-        });
-
-        const client = new DynamoDBClient({
-          region: REGION,
-          credentials,
-        });
-
-        const scan = new ScanCommand({
-          TableName: TABLE_NAME,
-          FilterExpression: '#cat = :cat AND #sub = :sub AND #code <> :code',
-          ExpressionAttributeNames: {
-            '#cat': 'category',
-            '#sub': 'subCategory',
-            '#code': 'productCode',
-          },
-          ExpressionAttributeValues: {
-            ':cat': { S: category },
-            ':sub': { S: subCategory },
-            ':code': { S: currentProductCode },
-          },
-          Limit: 10,
-        });
-
-        const res = await client.send(scan);
-        const data = res.Items.map(unmarshall).slice(0, 4);
-        setSuggestions(data);
-      } catch (e) {
-        console.error('Suggestions fetch failed:', e);
       }
     };
 
     fetchProduct();
   }, [productCode]);
 
-  if (!product) return <div>Loading product...</div>;
+  useEffect(() => {
+    if (!product) return;
+
+    const fetchSuggestions = async () => {
+      try {
+        const credentials = fromCognitoIdentityPool({
+          client: new CognitoIdentityClient({ region: REGION }),
+          identityPoolId: IDENTITY_POOL_ID,
+        });
+
+        const client = new DynamoDBClient({ region: REGION, credentials });
+
+        const scanCommand = new ScanCommand({ TableName: TABLE_NAME });
+        const res = await client.send(scanCommand);
+        let items = res.Items.map(unmarshall).filter(p => p.productCode !== product.productCode);
+
+        let subCategoryMatches = shuffleArray(items.filter(p => p.subCategory === product.subCategory));
+        let categoryMatches = shuffleArray(items.filter(
+          p => p.category === product.category && p.subCategory !== product.subCategory
+        ));
+
+        const combined = [...subCategoryMatches, ...categoryMatches].slice(0, 4);
+        setSuggestions(combined);
+      } catch (e) {
+        console.error('Suggestions fetch failed:', e);
+      }
+    };
+
+    fetchSuggestions();
+  }, [product]);
+
+  if (!product) return <LuxuryLoader />;
 
   return (
     <Layout>
       <div className={styles.root}>
-        <Container size="large" spacing="min">
+        <Container size={'large'} spacing={'min'}>
           <Breadcrumbs
             crumbs={[
               { link: '/', label: 'Home' },
-              { label: product.category, link: `/shop/${product.category}` },
-              { label: product.subCategory, link: `/shop/${product.category}/${product.subCategory}` },
-              { label: product.name },
+              { label: formatBreadcrumbLabel(product.category), link: `/shop/${product.category}` },
+              {
+                label: formatBreadcrumbLabel(product.subCategory),
+                link: `/shop/${product.category}/${product.subCategory}`,
+              },
+              { label: formatBreadcrumbLabel(product.name) },
             ]}
           />
 
@@ -171,20 +190,22 @@ const ProductPage = ({ params }) => {
 
               <div className={styles.actionContainer}>
                 <div className={styles.addToButtonContainer}>
-                  <Button onClick={() => showNotification()} fullWidth level="primary">
+                  <Button onClick={() => showNotification()} fullWidth level={'primary'}>
                     Add to Bag
                   </Button>
                 </div>
                 <div
                   className={styles.wishlistActionContainer}
-                  role="presentation"
+                  role={'presentation'}
                   onClick={() => setIsWishlist(!isWishlist)}
                 >
-                  <Icon symbol="heart" />
+                  <Icon symbol={'heart'} />
                   <div
-                    className={`${styles.heartFillContainer} ${isWishlist ? styles.show : styles.hide}`}
+                    className={`${styles.heartFillContainer} ${
+                      isWishlist ? styles.show : styles.hide
+                    }`}
                   >
-                    <Icon symbol="heartFill" />
+                    <Icon symbol={'heartFill'} />
                   </div>
                 </div>
               </div>
@@ -222,13 +243,15 @@ const ProductPage = ({ params }) => {
 
         <div className={styles.attributeContainer}>
           <Split
-            image="/cloth.png"
-            alt="attribute description"
-            title="Sustainability"
-            description="We design our products to look good and to be used on a daily basis. Quality over quantity is a cornerstone of our ethos."
-            ctaText="learn more"
+            image={'/cloth.png'}
+            alt={'attribute description'}
+            title={'Sustainability'}
+            description={
+              'We design our products to look good and to be used on a daily basis. Quality over quantity is a cornerstone of our ethos.'
+            }
+            ctaText={'learn more'}
             cta={() => navigate('/blog')}
-            bgColor="var(--standard-light-grey)"
+            bgColor={'var(--standard-light-grey)'}
           />
         </div>
       </div>
@@ -237,3 +260,7 @@ const ProductPage = ({ params }) => {
 };
 
 export default ProductPage;
+
+export const config = {
+  matchPath: "/product/:productCode",
+};
