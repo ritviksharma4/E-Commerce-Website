@@ -6,7 +6,7 @@ No options available for this component
 
 ## Install
 ```
-import LayoutOption from 'components/LayoutOption'
+// import LayoutOption from 'components/LayoutOption'
 ```
 
 ## Examples

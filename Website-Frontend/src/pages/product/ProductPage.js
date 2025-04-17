@@ -180,7 +180,18 @@ const ProductPage = ({ params }) => {
               <span className={styles.vendor}>by {product.vendor}</span>
 
               <div className={styles.priceContainer}>
-                <CurrencyFormatter appendZero amount={product.price} />
+                {product.originalPrice ? (
+                  <>
+                    <span className={styles.discountedPrice}>
+                      <CurrencyFormatter appendZero amount={product.price} />
+                    </span>
+                    <span className={styles.originalPrice}>
+                      <CurrencyFormatter appendZero amount={product.originalPrice} />
+                    </span>
+                  </>
+                ) : (
+                  <CurrencyFormatter appendZero amount={product.price} />
+                )}
               </div>
 
               <SwatchList

@@ -28,12 +28,26 @@
 
 .priceContainer {
     margin: 32px 0px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
 
 .priceContainer span {
     font-weight: normal;
     font-size: 24px;
     line-height: 29px;
+}
+
+.originalPrice {
+    text-decoration: line-through;
+    color: #888;
+    font-weight: 400;
+}
+  
+.discountedPrice {
+    color: #d62828; /* bright red or any primary brand color */
+    font-weight: 600;
 }
 
 .vendor {
