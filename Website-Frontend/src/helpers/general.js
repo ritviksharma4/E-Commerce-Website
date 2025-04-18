@@ -44,12 +44,11 @@ function isEmpty(input) {
  * Checks if user is authenticated
  */
 function isAuth() {
-  const isBrowser = typeof window !== 'undefined';
-  if (isBrowser) {
+  if (typeof window !== 'undefined') {
     const token = window.localStorage.getItem('key');
     return !!token;
   }
-  return true;
+  return false; // Better default for SSR: unauthenticated
 }
 
 /**
