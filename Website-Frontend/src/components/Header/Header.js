@@ -136,8 +136,8 @@ const Header = (prop) => {
               <Icon symbol={'heart'}></Icon>
             </Link>
             <Link
-              aria-label="Orders"
-              href={isAuth() ? '/login' : '/account/orders/'}
+              aria-label="Account"
+              href={isAuth() ? '/account/orders/' : '/login' }
               className={`${styles.iconContainer} ${styles.hideOnMobile}`}
             >
               <Icon symbol={'user'}></Icon>

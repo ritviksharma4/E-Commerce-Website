@@ -157,8 +157,11 @@
 .closeButton:hover {
     color: #999;
 }
-  
-  
+
+.boldUnderline {
+    font-weight: bold;
+    text-decoration: underline;
+}  
 
   /* Animations */
   @keyframes fadeIn {

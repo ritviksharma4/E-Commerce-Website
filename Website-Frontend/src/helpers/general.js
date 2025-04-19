@@ -45,8 +45,27 @@ function isEmpty(input) {
  */
 function isAuth() {
   if (typeof window !== 'undefined') {
-    const token = window.localStorage.getItem('key');
-    return !!token;
+    const isLoginKeyValid = () => {
+      const loginKey = JSON.parse(localStorage.getItem('velvet_login_key'));
+      console.log("loginKey = ", loginKey)
+      if (loginKey) {
+        const currentTime = new Date().getTime();
+        const timeElapsed = currentTime - loginKey.timestamp;
+        const fiveMinutes = 5 * 60 * 1000; // 5 minutes in milliseconds
+
+        if (timeElapsed < fiveMinutes) {
+          console.log("Key is valid")
+          return true; // Key is valid
+        } else {
+          console.log("Key is now invalid")
+          localStorage.removeItem('velvet_login_key'); // Remove expired key
+          return false; // Key expired
+        }
+      }
+      return false; // No key found
+    };
+
+    return isLoginKeyValid(); // Check if the login key is valid
   }
   return false; // Better default for SSR: unauthenticated
 }

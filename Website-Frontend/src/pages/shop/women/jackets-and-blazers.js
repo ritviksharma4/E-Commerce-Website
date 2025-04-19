@@ -75,7 +75,7 @@ const JacketsBlazersWomenPage = () => {
 
       const items = response.Items.map((item) => {
         const data = unmarshall(item);
-        data.imageUrl = `https://${S3_BUCKET}.s3.${REGION}.amazonaws.com/Women/jackets-and-blazers/${data.productCode}/display.jpg`;
+        data.imageUrl = `https://${S3_BUCKET}.s3.${REGION}.amazonaws.com/${data.category}/${data.subCategory}/${data.productCode}/display.jpg`;
         return data;
       });
 

@@ -22,17 +22,20 @@ const LoginPage = () => {
 
   const { timeLeft, startCountdown, stopCountdown } = useCountdown(waitTime);
 
-const handleChange = (id, e) => {
-  setLoginForm({ ...loginForm, [id]: e });
-};
+  // Handle input change
+  const handleChange = (id, e) => {
+    setLoginForm({ ...loginForm, [id]: e });
+  };
 
-const formatTime = (seconds) => {
+  // Format the time in minutes:seconds
+  const formatTime = (seconds) => {
     if (!Number.isFinite(seconds)) return '0:00';
     const minutes = Math.floor(seconds / 60);
     const secs = seconds % 60;
     return `${minutes}:${secs < 10 ? '0' : ''}${secs}`;
-};
+  };
 
+  // Handle form submission
   const handleSubmit = (e) => {
     e.preventDefault();
     let validForm = true;
@@ -53,8 +56,11 @@ const formatTime = (seconds) => {
 
       // Mock login
       if (loginForm.email !== 'error@example.com') {
+        // Store velvet_login_key in localStorage with a timestamp for expiry check
+        const loginKey = { timestamp: new Date().getTime() };
+        localStorage.setItem('velvet_login_key', JSON.stringify(loginKey));
+
         navigate('/account');
-        window.localStorage.setItem('key', 'sampleToken');
       } else {
         window.scrollTo(0, 0);
         setErrorMessage('There is no such account associated with this email address');
@@ -65,6 +71,25 @@ const formatTime = (seconds) => {
     }
   };
 
+  // Check if the velvet_login_key is valid (expires after 5 minutes)
+  const isLoginKeyValid = () => {
+    const loginKey = JSON.parse(localStorage.getItem('velvet_login_key'));
+    if (loginKey) {
+      const currentTime = new Date().getTime();
+      const timeElapsed = currentTime - loginKey.timestamp;
+      const fiveMinutes = 5 * 60 * 1000; // 5 minutes in milliseconds
+
+      if (timeElapsed < fiveMinutes) {
+        return true; // Key is valid
+      } else {
+        localStorage.removeItem('velvet_login_key'); // Remove expired key
+        return false; // Key expired
+      }
+    }
+    return false; // No key found
+  };
+
+  // Get Guest Login
   const getGuestLogin = async () => {
     setIsGuestLoginLoading(true);
     try {
@@ -75,6 +100,9 @@ const formatTime = (seconds) => {
       if (data.email) {
         setLoginForm({ email: data.email, password: data.password });
         setHasUsedGuestLogin(true); // Disable the button
+        // Store velvet_login_key for guest login
+        const loginKey = { timestamp: new Date().getTime() };
+        localStorage.setItem('velvet_login_key', JSON.stringify(loginKey));
       } else if (data.waitTime) {
         setWaitTime(data.waitTime);
         setIsWaiting(true);
@@ -88,6 +116,7 @@ const formatTime = (seconds) => {
     }
   };
 
+  // Reset the countdown when timeLeft reaches 0
   useEffect(() => {
     if (timeLeft === 0) {
       stopCountdown();
@@ -95,6 +124,14 @@ const formatTime = (seconds) => {
       setWaitTime(null);
     }
   }, [timeLeft, stopCountdown]);
+
+  // UseEffect to check the validity of the login key on component mount
+  useEffect(() => {
+    if (!isLoginKeyValid()) {
+      // Redirect to login page if the key is not valid
+      navigate('/login');
+    }
+  }, []);
 
   return (
     <Layout disablePaddingBottom={true}>
@@ -105,7 +142,9 @@ const formatTime = (seconds) => {
       <div className={styles.root}>
         <div className={styles.loginFormContainer}>
           <h1 className={styles.loginTitle}>Login</h1>
-          <span className={styles.subtitle}>Please enter your e-mail and password</span>
+          <span className={styles.subtitle}>
+            Please click on <span className={styles.boldUnderline}>Get Guest Login</span> to fetch a Sample User for demo purposes.
+          </span>
 
           {/* Guest Wait Timer Popup */}
           {isWaiting && (

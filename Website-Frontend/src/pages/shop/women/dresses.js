@@ -74,7 +74,7 @@ const DressesWomenPage = () => {
 
       const items = response.Items.map((item) => {
         const data = unmarshall(item);
-        data.imageUrl = `https://${S3_BUCKET}.s3.${REGION}.amazonaws.com/Women/dresses/${data.productCode}/display.jpg`;
+        data.imageUrl = `https://${S3_BUCKET}.s3.${REGION}.amazonaws.com/${data.category}/${data.subCategory}/${data.productCode}/display.jpg`;
         return data;
       });
 

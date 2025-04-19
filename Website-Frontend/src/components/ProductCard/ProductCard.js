@@ -17,63 +17,97 @@ const ProductCard = (props) => {
     meta,
     showQuickView,
     height = 580,
+    productCode,
   } = props;
 
-  const handleRouteToProduct = () => {
-    navigate(`/product/${props.productCode}`);
+  const handleRouteToProduct = (e) => {
+    e.preventDefault();
+    e.stopPropagation(); // Just in case
+    navigate(`/product/${productCode}`);
   };
 
   const handleQuickView = (e) => {
+    e.preventDefault();
     e.stopPropagation();
-    showQuickView();
+    showQuickView(props);
   };
 
   const handleFavorite = (e) => {
+    e.preventDefault();
     e.stopPropagation();
     setIsWishlist(!isWishlist);
   };
 
   return (
     <div className={styles.root}>
-      <div
-        className={styles.imageContainer}
-        onClick={() => handleRouteToProduct()}
-        role={'presentation'}
-      >
-        <img style={{ height: `${height}px` }} src={toOptimizedImage(image)} alt={imageAlt}></img>
+      <div className={styles.imageContainer} role="presentation">
+        {/* ✅ Only the image itself routes */}
+        <img
+          style={{ height: `${height}px` }}
+          src={toOptimizedImage(image)}
+          alt={imageAlt}
+          onClick={handleRouteToProduct}
+          role="button"
+          tabIndex={0}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              handleRouteToProduct();
+            }
+          }}
+          aria-label={imageAlt || 'Product Image'}  // Ensure there's an accessible label
+        />
+
+
+        {/* ✅ Quick View Icon */}
         <div
+          tabIndex={0}
           className={styles.bagContainer}
-          role={'presentation'}
-          onClick={(e) => handleQuickView(e)}
+          role="button"
+          onClick={handleQuickView}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              handleQuickView();  // Trigger click when Enter or Space is pressed
+            }
+          }}
         >
-          <Icon symbol={'bagPlus'} />
+          <Icon symbol="bagPlus" />
         </div>
+
+        {/* ✅ Favorite Icon */}
         <div
           className={styles.heartContainer}
-          role={'presentation'}
-          onClick={(e) => handleFavorite(e)}
+          role="button"
+          onClick={handleFavorite}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              handleFavorite();  // Trigger click when Enter or Space is pressed
+            }
+          }}
+          tabIndex={0}
+          
         >
-          <Icon symbol={'heart'} />
+          <Icon symbol="heart" />
           <div
             className={`${styles.heartFillContainer} ${
-              isWishlist === true ? styles.show : styles.hide
+              isWishlist ? styles.show : styles.hide
             }`}
           >
-            <Icon symbol={'heartFill'}></Icon>
+            <Icon symbol="heartFill" />
           </div>
         </div>
       </div>
+
       <div className={styles.detailsContainer}>
         <span className={styles.productName}>{name}</span>
         <div className={styles.prices}>
           <span
-            className={`${originalPrice !== undefined ? styles.salePrice : ''}`}
+            className={originalPrice !== undefined ? styles.salePrice : ''}
           >
-            <CurrencyFormatter amount={price}></CurrencyFormatter>
+            <CurrencyFormatter amount={price} />
           </span>
           {originalPrice && (
             <span className={styles.originalPrice}>
-              <CurrencyFormatter amount={originalPrice}></CurrencyFormatter>
+              <CurrencyFormatter amount={originalPrice} />
             </span>
           )}
         </div>

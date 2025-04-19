@@ -4,7 +4,7 @@ import * as styles from './AccountNav.module.css';
 
 const AccountNav = (props) => {
   const handleLogout = () => {
-    window.localStorage.removeItem('key');
+    window.localStorage.removeItem('velvet_login_key');
     navigate('/');
   };
 

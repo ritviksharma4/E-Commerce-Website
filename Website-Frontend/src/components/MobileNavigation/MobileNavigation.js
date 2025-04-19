@@ -19,7 +19,7 @@ const MobileNavigation = (props) => {
   const [depth, setDepth] = useState(0);
 
   const handleLogout = () => {
-    window.localStorage.removeItem('key');
+    window.localStorage.removeItem('velvet_login_key');
     navigate('/');
     close();
   };

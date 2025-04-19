@@ -75,7 +75,7 @@ const SweatShirtsHoodiesMenPage = () => {
 
       const items = response.Items.map((item) => {
         const data = unmarshall(item);
-        data.imageUrl = `https://${S3_BUCKET}.s3.${REGION}.amazonaws.com/Men/sweatshirts-and-hoodies/${data.productCode}/display.jpg`;
+        data.imageUrl = `https://${S3_BUCKET}.s3.${REGION}.amazonaws.com/${data.category}/${data.subCategory}/${data.productCode}/${data.productCode}/display.jpg`;
         return data;
       });
 

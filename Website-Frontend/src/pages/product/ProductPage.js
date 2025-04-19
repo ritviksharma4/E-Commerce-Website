@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { navigate } from 'gatsby';
 import * as styles from './ProductPage.module.css';
-
+import { isAuth } from '../../helpers/general';
 import Accordion from '../../components/Accordion';
 import AdjustItem from '../../components/AdjustItem';
 import Button from '../../components/Button';
@@ -216,9 +216,19 @@ const ProductPage = ({ params }) => {
 
               <div className={styles.actionContainer}>
                 <div className={styles.addToButtonContainer}>
-                  <Button onClick={() => showNotification()} fullWidth level={'primary'}>
-                    Add to Bag
-                  </Button>
+                <Button
+                  onClick={() => {
+                    if (isAuth()) {
+                      showNotification();
+                    } else {
+                      window.location.href = '/login';
+                    }
+                  }}
+                  fullWidth
+                  level={'primary'}
+                >
+                  Add to Bag
+                </Button>
                 </div>
                 <div
                   className={styles.wishlistActionContainer}
