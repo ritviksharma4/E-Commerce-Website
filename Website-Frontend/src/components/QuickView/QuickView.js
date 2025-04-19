@@ -9,6 +9,7 @@ import Button from '../Button';
 import CurrencyFormatter from '../CurrencyFormatter';
 import SizeList from '../SizeList';
 import SwatchList from '../SwatchList';
+import LuxuryLoader from '../../components/Loading/LuxuriousLoader'; // ✅ Added here
 
 import AddItemNotificationContext from '../../context/AddItemNotificationProvider';
 import * as styles from './QuickView.module.css';
@@ -40,7 +41,6 @@ const QuickView = ({ close, buttonTitle = 'Add to Bag', product: initialProduct 
   );
   const [activeSize, setActiveSize] = useState(initialProduct?.sizeOptions?.[0]);
 
-  // Sync product when QuickView opens with a different product
   useEffect(() => {
     if (!initialProduct) return;
 
@@ -54,7 +54,6 @@ const QuickView = ({ close, buttonTitle = 'Add to Bag', product: initialProduct 
     setActiveSize(initialProduct.sizeOptions?.[0]);
   }, [initialProduct]);
 
-  // Fetch Product Details for color swatch
   const fetchProductDetails = useCallback(async (productCode) => {
     setLoading(true);
     try {
@@ -116,7 +115,7 @@ const QuickView = ({ close, buttonTitle = 'Add to Bag', product: initialProduct 
       </div>
       <div className={styles.contentContainer}>
         {loading ? (
-          <div className={styles.loading}>Loading...</div>
+          <LuxuryLoader /> // ✅ Replaced "Loading..." with luxury loader
         ) : (
           <>
             <div className={styles.productContainer}>

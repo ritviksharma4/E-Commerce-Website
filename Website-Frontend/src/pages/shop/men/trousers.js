@@ -8,22 +8,12 @@ import Container from '../../../components/Container';
 import Chip from '../../../components/Chip';
 import Icon from '../../../components/Icons/Icon';
 import Layout from '../../../components/Layout';
-// import LayoutOption from '../../../components/LayoutOption';
 import ProductCardGrid from '../../../components/ProductCardGrid';
 import Button from '../../../components/Button';
 import Config from '../../../config.json';
-
-import {
-  CognitoIdentityClient
-} from '@aws-sdk/client-cognito-identity';
-import {
-  fromCognitoIdentityPool
-} from '@aws-sdk/credential-provider-cognito-identity';
-import {
-  DynamoDBClient,
-  ScanCommand
-} from '@aws-sdk/client-dynamodb';
-import { unmarshall } from '@aws-sdk/util-dynamodb';
+import LuxuryLoader from '../../../components/Loading/LuxuriousLoader';
+import { isAuth } from '../../../helpers/general';
+import { navigate } from 'gatsby';
 
 const ITEMS_PER_PAGE = 6;
 
@@ -32,11 +22,9 @@ const TrousersMenPage = () => {
   const [allProducts, setAllProducts] = useState([]);
   const [visibleProducts, setVisibleProducts] = useState([]);
   const [totalCount, setTotalCount] = useState(0);
+  const [loading, setLoading] = useState(true);
 
-  const REGION = process.env.GATSBY_APP_AWS_REGION;
-  const IDENTITY_POOL_ID = process.env.GATSBY_APP_COGNITO_IDENTITY_POOL_ID;
-  const S3_BUCKET = process.env.GATSBY_APP_S3_BUCKET_NAME;
-  const TABLE_NAME = process.env.GATSBY_APP_DYNAMODB_TABLE;
+  const LAMBDA_ENDPOINT = process.env.GATSBY_APP_GET_PRODUCT_DETAILS_FOR_USER;
 
   // Function to restore scroll position
   const restoreScroll = () => {
@@ -46,54 +34,88 @@ const TrousersMenPage = () => {
     }
   };
 
-  // Fetch products from DynamoDB and save them to state
   const fetchProducts = useCallback(async () => {
+    const savedProducts = sessionStorage.getItem('trousersMen_products');
+    const savedTotalCount = sessionStorage.getItem('trousersMen_totalCount');
+    const savedIndex = parseInt(sessionStorage.getItem('trousersMen_loadedItemCount')) || ITEMS_PER_PAGE;
+  
+    if (savedProducts && savedTotalCount) {
+      const parsed = JSON.parse(savedProducts);
+      setAllProducts(parsed);
+      setTotalCount(parseInt(savedTotalCount));
+      setVisibleProducts(parsed.slice(0, savedIndex));
+      setTimeout(restoreScroll, 0);
+      setLoading(false);  // End loading
+      return;
+    }
+  
     try {
-      const credentials = fromCognitoIdentityPool({
-        client: new CognitoIdentityClient({ region: REGION }),
-        identityPoolId: IDENTITY_POOL_ID,
-      });
-
-      const client = new DynamoDBClient({
-        region: REGION,
-        credentials,
-      });
-
-      const command = new ScanCommand({
-        TableName: TABLE_NAME,
-        FilterExpression: 'begins_with(productCode, :prefix)',
-        ExpressionAttributeValues: {
-          ':prefix': { S: 'M-TRS-' },
-        },
-      });
-
-      const response = await client.send(command);
-
-      if (!response.Items || response.Items.length === 0) {
-        console.error('No items found in DynamoDB.');
+      const user = JSON.parse(localStorage.getItem('velvet_login_key') || '{}');
+      const email = user.email || null;
+  
+      if (!email) {
+        console.warn('User email not found in localStorage');
+        setLoading(false);
         return;
       }
-
-      const items = response.Items.map((item) => {
-        const data = unmarshall(item);
-        data.imageUrl = `https://${S3_BUCKET}.s3.${REGION}.amazonaws.com/${data.category}/${data.subCategory}/${data.productCode}/display.jpg`;
-        return data;
+  
+      const response = await fetch(LAMBDA_ENDPOINT, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: email,
+          category: 'men',
+          subCategory: 'trousers', // Additional parameter
+        }),
       });
-
+  
+      const text = await response.text();
+      let lambdaResponse;
+      let items = [];
+  
+      try {
+        lambdaResponse = JSON.parse(text);
+      } catch (err) {
+        console.error("Error parsing Lambda response text:", err);
+        lambdaResponse = {};
+      }
+  
+      if (Array.isArray(lambdaResponse)) {
+        items = lambdaResponse;
+      } else if (typeof lambdaResponse.body === 'string') {
+        try {
+          const parsedBody = JSON.parse(lambdaResponse.body);
+          items = parsedBody.products || [];
+        } catch (err) {
+          console.error("Error parsing Lambda body:", err);
+        }
+      } else if (lambdaResponse.products) {
+        items = lambdaResponse.products;
+      }
+  
+      // Set products and also cache to sessionStorage
       setAllProducts(items);
       setTotalCount(items.length);
-
-      // Get the number of loaded items from sessionStorage
-      const savedIndex = parseInt(sessionStorage.getItem('trousersMen_loadedItemCount')) || ITEMS_PER_PAGE;
-      setVisibleProducts(items.slice(0, savedIndex));
-
+      sessionStorage.setItem('trousersMen_products', JSON.stringify(items));
+      sessionStorage.setItem('trousersMen_totalCount', items.length.toString());
+  
+      const loadedItems = items.slice(0, savedIndex);
+      setVisibleProducts(loadedItems);
       setTimeout(restoreScroll, 0);
     } catch (error) {
-      console.error('Error fetching products:', error);
+      console.error('Error fetching men’s trousers from Lambda:', error);
+    } finally {
+      setLoading(false);  // End loading after fetch
     }
-  }, [REGION, IDENTITY_POOL_ID, TABLE_NAME, S3_BUCKET]);
+  }, [LAMBDA_ENDPOINT]);
 
   useEffect(() => {
+    if (!isAuth()) {
+      navigate('/login');
+      return;
+    }
     window.addEventListener('keydown', escapeHandler);
     fetchProducts();
     return () => window.removeEventListener('keydown', escapeHandler);
@@ -121,73 +143,77 @@ const TrousersMenPage = () => {
   return (
     <Layout>
       <div className={styles.root}>
-        <Container size={'large'} spacing={'min'}>
-          <div className={styles.breadcrumbContainer}>
-            <Breadcrumbs
-              crumbs={[
-                { link: '/', label: 'Home' },
-                { link: '/shop/men', label: 'Men' },
-                { label: 'Trousers' },
-              ]}
+        {loading ? (
+          <LuxuryLoader />  /* Show luxury loader while waiting */
+        ) : (
+          <>
+            <Container size={'large'} spacing={'min'}>
+              <div className={styles.breadcrumbContainer}>
+                <Breadcrumbs
+                  crumbs={[
+                    { link: '/', label: 'Home' },
+                    { link: '/shop/men', label: 'Men' },
+                    { label: 'Trousers' },
+                  ]}
+                />
+              </div>
+            </Container>
+            <Banner
+              maxWidth={'650px'}
+              name={`Men's Trousers`}
+              subtitle={
+                'Look to our men’s Trousers for modern takes on one-and-done dressing. From midis in bold prints to dramatic floor-sweeping styles and easy all-in-ones, our edit covers every mood.'
+              }
             />
-          </div>
-        </Container>
-        <Banner
-          maxWidth={'650px'}
-          name={`Men's Trousers`}
-          subtitle={
-            'Look to our men’s Trousers for modern takes on one-and-done dressing. From midis in bold prints to dramatic floor-sweeping styles and easy all-in-ones, our edit covers every mood.'
-          }
-        />
-        <Container size={'large'} spacing={'min'}>
-          <div className={styles.metaContainer}>
-            <span className={styles.itemCount}>
-              {visibleProducts.length}/{totalCount} items
-            </span>
-            <div className={styles.controllerContainer}>
-              <div
-                className={styles.iconContainer}
-                role={'presentation'}
-                onClick={() => setShowFilter(!showFilter)}
-              >
-                <Icon symbol={'filter'} />
-                <span>Filters</span>
+            <Container size={'large'} spacing={'min'}>
+              <div className={styles.metaContainer}>
+                <span className={styles.itemCount}>
+                  {visibleProducts.length}/{totalCount} items
+                </span>
+                <div className={styles.controllerContainer}>
+                  <div
+                    className={styles.iconContainer}
+                    role={'presentation'}
+                    onClick={() => setShowFilter(!showFilter)}
+                  >
+                    <Icon symbol={'filter'} />
+                    <span>Filters</span>
+                  </div>
+                  <div className={`${styles.iconContainer} ${styles.sortContainer}`}>
+                    <span>Sort by</span>
+                    <Icon symbol={'caret'} />
+                  </div>
+                </div>
               </div>
-              <div className={`${styles.iconContainer} ${styles.sortContainer}`}>
-                <span>Sort by</span>
-                <Icon symbol={'caret'} />
+              <CardController
+                closeFilter={() => setShowFilter(false)}
+                visible={showFilter}
+                filters={Config.filters}
+              />
+              <div className={styles.chipsContainer}>
+                <Chip name={'XS'} />
+                <Chip name={'S'} />
               </div>
-            </div>
-          </div>
-          <CardController
-            closeFilter={() => setShowFilter(false)}
-            visible={showFilter}
-            filters={Config.filters}
-          />
-          <div className={styles.chipsContainer}>
-            <Chip name={'XS'} />
-            <Chip name={'S'} />
-          </div>
-          <div className={styles.productContainer}>
-            <span className={styles.mobileItemCount}>
-              {visibleProducts.length}/{totalCount} items
-            </span>
-            <ProductCardGrid data={visibleProducts} />
-          </div>
-          {visibleProducts.length < totalCount && (
-            <div className={styles.loadMoreContainer}>
-              <span>{visibleProducts.length}/{totalCount} shown</span>
-              <Button fullWidth level={'secondary'} onClick={handleLoadMore}>
-                LOAD MORE
-              </Button>
-            </div>
-          )}
-        </Container>
+              <div className={styles.productContainer}>
+                <span className={styles.mobileItemCount}>
+                  {visibleProducts.length}/{totalCount} items
+                </span>
+                <ProductCardGrid data={visibleProducts} />
+              </div>
+              {visibleProducts.length < totalCount && (
+                <div className={styles.loadMoreContainer}>
+                  <span>{visibleProducts.length}/{totalCount} shown</span>
+                  <Button fullWidth level={'secondary'} onClick={handleLoadMore}>
+                    LOAD MORE
+                  </Button>
+                </div>
+              )}
+            </Container>
+          </>
+        )}
       </div>
-
-      {/* <LayoutOption /> */}
     </Layout>
-  );
+  );  
 };
 
 export default TrousersMenPage;

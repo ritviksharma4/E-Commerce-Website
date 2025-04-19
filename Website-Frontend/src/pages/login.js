@@ -57,8 +57,12 @@ const LoginPage = () => {
       // Mock login
       if (loginForm.email !== 'error@example.com') {
         // Store velvet_login_key in localStorage with a timestamp for expiry check
-        const loginKey = { timestamp: new Date().getTime() };
-        localStorage.setItem('velvet_login_key', JSON.stringify(loginKey));
+        const existingLoginKey = JSON.parse(localStorage.getItem('velvet_login_key')) || {};
+        const updatedLoginKey = {
+          ...existingLoginKey,
+          timestamp: new Date().getTime()
+        };
+        localStorage.setItem('velvet_login_key', JSON.stringify(updatedLoginKey));
 
         navigate('/account');
       } else {
@@ -96,12 +100,22 @@ const LoginPage = () => {
       const lambdaUrl = process.env.GATSBY_APP_GET_GUEST_LOGIN_ENDPOINT;
       const response = await fetch(lambdaUrl);
       const data = await response.json();
-
+  
       if (data.email) {
         setLoginForm({ email: data.email, password: data.password });
         setHasUsedGuestLogin(true); // Disable the button
-        // Store velvet_login_key for guest login
-        const loginKey = { timestamp: new Date().getTime() };
+  
+        // Store all required fields in localStorage
+        const loginKey = {
+          timestamp: new Date().getTime(),
+          email: data.email,
+          addresses: data.addresses || [],
+          firstName: data.firstName || '',
+          lastName: data.lastName || '',
+        };
+        console.log("Login Data: ", data)
+        console.log("Creating LoginKey: ", loginKey)
+  
         localStorage.setItem('velvet_login_key', JSON.stringify(loginKey));
       } else if (data.waitTime) {
         setWaitTime(data.waitTime);
@@ -115,6 +129,7 @@ const LoginPage = () => {
       setIsGuestLoginLoading(false);
     }
   };
+  
 
   // Reset the countdown when timeLeft reaches 0
   useEffect(() => {
@@ -144,6 +159,9 @@ const LoginPage = () => {
           <h1 className={styles.loginTitle}>Login</h1>
           <span className={styles.subtitle}>
             Please click on <span className={styles.boldUnderline}>Get Guest Login</span> to fetch a Sample User for demo purposes.
+          </span>
+          <span className={styles.subtitle}>
+            <span className={styles.boldUnderline}>Session is Valid only for 5 Minutes!</span>
           </span>
 
           {/* Guest Wait Timer Popup */}

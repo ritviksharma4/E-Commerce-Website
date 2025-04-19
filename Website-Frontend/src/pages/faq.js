@@ -35,7 +35,7 @@ const FaqPage = (props) => {
               </p>
               <p>
                 If there’s something you want to know about your order, please
-                get in touch with us at customerservice@example.com or call us
+                get in touch with us at customerservice@velvet.com or call us
                 on +44 (0)115 111 1111.
               </p>
             </div>
@@ -74,7 +74,7 @@ const FaqPage = (props) => {
               </p>
               <p>
                 If there’s something you want to know about your order, please
-                get in touch with us at customerservice@example.com call us on
+                get in touch with us at customerservice@velvet.com call us on
                 +44 (0)115 111 1111.
               </p>
             </div>
@@ -104,7 +104,7 @@ const FaqPage = (props) => {
                 use of your card will take place on our website. But if a
                 fraudulent transaction does take place, first contact your
                 credit or debit card company so they can protect your card and
-                reimburse you. Then let us know at customerservice@example.com
+                reimburse you. Then let us know at customerservice@velvet.com
                 and we will work with your card company to minimise any further
                 inconvenience to you.
               </p>

@@ -61,6 +61,18 @@
     gap: 16px;
 }
 
+.noAddress {
+    text-align: center;
+    font-size: 1.1rem;
+    color: #888;
+    font-style: italic;
+    margin-top: 2rem;
+    padding: 1rem;
+    border: 1px dashed #ccc;
+    border-radius: 8px;
+    background-color: #fafafa;
+}  
+
 @media (max-width: 1100px) {
     .addressListContainer {
         grid-template-columns: 1fr 1fr;

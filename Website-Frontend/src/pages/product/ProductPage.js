@@ -110,7 +110,7 @@ const ProductPage = ({ params }) => {
     };
 
     fetchProduct();
-  }, [productCode]);
+  }, [productCode, IDENTITY_POOL_ID, REGION, TABLE_NAME]);
 
   useEffect(() => {
     if (!product) return;
@@ -141,7 +141,7 @@ const ProductPage = ({ params }) => {
     };
 
     fetchSuggestions();
-  }, [product]);
+  }, [product, IDENTITY_POOL_ID, REGION, TABLE_NAME]);
 
   const handleSwatchClick = (swatch) => {
     if (!swatch || !swatch.productCode) return;

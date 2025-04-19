@@ -54,7 +54,7 @@ const AddNotification = (props) => {
           Checkout
         </Button>
         <div className={styles.linkContainer}>
-          <Link to={'/shop'}>Continue Shopping</Link>
+          <Link to={'/'}>Continue Shopping</Link>
         </div>
       </div>
     </div>

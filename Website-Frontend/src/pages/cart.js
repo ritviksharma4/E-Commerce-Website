@@ -7,6 +7,7 @@ import Container from '../components/Container';
 import Footer from '../components/Footer';
 import Icon from '../components/Icons/Icon';
 import OrderSummary from '../components/OrderSummary';
+import { isAuth } from '../helpers/general';
 
 import * as styles from './cart.module.css';
 
@@ -26,7 +27,7 @@ const CartPage = (props) => {
         <Container size={'large'} spacing={'min'}>
           <div className={styles.headerContainer}>
             <div className={styles.shoppingContainer}>
-              <Link className={styles.shopLink} to={'/shop'}>
+              <Link className={styles.shopLink} to={'/'}>
                 <Icon symbol={'arrow'}></Icon>
                 <span className={styles.continueShopping}>
                   Continue Shopping
@@ -35,7 +36,7 @@ const CartPage = (props) => {
             </div>
             <Brand />
             <div className={styles.loginContainer}>
-              <Link to={'/login'}>Login</Link>
+              <Link to={isAuth() ? '/account/orders/' : '/login' }>Login</Link>
             </div>
           </div>
           <div className={styles.summaryContainer}>
