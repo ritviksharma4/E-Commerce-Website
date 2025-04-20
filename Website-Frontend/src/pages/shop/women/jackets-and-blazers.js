@@ -51,12 +51,6 @@ const JacketsBlazersWomenPage = () => {
       const user = JSON.parse(localStorage.getItem('velvet_login_key') || '{}');
       const email = user.email || null;
 
-      if (!email) {
-        console.warn('User email not found in localStorage');
-        setLoading(false);
-        return;
-      }
-
       const response = await fetch(LAMBDA_ENDPOINT, {
         method: 'POST',
         headers: {

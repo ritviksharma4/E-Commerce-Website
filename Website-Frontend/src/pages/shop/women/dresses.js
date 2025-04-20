@@ -51,12 +51,6 @@ const DressesWomenPage = () => {
       const user = JSON.parse(localStorage.getItem('velvet_login_key') || '{}');
       const email = user.email || null;
 
-      if (!email) {
-        console.warn('User email not found in localStorage');
-        setLoading(false);
-        return;
-      }
-
       const response = await fetch(LAMBDA_ENDPOINT, {
         method: 'POST',
         headers: {
@@ -79,6 +73,8 @@ const DressesWomenPage = () => {
         console.error("Error parsing Lambda response text:", err);
         lambdaResponse = {};
       }
+
+      console.log("Lambda Response for Dresses: ", lambdaResponse)
 
       if (Array.isArray(lambdaResponse)) {
         items = lambdaResponse;

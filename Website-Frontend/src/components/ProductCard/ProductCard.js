@@ -7,7 +7,9 @@ import CurrencyFormatter from '../CurrencyFormatter';
 import { toOptimizedImage } from '../../helpers/general';
 
 const ProductCard = (props) => {
-  const [isWishlist, setIsWishlist] = useState(false);
+  const { isInWishlist} = props
+  const [isWishlist, setIsWishlist] = useState(isInWishlist);
+  console.log("IsInWishList: ", isInWishlist)
   const {
     image,
     imageAlt,

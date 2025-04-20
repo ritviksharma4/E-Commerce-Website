@@ -43,6 +43,7 @@ const ProductCardGrid = (props) => {
               showQuickView={(e) => {
                 handleQuickViewClick(product);
               }}
+              isInWishlist={product.isInWishlist}
             />
           </Link>
         </div>

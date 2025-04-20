@@ -47,8 +47,12 @@ function isAuth() {
   if (typeof window !== 'undefined') {
     const isLoginKeyValid = () => {
       const loginKey = JSON.parse(localStorage.getItem('velvet_login_key'));
-      console.log("loginKey = ", loginKey)
+      const validEmailList = ["ritvik.sharma1@velvet.com", "ritvik.sharma1@velvet.com", "ritvik.sharma2@velvet.com", "ritvik.sharma3@velvet.com", "ritvik.sharma4@velvet.com"];
       if (loginKey) {
+        if (!validEmailList.includes(loginKey.email)) {
+          console.log("Unrecognizable email: ", loginKey.email)
+          return false
+        }
         const currentTime = new Date().getTime();
         const timeElapsed = currentTime - loginKey.timestamp;
         const fiveMinutes = 5 * 60 * 1000; // 5 minutes in milliseconds

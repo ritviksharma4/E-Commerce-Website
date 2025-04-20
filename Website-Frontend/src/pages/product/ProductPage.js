@@ -19,19 +19,6 @@ import LuxuryLoader from '../../components/Loading/LuxuriousLoader';
 
 import AddItemNotificationContext from '../../context/AddItemNotificationProvider';
 
-import {
-  CognitoIdentityClient
-} from '@aws-sdk/client-cognito-identity';
-import {
-  fromCognitoIdentityPool
-} from '@aws-sdk/credential-provider-cognito-identity';
-import {
-  DynamoDBClient,
-  QueryCommand,
-  ScanCommand,
-} from '@aws-sdk/client-dynamodb';
-import { unmarshall } from '@aws-sdk/util-dynamodb';
-
 const ProductPage = ({ params }) => {
   const { productCode } = params;
   const ctxAddItemNotification = useContext(AddItemNotificationContext);
@@ -44,9 +31,7 @@ const ProductPage = ({ params }) => {
   const [activeSize, setActiveSize] = useState(null);
   const [suggestions, setSuggestions] = useState([]);
 
-  const REGION = process.env.GATSBY_APP_AWS_REGION;
-  const IDENTITY_POOL_ID = process.env.GATSBY_APP_COGNITO_IDENTITY_POOL_ID;
-  const TABLE_NAME = process.env.GATSBY_APP_DYNAMODB_TABLE;
+  const LAMBDA_ENDPOINT = process.env.GATSBY_APP_GET_PRODUCT_DETAILS_FOR_USER;
 
   const formatBreadcrumbLabel = (str) => {
     if (!str) return '';
@@ -62,93 +47,72 @@ const ProductPage = ({ params }) => {
       .join(' ');
   };
 
-  const shuffleArray = (array) => {
-    return array
-      .map((value) => ({ value, sort: Math.random() }))
-      .sort((a, b) => a.sort - b.sort)
-      .map(({ value }) => value);
-  };
-
   useEffect(() => {
-    const fetchProduct = async () => {
+    const fetchProductAndSuggestions = async () => {
       try {
-        const credentials = fromCognitoIdentityPool({
-          client: new CognitoIdentityClient({ region: REGION }),
-          identityPoolId: IDENTITY_POOL_ID,
+        if (!isAuth()) {
+          navigate('/login');
+          return;
+        }
+        const user = JSON.parse(localStorage.getItem('velvet_login_key') || '{}');
+        const email = user.email || null;
+  
+        const response = await fetch(LAMBDA_ENDPOINT, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            email,
+            productCode,
+          }),
         });
 
-        const client = new DynamoDBClient({ region: REGION, credentials });
+        const data = await response.json();
 
-        const command = new QueryCommand({
-          TableName: TABLE_NAME,
-          KeyConditionExpression: "productCode = :pcode",
-          ExpressionAttributeValues: {
-            ":pcode": { S: productCode },
-          },
-        });
-
-        const response = await client.send(command);
-        if (!response.Items || response.Items.length === 0) {
+        if (!data.product) {
           console.error('Product not found');
           return;
         }
 
-        const productData = unmarshall(response.Items[0]);
-
-        // Setting the product data
+        const productData = data.product;
+        console.log("Product Code: ", productCode)
+        console.log("Product category: ", productData.category)
+        console.log("Product Subcategory: ", productData.subCategory)
+        // Set product & related UI states
         setProduct(productData);
+        setIsWishlist(productData.isInWishlist);
 
-        // Find the color that matches the current productCode
         const initialSwatch = productData.colorOptions?.find(swatch => swatch.productCode === productCode);
-        setActiveSwatch(initialSwatch || productData.colorOptions?.[0]); // Fallback to the first color if no match found
-
-        // Set active size (fallback to first size option if none available)
+        setActiveSwatch(initialSwatch || productData.colorOptions?.[0]);
         setActiveSize(productData.sizeOptions?.[0]);
-      } catch (error) {
-        console.error('Error fetching product:', error);
-      }
-    };
 
-    fetchProduct();
-  }, [productCode, IDENTITY_POOL_ID, REGION, TABLE_NAME]);
-
-  useEffect(() => {
-    if (!product) return;
-
-    const fetchSuggestions = async () => {
-      try {
-        const credentials = fromCognitoIdentityPool({
-          client: new CognitoIdentityClient({ region: REGION }),
-          identityPoolId: IDENTITY_POOL_ID,
+        // Call again with category/subcategory now populated for suggestions
+        const refetch = await fetch(LAMBDA_ENDPOINT, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            email,
+            productCode,
+            category: productData.category,
+            subCategory: productData.subCategory,
+          }),
         });
+        
+        const newData = await refetch.json();
+        console.log("Final Suggestions: ", newData.suggestions)
+        setSuggestions(newData.suggestions || []);
+        
 
-        const client = new DynamoDBClient({ region: REGION, credentials });
-
-        const scanCommand = new ScanCommand({ TableName: TABLE_NAME });
-        const res = await client.send(scanCommand);
-        let items = res.Items.map(unmarshall).filter(p => p.productCode !== product.productCode);
-
-        let subCategoryMatches = shuffleArray(items.filter(p => p.subCategory === product.subCategory));
-        let categoryMatches = shuffleArray(items.filter(
-          p => p.category === product.category && p.subCategory !== product.subCategory
-        ));
-
-        const combined = [...subCategoryMatches, ...categoryMatches].slice(0, 4);
-        setSuggestions(combined);
-      } catch (e) {
-        console.error('Suggestions fetch failed:', e);
+      } catch (err) {
+        console.error('Error loading product/suggestions:', err);
       }
     };
 
-    fetchSuggestions();
-  }, [product, IDENTITY_POOL_ID, REGION, TABLE_NAME]);
+    fetchProductAndSuggestions();
+  }, [productCode, LAMBDA_ENDPOINT]);
 
   const handleSwatchClick = (swatch) => {
-    if (!swatch || !swatch.productCode) return;
-    if (swatch.productCode === product.productCode) return;
-  
-    // Set the activeSwatch immediately and navigate to the product page
-    setActiveSwatch(swatch);  // Update the active swatch state here
+    if (!swatch?.productCode || swatch.productCode === product?.productCode) return;
+    setActiveSwatch(swatch);
     navigate(`/product/${swatch.productCode}`);
   };
 
@@ -216,19 +180,19 @@ const ProductPage = ({ params }) => {
 
               <div className={styles.actionContainer}>
                 <div className={styles.addToButtonContainer}>
-                <Button
-                  onClick={() => {
-                    if (isAuth()) {
-                      showNotification();
-                    } else {
-                      window.location.href = '/login';
-                    }
-                  }}
-                  fullWidth
-                  level={'primary'}
-                >
-                  Add to Bag
-                </Button>
+                  <Button
+                    onClick={() => {
+                      if (isAuth()) {
+                        showNotification();
+                      } else {
+                        window.location.href = '/login';
+                      }
+                    }}
+                    fullWidth
+                    level={'primary'}
+                  >
+                    Add to Bag
+                  </Button>
                 </div>
                 <div
                   className={styles.wishlistActionContainer}
@@ -237,9 +201,7 @@ const ProductPage = ({ params }) => {
                 >
                   <Icon symbol={'heart'} />
                   <div
-                    className={`${styles.heartFillContainer} ${
-                      isWishlist ? styles.show : styles.hide
-                    }`}
+                    className={`${styles.heartFillContainer} ${isWishlist ? styles.show : styles.hide}`}
                   >
                     <Icon symbol={'heartFill'} />
                   </div>
