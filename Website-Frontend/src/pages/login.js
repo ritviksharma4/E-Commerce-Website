@@ -112,6 +112,7 @@ const LoginPage = () => {
           addresses: data.addresses || [],
           firstName: data.firstName || '',
           lastName: data.lastName || '',
+          totalCartItems: data.totalCartItems || 0
         };
         console.log("Login Data: ", data)
         console.log("Creating LoginKey: ", loginKey)

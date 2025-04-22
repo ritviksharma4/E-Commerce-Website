@@ -8,10 +8,12 @@ const HISTORY_TABLE = 'velvet-ecommerce-guest-shopping-history';
 const client = new DynamoDBClient({ region: REGION });
 const docClient = DynamoDBDocumentClient.from(client);
 
-// Extract wishlist productCodes from raw DynamoDB response
+// Extract wishlist productCodes from list of maps
 function extractWishlistProductCodes(wishlistItems) {
   if (!Array.isArray(wishlistItems)) return [];
-  return wishlistItems;
+  return wishlistItems
+    .filter(item => item && typeof item.productCode === 'string')
+    .map(item => item.productCode);
 }
 
 // Common CORS headers
@@ -54,7 +56,7 @@ export const handler = async (event) => {
     // Get user wishlist
     let wishlistProductCodes = [];
     try {
-      const userData = await client.send(
+      const userData = await docClient.send(
         new GetCommand({
           TableName: HISTORY_TABLE,
           Key: { email },
@@ -88,64 +90,64 @@ export const handler = async (event) => {
       isInWishlist: wishlistProductCodes.includes(item.productCode),
     }));
 
-    console.log("Result: ", result)
+    console.log("Result: ", result);
 
     if (!productCode) {
+      return {
+        statusCode: 200,
+        headers: CORS_HEADERS,
+        body: JSON.stringify({ products: result }),
+      };
+    } else {
+      const product = result.length > 0 ? result[0] : null;
+      if (!product) {
         return {
-            statusCode: 200,
-            headers: CORS_HEADERS,
-            body: JSON.stringify({ products: result }),
+          statusCode: 404,
+          headers: CORS_HEADERS,
+          body: JSON.stringify({ message: 'Product not found' }),
         };
+      }
+
+      // Prepare suggestions
+      const sameSubCategory = allProducts.filter(p =>
+        p.productCode !== productCode &&
+        p.category === category &&
+        p.subCategory === subCategory
+      );
+
+      const sameCategory = allProducts.filter(p =>
+        p.productCode !== productCode &&
+        p.category === category &&
+        p.subCategory !== subCategory &&
+        !sameSubCategory.find(s => s.productCode === p.productCode)
+      );
+
+      // Shuffle helper
+      const shuffle = (arr) => {
+        return arr
+          .map((item) => ({ item, sortKey: Math.random() }))
+          .sort((a, b) => a.sortKey - b.sortKey)
+          .map(({ item }) => item);
+      };
+
+      const shuffledSub = shuffle(sameSubCategory);
+      const shuffledCat = shuffle(sameCategory);
+
+      const suggestions = [...shuffledSub, ...shuffledCat].slice(0, 4);
+
+      return {
+        statusCode: 200,
+        headers: CORS_HEADERS,
+        body: JSON.stringify({
+          product,
+          suggestions: suggestions.map(item => ({
+            ...item,
+            isInWishlist: wishlistProductCodes.includes(item.productCode),
+          }))
+        }),
+      };
     }
-    else {
-        const product = result.length > 0 ? result[0] : null;
-        if (!product) {
-            return {
-            statusCode: 404,
-            headers: CORS_HEADERS,
-            body: JSON.stringify({ message: 'Product not found' }),
-            };
-        }
-        // Prepare suggestions
-        const sameSubCategory = allProducts.filter(p =>
-            p.productCode !== productCode &&
-            p.category === category &&
-            p.subCategory === subCategory
-        );
-    
-        const sameCategory = allProducts.filter(p =>
-            p.productCode !== productCode &&
-            p.category === category &&
-            p.subCategory !== subCategory &&
-            !sameSubCategory.find(s => s.productCode === p.productCode)
-        );
-    
-        // Shuffle helper
-        const shuffle = (arr) => {
-            return arr
-              .map((item) => ({ item, sortKey: Math.random() }))
-              .sort((a, b) => a.sortKey - b.sortKey)
-              .map(({ item }) => item);
-        };          
-    
-        const shuffledSub = shuffle(sameSubCategory);
-        const shuffledCat = shuffle(sameCategory);
-    
-        const suggestions = [...shuffledSub, ...shuffledCat].slice(0, 4);
-    
-        return {
-            statusCode: 200,
-            headers: CORS_HEADERS,
-            body: JSON.stringify({
-                product,
-                suggestions: suggestions.map(item => ({
-                    ...item,
-                    isInWishlist: wishlistProductCodes.includes(item.productCode),
-                }))
-            }),
-        };
-    }
-    
+
   } catch (error) {
     console.error('Error fetching products:', error);
     return {

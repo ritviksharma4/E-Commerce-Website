@@ -45,6 +45,7 @@ const CartPage = (props) => {
               <div className={styles.cartItemsContainer}>
                 <CartItem {...sampleCartItem} />
                 <CartItem {...sampleCartItem} />
+                
               </div>
               <OrderSummary />
             </div>

@@ -33,19 +33,8 @@ const EarRingsBraceletsAccessoriesPage = () => {
   };
 
   const fetchProducts = useCallback(async () => {
-    const savedProducts = sessionStorage.getItem('earRingsBracelets_products');
-    const savedTotalCount = sessionStorage.getItem('earRingsBracelets_totalCount');
+    
     const savedIndex = parseInt(sessionStorage.getItem('earRingsBracelets_loadedItemCount')) || ITEMS_PER_PAGE;
-
-    if (savedProducts && savedTotalCount) {
-      const parsed = JSON.parse(savedProducts);
-      setAllProducts(parsed);
-      setTotalCount(parseInt(savedTotalCount));
-      setVisibleProducts(parsed.slice(0, savedIndex));
-      setTimeout(restoreScroll, 0);
-      setLoading(false);  // End loading
-      return;
-    }
 
     try {
       const user = JSON.parse(localStorage.getItem('velvet_login_key') || '{}');
@@ -90,9 +79,7 @@ const EarRingsBraceletsAccessoriesPage = () => {
       // Set products and also cache to sessionStorage
       setAllProducts(items);
       setTotalCount(items.length);
-      sessionStorage.setItem('earRingsBracelets_products', JSON.stringify(items));
-      sessionStorage.setItem('earRingsBracelets_totalCount', items.length.toString());
-
+      
       const loadedItems = items.slice(0, savedIndex);
       setVisibleProducts(loadedItems);
       setTimeout(restoreScroll, 0);

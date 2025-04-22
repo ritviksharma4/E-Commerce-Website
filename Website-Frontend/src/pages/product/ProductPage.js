@@ -32,6 +32,7 @@ const ProductPage = ({ params }) => {
   const [suggestions, setSuggestions] = useState([]);
 
   const LAMBDA_ENDPOINT = process.env.GATSBY_APP_GET_PRODUCT_DETAILS_FOR_USER;
+  const UPDATE_USER_SHOPPING_HISTORY = process.env.GATSBY_APP_UPDATE_SHOPPING_HISTORY_FOR_USER
 
   const formatBreadcrumbLabel = (str) => {
     if (!str) return '';
@@ -48,22 +49,34 @@ const ProductPage = ({ params }) => {
   };
 
   useEffect(() => {
-    const fetchProductAndSuggestions = async () => {
+    const fetchProduct = async () => {
       try {
         if (!isAuth()) {
           navigate('/login');
           return;
         }
+
         const user = JSON.parse(localStorage.getItem('velvet_login_key') || '{}');
         const email = user.email || null;
-  
+
+        const updateUserHistory = await fetch(UPDATE_USER_SHOPPING_HISTORY, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ 
+            email, 
+            "updateType": {
+              "recentlyViewed": productCode
+            } ,
+            
+           }),
+        });
+
+        console.log("Updating User's Recently Viewed History: ", updateUserHistory)
+
         const response = await fetch(LAMBDA_ENDPOINT, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            email,
-            productCode,
-          }),
+          body: JSON.stringify({ email, productCode }),
         });
 
         const data = await response.json();
@@ -74,46 +87,87 @@ const ProductPage = ({ params }) => {
         }
 
         const productData = data.product;
-        console.log("Product Code: ", productCode)
-        console.log("Product category: ", productData.category)
-        console.log("Product Subcategory: ", productData.subCategory)
-        // Set product & related UI states
+        console.log("Product Code: ", productCode);
+        console.log("Product category: ", productData.category);
+        console.log("Product Subcategory: ", productData.subCategory);
+
         setProduct(productData);
         setIsWishlist(productData.isInWishlist);
 
-        const initialSwatch = productData.colorOptions?.find(swatch => swatch.productCode === productCode);
+        const initialSwatch = productData.colorOptions?.find(
+          swatch => swatch.productCode === productCode
+        );
         setActiveSwatch(initialSwatch || productData.colorOptions?.[0]);
         setActiveSize(productData.sizeOptions?.[0]);
+      } catch (err) {
+        console.error('Error loading product:', err);
+      }
+    };
 
-        // Call again with category/subcategory now populated for suggestions
+    fetchProduct();
+  }, [productCode, LAMBDA_ENDPOINT, UPDATE_USER_SHOPPING_HISTORY]);
+
+  useEffect(() => {
+    const fetchSuggestions = async () => {
+      try {
+        if (!product || !product.category || !product.subCategory) return;
+
+        const user = JSON.parse(localStorage.getItem('velvet_login_key') || '{}');
+        const email = user.email || null;
+
         const refetch = await fetch(LAMBDA_ENDPOINT, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             email,
             productCode,
-            category: productData.category,
-            subCategory: productData.subCategory,
+            category: product.category,
+            subCategory: product.subCategory,
           }),
         });
-        
-        const newData = await refetch.json();
-        console.log("Final Suggestions: ", newData.suggestions)
-        setSuggestions(newData.suggestions || []);
-        
 
+        const newData = await refetch.json();
+        console.log("Final Suggestions: ", newData.suggestions);
+        setSuggestions(newData.suggestions || []);
       } catch (err) {
-        console.error('Error loading product/suggestions:', err);
+        console.error('Error fetching suggestions:', err);
       }
     };
 
-    fetchProductAndSuggestions();
-  }, [productCode, LAMBDA_ENDPOINT]);
+    fetchSuggestions();
+  }, [product?.category, product?.subCategory, LAMBDA_ENDPOINT, product, productCode]);
 
   const handleSwatchClick = (swatch) => {
     if (!swatch?.productCode || swatch.productCode === product?.productCode) return;
     setActiveSwatch(swatch);
     navigate(`/product/${swatch.productCode}`);
+  };
+
+  const handleHeartIconClick = async () => {
+    const nextWishlistState = !isWishlist;
+    setIsWishlist(nextWishlistState);
+  
+    const user = JSON.parse(localStorage.getItem('velvet_login_key') || '{}');
+    const email = user.email || null;
+  
+    const action = nextWishlistState ? "add" : "remove";
+    console.log("Latest Wishlist action: ", action);
+  
+    const updateUserHistory = await fetch(UPDATE_USER_SHOPPING_HISTORY, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ 
+        email, 
+        updateType: {
+          wishlistItems: {
+            productCode: productCode,
+            action: action,
+          },
+        },
+      }),
+    });
+  
+    console.log("Updating User's Wishlist: ", updateUserHistory);
   };
 
   if (!product) return <LuxuryLoader />;
@@ -197,7 +251,7 @@ const ProductPage = ({ params }) => {
                 <div
                   className={styles.wishlistActionContainer}
                   role={'presentation'}
-                  onClick={() => setIsWishlist(!isWishlist)}
+                  onClick={handleHeartIconClick}
                 >
                   <Icon symbol={'heart'} />
                   <div

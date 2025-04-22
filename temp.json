@@ -1,0 +1,35 @@
+{
+    "cartItems": [
+        {
+            "productCode": "",
+            "name": "",
+            "price": "",
+            "color": "",
+            "image": "",
+            "size": "",
+            "qty": ""
+        }
+    ]
+}
+
+{
+    "wishlistItems": [
+        {
+            "productCode": "",
+            "color": "",
+            "size": "",
+            "image": ""
+        }
+    ]
+}
+
+{
+    "recentlyViewed": [
+        {
+            "productCode": "",
+            "name": "",
+            "price": "",
+            "image": ""
+        }
+    ]
+}

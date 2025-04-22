@@ -34,19 +34,8 @@ const CapsScarvesAccessoriesPage = () => {
   };
 
   const fetchProducts = useCallback(async () => {
-    const savedProducts = sessionStorage.getItem('capsScarves_products');
-    const savedTotalCount = sessionStorage.getItem('capsScarves_totalCount');
+    
     const savedIndex = parseInt(sessionStorage.getItem('capsScarves_loadedItemCount')) || ITEMS_PER_PAGE;
-  
-    if (savedProducts && savedTotalCount) {
-      const parsed = JSON.parse(savedProducts);
-      setAllProducts(parsed);
-      setTotalCount(parseInt(savedTotalCount));
-      setVisibleProducts(parsed.slice(0, savedIndex));
-      setTimeout(restoreScroll, 0);
-      setLoading(false);  // End loading
-      return;
-    }
   
     try {
       const user = JSON.parse(localStorage.getItem('velvet_login_key') || '{}');
@@ -91,8 +80,6 @@ const CapsScarvesAccessoriesPage = () => {
       // Set products and also cache to sessionStorage
       setAllProducts(items);
       setTotalCount(items.length);
-      sessionStorage.setItem('capsScarves_products', JSON.stringify(items));
-      sessionStorage.setItem('capsScarves_totalCount', items.length.toString());
   
       const loadedItems = items.slice(0, savedIndex);
       setVisibleProducts(loadedItems);

@@ -1,92 +1,100 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { navigate } from 'gatsby';
 import * as styles from './favorites.module.css';
 
-import Button from '../../components/Button';
+import Layout from '../../components/Layout/Layout';
 import Breadcrumbs from '../../components/Breadcrumbs';
 import Container from '../../components/Container';
-import FavoriteCard from '../../components/FavoriteCard/FavoriteCard';
-import Layout from '../../components/Layout/Layout';
-import Modal from '../../components/Modal';
-
+import LuxuryLoader from '../../components/Loading/LuxuriousLoader';
+import Banner from '../../components/Banner'
+// import Modal from '../../components/Modal';
+import FavoriteCardGrid from '../../components/FavoriteCardGrid/FavoriteCardGrid';
 import { isAuth } from '../../helpers/general';
 
-const FavoritesPage = (props) => {
-  const sampleFavorite1 = {
-    color: 'Anthracite Melange',
-    size: 'XS',
-    img: '/products/shirt1.jpg',
-    alt: 'favorite 1',
-  };
+const FavoritesPage = () => {
+  const [wishlistItems, setWishlistItems] = useState([]);
+  const [loading, setLoading] = useState(true);
+  
+  const LAMBDA_ENDPOINT = process.env.GATSBY_APP_GET_SHOPPING_HISTORY_FOR_USER;
 
-  const sampleFavorite2 = {
-    color: 'Purple Pale',
-    size: 'XS',
-    img: '/products/shirt2.jpg',
-    alt: 'favorite 2',
-  };
+  useEffect(() => {
+    if (!isAuth()) {
+      navigate('/login');
+      return;
+    }
 
-  const sampleFavorite3 = {
-    color: 'Moss Green',
-    size: 'S',
-    img: '/products/shirt3.jpg',
-    alt: 'favorite 3',
-  };
+    const fetchWishlist = async () => {
+      try {
+        const localUser = JSON.parse(localStorage.getItem('velvet_login_key'));
+        const email = localUser?.email;
 
-  if (isAuth() === false) {
-    navigate('/login');
+        if (!email) {
+          throw new Error('User email not found in localStorage');
+        }
+
+        const response = await fetch(LAMBDA_ENDPOINT, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            email,
+            requestType: 'wishlistItems',
+          }),
+        });
+
+        const result = await response.json();
+        console.log("Result: ", result)
+        setWishlistItems(result.wishlistItems || []);
+      } catch (error) {
+        console.error('Failed to fetch wishlist:', error);
+        setWishlistItems([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchWishlist();
+  }, [LAMBDA_ENDPOINT]);
+
+  if (loading) {
+    return <LuxuryLoader />;
   }
-
-  const [showDelete, setShowDelete] = useState(false);
 
   return (
     <Layout>
       <div className={styles.root}>
-        <Container size={'large'}>
-          <Breadcrumbs
-            crumbs={[
-              { link: '/', label: 'Home' },
-              { link: '/account/favorites', label: 'Favorites' },
-            ]}
-          />
-          <h1>Favorites</h1>
-          <div className={styles.favoriteListContainer}>
-            <FavoriteCard
-              showConfirmDialog={() => setShowDelete(true)}
-              {...sampleFavorite1}
+        {loading ? (
+          <LuxuryLoader />  /* Show luxury loader while waiting */
+        ) : (
+          <>
+            <Container size={'large'} spacing={'min'}>
+              <div className={styles.breadcrumbContainer}>
+                <Breadcrumbs
+                  crumbs={[
+                    { link: '/', label: 'Home' },
+                    { label: 'Favorites' },
+                  ]}
+                />
+              </div>
+            </Container>
+            <Banner
+              maxWidth={'650px'}
+              name={`Your Wishlist`}
+              subtitle={
+                'Your wishlist is a private gallery of refined desire — where elegance meets exclusivity, and every piece tells a story of distinction.'
+              }
             />
-            <FavoriteCard
-              showConfirmDialog={() => setShowDelete(true)}
-              {...sampleFavorite2}
-            />
-            <FavoriteCard
-              showConfirmDialog={() => setShowDelete(true)}
-              {...sampleFavorite3}
-            />
-            <FavoriteCard
-              showConfirmDialog={() => setShowDelete(true)}
-              {...sampleFavorite2}
-            />
-          </div>
-        </Container>
+            <Container size={'large'} spacing={'min'}>
+              <div className={styles.metaContainer}>
+              </div>
+              <div className={styles.productContainer}>
+                <FavoriteCardGrid data={wishlistItems} setData={setWishlistItems} />
+              </div>
+            </Container>
+          </>
+        )}
       </div>
-      <Modal visible={showDelete} close={() => setShowDelete(false)}>
-        <div className={styles.confirmDeleteContainer}>
-          <h4>Remove from Favorites?</h4>
-          <p>
-            Are you sure you want to remove this from your favorites? You cannot
-            undo this action once you press <strong>'Delete'</strong>
-          </p>
-          <div className={styles.actionContainer}>
-            <Button onClick={() => setShowDelete(false)} level={'primary'}>
-              Delete
-            </Button>
-            <Button onClick={() => setShowDelete(false)} level={'secondary'}>
-              Cancel
-            </Button>
-          </div>
-        </div>
-      </Modal>
     </Layout>
   );
 };

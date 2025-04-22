@@ -9,6 +9,8 @@ import { toOptimizedImage } from '../../helpers/general';
 const ProductCard = (props) => {
   const { isInWishlist} = props
   const [isWishlist, setIsWishlist] = useState(isInWishlist);
+  const UPDATE_USER_SHOPPING_HISTORY = process.env.GATSBY_APP_UPDATE_SHOPPING_HISTORY_FOR_USER
+
   console.log("IsInWishList: ", isInWishlist)
   const {
     image,
@@ -34,10 +36,34 @@ const ProductCard = (props) => {
     showQuickView(props);
   };
 
-  const handleFavorite = (e) => {
+  const handleFavorite = async (e) => {
     e.preventDefault();
     e.stopPropagation();
-    setIsWishlist(!isWishlist);
+    const nextWishlistState = !isWishlist;
+    setIsWishlist(nextWishlistState);
+  
+    const user = JSON.parse(localStorage.getItem('velvet_login_key') || '{}');
+    const email = user.email || null;
+  
+    const action = nextWishlistState ? "add" : "remove";
+    console.log("Latest Wishlist action: ", action);
+  
+    const updateUserHistory = await fetch(UPDATE_USER_SHOPPING_HISTORY, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ 
+        email, 
+        updateType: {
+          wishlistItems: {
+            productCode: productCode,
+            action: action,
+          },
+        },
+      }),
+    });
+  
+    console.log("Updating User's Wishlist: ", updateUserHistory);
+
   };
 
   return (

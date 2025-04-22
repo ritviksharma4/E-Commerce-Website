@@ -33,19 +33,8 @@ const DressesWomenPage = () => {
   };
 
   const fetchProducts = useCallback(async () => {
-    const savedProducts = sessionStorage.getItem('dresses_products');
-    const savedTotalCount = sessionStorage.getItem('dresses_totalCount');
+   
     const savedIndex = parseInt(sessionStorage.getItem('dresses_loadedItemCount')) || ITEMS_PER_PAGE;
-
-    if (savedProducts && savedTotalCount) {
-      const parsed = JSON.parse(savedProducts);
-      setAllProducts(parsed);
-      setTotalCount(parseInt(savedTotalCount));
-      setVisibleProducts(parsed.slice(0, savedIndex));
-      setTimeout(restoreScroll, 0);
-      setLoading(false);  // End loading
-      return;
-    }
 
     try {
       const user = JSON.parse(localStorage.getItem('velvet_login_key') || '{}');
@@ -92,8 +81,6 @@ const DressesWomenPage = () => {
       // Set products and also cache to sessionStorage
       setAllProducts(items);
       setTotalCount(items.length);
-      sessionStorage.setItem('dresses_products', JSON.stringify(items));
-      sessionStorage.setItem('dresses_totalCount', items.length.toString());
 
       const loadedItems = items.slice(0, savedIndex);
       setVisibleProducts(loadedItems);

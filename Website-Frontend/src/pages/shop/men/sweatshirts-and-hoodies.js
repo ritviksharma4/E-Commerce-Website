@@ -33,19 +33,8 @@ const SweatShirtsHoodiesMenPage = () => {
   };
 
   const fetchProducts = useCallback(async () => {
-    const savedProducts = sessionStorage.getItem('sweatshirtsHoodiesMen_products');
-    const savedTotalCount = sessionStorage.getItem('sweatshirtsHoodiesMen_totalCount');
-    const savedIndex = parseInt(sessionStorage.getItem('sweatshirtsHoodiesMen_loadedItemCount')) || ITEMS_PER_PAGE;
 
-    if (savedProducts && savedTotalCount) {
-      const parsed = JSON.parse(savedProducts);
-      setAllProducts(parsed);
-      setTotalCount(parseInt(savedTotalCount));
-      setVisibleProducts(parsed.slice(0, savedIndex));
-      setTimeout(restoreScroll, 0);
-      setLoading(false);  // End loading
-      return;
-    }
+    const savedIndex = parseInt(sessionStorage.getItem('sweatshirtsHoodiesMen_loadedItemCount')) || ITEMS_PER_PAGE;
 
     try {
       const user = JSON.parse(localStorage.getItem('velvet_login_key') || '{}');
@@ -90,8 +79,6 @@ const SweatShirtsHoodiesMenPage = () => {
       // Set products and also cache to sessionStorage
       setAllProducts(items);
       setTotalCount(items.length);
-      sessionStorage.setItem('sweatshirtsHoodiesMen_products', JSON.stringify(items));
-      sessionStorage.setItem('sweatshirtsHoodiesMen_totalCount', items.length.toString());
 
       const loadedItems = items.slice(0, savedIndex);
       setVisibleProducts(loadedItems);

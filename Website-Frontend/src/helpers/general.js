@@ -47,7 +47,7 @@ function isAuth() {
   if (typeof window !== 'undefined') {
     const isLoginKeyValid = () => {
       const loginKey = JSON.parse(localStorage.getItem('velvet_login_key'));
-      const validEmailList = ["ritvik.sharma1@velvet.com", "ritvik.sharma1@velvet.com", "ritvik.sharma2@velvet.com", "ritvik.sharma3@velvet.com", "ritvik.sharma4@velvet.com"];
+      const validEmailList = ["ritvik.sharma1@velvet.com", "ritvik.sharma2@velvet.com", "ritvik.sharma3@velvet.com", "ritvik.sharma4@velvet.com", "ritvik.sharma5@velvet.com"];
       if (loginKey) {
         if (!validEmailList.includes(loginKey.email)) {
           console.log("Unrecognizable email: ", loginKey.email)

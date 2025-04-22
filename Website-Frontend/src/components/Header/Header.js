@@ -19,6 +19,7 @@ const Header = (prop) => {
   const [showMiniCart, setShowMiniCart] = useState(false);
   const [mobileMenu, setMobileMenu] = useState(false);
   const [showMenu, setShowMenu] = useState(true);
+  const [totalCartItems, setTotalCartItems] = useState(0);
 
   const [menu, setMenu] = useState();
   const [activeMenu, setActiveMenu] = useState();
@@ -51,10 +52,21 @@ const Header = (prop) => {
     setShowSearch(false);
   };
 
+  useEffect(() => {
+    if (!isAuth()) {
+      navigate('/login');
+      return;
+    }
+    let loginKey = JSON.parse(localStorage.getItem('velvet_login_key'));
+    setTotalCartItems(loginKey.totalCartItems)
+  }, []);
+
   // disable active menu when show menu is hidden
   useEffect(() => {
     if (showMenu === false) setActiveMenu(false);
   }, [showMenu]);
+
+  
 
   // hide menu onscroll
   useEffect(() => {
@@ -152,7 +164,7 @@ const Header = (prop) => {
             >
               <Icon symbol={'bag'}></Icon>
               <div className={styles.bagNotification}>
-                <span>1</span>
+                <span>{totalCartItems}</span>
               </div>
             </button>
             <div className={styles.notificationContainer}>

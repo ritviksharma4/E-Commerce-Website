@@ -33,19 +33,8 @@ const AllAccessoriesPage = () => {
   };
 
   const fetchProducts = useCallback(async () => {
-    const savedProducts = sessionStorage.getItem('all_accessories_products');
-    const savedTotalCount = sessionStorage.getItem('all_accessories_totalCount');
-    const savedIndex = parseInt(sessionStorage.getItem('all_accessories_loadedItemCount')) || ITEMS_PER_PAGE;
 
-    if (savedProducts && savedTotalCount) {
-      const parsed = JSON.parse(savedProducts);
-      setAllProducts(parsed);
-      setTotalCount(parseInt(savedTotalCount));
-      setVisibleProducts(parsed.slice(0, savedIndex));
-      setTimeout(restoreScroll, 0);
-      setLoading(false);  // End loading
-      return;
-    }
+    const savedIndex = parseInt(sessionStorage.getItem('all_accessories_loadedItemCount')) || ITEMS_PER_PAGE;
 
     try {
       const user = JSON.parse(localStorage.getItem('velvet_login_key') || '{}');
@@ -89,8 +78,6 @@ const AllAccessoriesPage = () => {
       // Set products and also cache to sessionStorage
       setAllProducts(items);
       setTotalCount(items.length);
-      sessionStorage.setItem('all_accessories_products', JSON.stringify(items));
-      sessionStorage.setItem('all_accessories_totalCount', items.length.toString());
 
       const loadedItems = items.slice(0, savedIndex);
       setVisibleProducts(loadedItems);

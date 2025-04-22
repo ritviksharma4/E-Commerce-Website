@@ -34,19 +34,8 @@ const JacketsMenPage = () => {
   };
 
   const fetchProducts = useCallback(async () => {
-    const savedProducts = sessionStorage.getItem('jackets_men_products');
-    const savedTotalCount = sessionStorage.getItem('jackets_men_totalCount');
+    
     const savedIndex = parseInt(sessionStorage.getItem('jackets_men_loadedItemCount')) || ITEMS_PER_PAGE;
-
-    if (savedProducts && savedTotalCount) {
-      const parsed = JSON.parse(savedProducts);
-      setAllProducts(parsed);
-      setTotalCount(parseInt(savedTotalCount));
-      setVisibleProducts(parsed.slice(0, savedIndex));
-      setTimeout(restoreScroll, 0);
-      setLoading(false);
-      return;
-    }
 
     try {
       const user = JSON.parse(localStorage.getItem('velvet_login_key') || '{}');
@@ -90,9 +79,7 @@ const JacketsMenPage = () => {
 
       setAllProducts(items);
       setTotalCount(items.length);
-      sessionStorage.setItem('jackets_men_products', JSON.stringify(items));
-      sessionStorage.setItem('jackets_men_totalCount', items.length.toString());
-
+      
       const loadedItems = items.slice(0, savedIndex);
       setVisibleProducts(loadedItems);
       setTimeout(restoreScroll, 0);
