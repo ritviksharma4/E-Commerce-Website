@@ -31,7 +31,7 @@ const MiniCartItem = (props) => {
             <span className={styles.size}>{size}</span>
           </span>
         </div>
-        <div className={styles.AdjustItemForCartContainer}>
+        <div className={styles.adjustItemForCartContainer}>
         <AdjustItemForCart
           productCode={productCode}
           color={color}
