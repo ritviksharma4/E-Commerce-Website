@@ -21,6 +21,15 @@ const CORS_HEADERS = {
 
 export const handler = async (event) => {
     try {
+
+        if (event.requestContext?.http?.method === 'OPTIONS') {
+            return {
+              statusCode: 200,
+              headers: CORS_HEADERS,
+              body: JSON.stringify({ message: 'CORS preflight success' }),
+            };
+        }
+
         const body = typeof event.body === 'string' ? JSON.parse(event.body) : event;
         console.log("Body: ", body);
         const { email, updateType } = body;
@@ -50,30 +59,45 @@ export const handler = async (event) => {
 
         switch (key) {
             case 'wishlistItems': {
-                const { productCode, action, size } = value;
+                const { productCode, action } = value;
                 const currentWishList = existing.wishlistItems || [];
-
-                updatedField =
-                    action === 'add'
-                        ? [...new Set([...currentWishList, productCode])]
-                        : currentWishList.filter(item => item.productCode !== productCode);
-
-                if (action === 'add') {
-                    updatedField.pop()
-                    let currentProductData = await getAdditionalDetails(productCode, key);
-                    console.log("Current Product Data For Wish List: ", currentProductData);
-                    let currentProductSize = size ? size : currentProductData[0].sizeOptions[0];
-                    let currentProductColors = currentProductData[0].colorOptions;
-                    let currentColor;
-                    for (let i = 0; i < currentProductColors.length; i++) {
-                        if (currentProductColors[i].productCode === productCode) {
-                            currentColor = currentProductColors[i].title
-                            break
-                        }
-                    }
-                    updatedField.push({"color": currentColor, "image": currentProductData[0].image, "productCode": productCode, "size": currentProductSize})
+            
+                if (action === 'remove') {
+                    updatedField = currentWishList.filter(item => item.productCode !== productCode);
                 }
-                console.log("Updated Field in Wishlist: ", updatedField)
+            
+                if (action === 'add') {
+                    const alreadyExists = currentWishList.some(item => item.productCode === productCode);
+                    
+                    if (alreadyExists) {
+                        updatedField = currentWishList;
+                    } else {
+                        let currentProductData = await getAdditionalDetails(productCode, key);
+                        console.log("Current Product Data For Wish List: ", currentProductData); 
+                        let currentProductColors = currentProductData[0].colorOptions;
+                        let currentColor;
+                        for (let i = 0; i < currentProductColors.length; i++) {
+                            if (currentProductColors[i].productCode === productCode) {
+                                currentColor = currentProductColors[i].title;
+                                break;
+                            }
+                        }
+                        updatedField = [
+                            {
+                                color: currentColor,
+                                image: currentProductData[0].image,
+                                productCode,
+                                sizeOptions: currentProductData[0].sizeOptions,
+                                colorOptions: currentProductData[0].colorOptions,
+                                name: currentProductData[0].name,
+                                price: currentProductData[0].price
+                            },
+                            ...currentWishList
+                        ];
+                    }
+                }
+            
+                console.log("Updated Field in Wishlist: ", updatedField);
                 break;
             }
 
@@ -84,7 +108,7 @@ export const handler = async (event) => {
                 const filtered = currentRecentlyViewed.filter(item => item.productCode !== productCode);
                 let currentProductData = await getAdditionalDetails(productCode, key);
                 console.log("Current Product Data For Recently Viewed: ", currentProductData);
-                updatedField = [{"productCode": productCode, "name": currentProductData[0].name, "price": currentProductData[0].price, "image": currentProductData[0].image}, ...filtered].slice(0, 9);
+                updatedField = [{"productCode": productCode, "name": currentProductData[0].name, "price": currentProductData[0].price, "image": currentProductData[0].image, "colorOptions": currentProductData[0].colorOptions, "sizeOptions": currentProductData[0].sizeOptions}, ...filtered].slice(0, 9);
                 break;
             }
 
@@ -96,31 +120,47 @@ export const handler = async (event) => {
 
             case 'cartItems': {
                 const item = value;
-                const { productCode, color, size, qty } = item;
+                const { productCode, color, size, qty, action } = item;
                 let currentCart = existing.cartItems || [];
-
+              
                 currentCart = currentCart.filter(
-                    c =>
-                        !(
-                            c.productCode === productCode &&
-                            c.size === size &&
-                            c.color === color
-                        )
+                  c => !(c.productCode === productCode && c.size === size && c.color === color)
                 );
-
-                if (qty > 0) {
-                    let currentProductData = await getAdditionalDetails(productCode, key);
-                    console.log("Current Product Data For Cart Items: ", currentProductData);
-                    item.name = currentProductData[0].name
-                    item.price = currentProductData[0].price
-                    item.image = currentProductData[0].image
-                    console.log("Final Items: ", item);
-                    currentCart.push(item);
+              
+                let finalQty = qty;
+              
+                if (action === "add") {
+                  const existingItem = existing.cartItems?.find(
+                    c => c.productCode === productCode && c.size === size && c.color === color
+                  );
+              
+                  if (existingItem) {
+                    finalQty = parseInt(finalQty) + parseInt(existingItem.qty || 0);
+                  }
                 }
-
+              
+                if (finalQty > 0) {
+                  const currentProductData = await getAdditionalDetails(productCode, key);
+                  console.log("Current Product Data For Cart Items: ", currentProductData);
+              
+                  const newItem = {
+                    productCode,
+                    color,
+                    size,
+                    qty: parseInt(finalQty),
+                    name: currentProductData[0].name,
+                    price: currentProductData[0].price,
+                    image: currentProductData[0].image,
+                  };
+              
+                  console.log("Final Item to Insert: ", newItem);
+              
+                  currentCart.unshift(newItem);
+                }
+              
                 updatedField = currentCart.filter(c => parseInt(c.qty) > 0);
                 break;
-            }
+              }              
 
             default:
                 return response(400, { error: 'Unsupported updateType' });

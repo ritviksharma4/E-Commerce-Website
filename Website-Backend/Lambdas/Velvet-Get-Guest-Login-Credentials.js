@@ -59,7 +59,10 @@ export const handler = async (event) => {
       };
 
       const { Item } = await dynamodb.send(new GetCommand(getParams));
-      const totalCartItems = Item?.cartItems?.length || 0;
+      let totalCartItems = 0;
+      Item.cartItems.map((item) => {
+        totalCartItems += item.qty;
+      });
 
       return {
         statusCode: 200,

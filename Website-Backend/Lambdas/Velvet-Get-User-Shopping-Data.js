@@ -1,90 +1,110 @@
 import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
 import {
   DynamoDBDocumentClient,
-  ScanCommand,
-  UpdateCommand,
-  GetCommand
+  QueryCommand
 } from '@aws-sdk/lib-dynamodb';
 
-const LOGIN_TABLE = 'velvet-ecommerce-guest-logins';
-const HISTORY_TABLE = 'velvet-ecommerce-guest-shopping-history';
-const GUEST_TIMEOUT_SECONDS = 300;
+const REGION = 'ap-south-1';
+const USER_HISTORY_TABLE_NAME = 'velvet-ecommerce-guest-shopping-history';
 
-const client = new DynamoDBClient({ region: 'ap-south-1' });
-const dynamodb = DynamoDBDocumentClient.from(client);
+const ddbClient = new DynamoDBClient({ region: REGION });
+const docClient = DynamoDBDocumentClient.from(ddbClient);
+
+const CORS_HEADERS = {
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+  'Access-Control-Allow-Headers': 'Content-Type',
+};
+
+const ALLOWED_TYPES = ['wishlistItems', 'recentlyViewed', 'orderHistory', 'cartItems'];
 
 export const handler = async (event) => {
-  try {
-    const currentTimestamp = Math.floor(Date.now() / 1000);
+  const response = (statusCode, body) => ({
+    statusCode,
+    headers: CORS_HEADERS,
+    body: JSON.stringify(body),
+  });
 
-    const scanParams = {
-      TableName: LOGIN_TABLE,
-    };
-
-    const { Items } = await dynamodb.send(new ScanCommand(scanParams));
-
-    let availableGuest = null;
-    let shortestWaitTime = Number.MAX_SAFE_INTEGER;
-
-    for (const item of Items) {
-      const { email, password, lastLoginTime = 0, firstName, lastName, addresses = [] } = item;
-      const timeSinceLastUse = currentTimestamp - lastLoginTime;
-
-      if (timeSinceLastUse >= GUEST_TIMEOUT_SECONDS) {
-        availableGuest = item;
-        break;
-      } else {
-        const timeToWait = GUEST_TIMEOUT_SECONDS - timeSinceLastUse;
-        if (timeToWait < shortestWaitTime) {
-          shortestWaitTime = timeToWait;
-        }
-      }
-    }
-
-    if (availableGuest) {
-      const updateParams = {
-        TableName: LOGIN_TABLE,
-        Key: { email: availableGuest.email },
-        UpdateExpression: 'SET lastLoginTime = :time',
-        ExpressionAttributeValues: {
-          ':time': currentTimestamp,
-        },
-      };
-
-      await dynamodb.send(new UpdateCommand(updateParams));
-
-      const getParams = {
-        TableName: HISTORY_TABLE,
-        Key: { email: availableGuest.email },
-      };
-
-      const { Item } = await dynamodb.send(new GetCommand(getParams));
-      const totalCartItems = Item?.cartItems?.length || 0;
-
-      return {
-        statusCode: 200,
-        body: JSON.stringify({
-          email: availableGuest.email,
-          password: availableGuest.password,
-          addresses: availableGuest.addresses,
-          firstName: availableGuest.firstName,
-          lastName: availableGuest.lastName,
-          totalCartItems: totalCartItems,
-        }),
-      };
-    } else {
-      return {
-        statusCode: 200,
-        body: JSON.stringify({
-          waitTime: shortestWaitTime,
-        }),
-      };
-    }
-  } catch (err) {
-    console.error('Guest login error:', err);
+  if (event.requestContext?.http?.method === 'OPTIONS') {
     return {
-      statusCode: 500,
-      body: JSON.stringify({ error: 'Internal Server Error' }),
+      statusCode: 200,
+      headers: CORS_HEADERS,
+      body: JSON.stringify({ message: 'CORS preflight success' }),
     };
+  }
+
+  try {
+    let body;
+    console.log(event);
+    if (event.body) {
+      // Lambda invoked via API Gateway
+      body = typeof event.body === 'string' ? JSON.parse(event.body) : event.body;
+    } else {
+      // Lambda invoked directly with JSON object
+      body = event;
+    }
+
+    const { email, requestType } = body;
+    console.log(email, requestType);
+    if (!email || !requestType) {
+      return response(400, { error: 'Missing email or requestType in request' });
+    }
+
+    if (!ALLOWED_TYPES.includes(requestType)) {
+      return response(400, {
+        error: 'Invalid requestType. Must be one of wishlistItems, recentlyViewed, orderHistory, cartItems.'
+      });
+    }
+
+    const queryParams = requestType === "recentlyViewed" ? {
+      TableName: USER_HISTORY_TABLE_NAME,
+      KeyConditionExpression: 'email = :email',
+      ExpressionAttributeValues: {
+        ':email': email,
+      },
+      ProjectionExpression: '#email, #attr, #wishlst',
+      ExpressionAttributeNames: {
+        '#email': 'email',
+        '#attr': requestType,
+        '#wishlst': "wishlistItems"
+      },
+    } : {
+      TableName: USER_HISTORY_TABLE_NAME,
+      KeyConditionExpression: 'email = :email',
+      ExpressionAttributeValues: {
+        ':email': email,
+      },
+      ProjectionExpression: '#email, #attr',
+      ExpressionAttributeNames: {
+        '#email': 'email',
+        '#attr': requestType
+      },
+    };
+
+    const data = await docClient.send(new QueryCommand(queryParams));
+
+    if (!data.Items || data.Items.length === 0) {
+      return response(404, { error: 'User not found' });
+    }
+
+    const userData = data.Items[0];
+    if (requestType === 'recentlyViewed') {
+      const wishlistItems = userData.wishlistItems || [];
+      const wisthlistProductCodes = wishlistItems.map(item => item.productCode);
+      userData[requestType].map(item => {
+        item.isInWishlist = wisthlistProductCodes.includes(item.productCode);
+      });
+      console.log("Updated UserData: ", userData[requestType]);
+    }
+
+    if (!(requestType in userData)) {
+      return response(404, { error: `Attribute '${requestType}' not found for user` });
+    }
+
+    return response(200, { [requestType]: userData[requestType] });
+
+  } catch (error) {
+    console.error('Error retrieving user history:', error);
+    return response(500, { error: 'Internal server error' });
   }
 };
