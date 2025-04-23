@@ -123,26 +123,22 @@ export const handler = async (event) => {
                 const { productCode, color, size, qty, action } = item;
                 let currentCart = existing.cartItems || [];
               
-                currentCart = currentCart.filter(
-                  c => !(c.productCode === productCode && c.size === size && c.color === color)
+                const existingIndex = currentCart.findIndex(
+                  c => c.productCode === productCode && c.size === size && c.color === color
                 );
               
                 let finalQty = qty;
               
-                if (action === "add") {
-                  const existingItem = existing.cartItems?.find(
-                    c => c.productCode === productCode && c.size === size && c.color === color
-                  );
-              
-                  if (existingItem) {
-                    finalQty = parseInt(finalQty) + parseInt(existingItem.qty || 0);
-                  }
+                if (action === "add" && existingIndex !== -1) {
+                  finalQty = parseInt(finalQty) + parseInt(currentCart[existingIndex].qty || 0);
                 }
+              
+                currentCart = currentCart.filter(
+                  c => !(c.productCode === productCode && c.size === size && c.color === color)
+                );
               
                 if (finalQty > 0) {
                   const currentProductData = await getAdditionalDetails(productCode, key);
-                  console.log("Current Product Data For Cart Items: ", currentProductData);
-              
                   const newItem = {
                     productCode,
                     color,
@@ -153,14 +149,18 @@ export const handler = async (event) => {
                     image: currentProductData[0].image,
                   };
               
-                  console.log("Final Item to Insert: ", newItem);
-              
-                  currentCart.unshift(newItem);
+                  if (action === 'add' && existingIndex === -1) {
+                    currentCart.unshift(newItem);
+                  } else if (existingIndex !== -1) {
+                    currentCart.splice(existingIndex, 0, newItem);
+                  } else {
+                    currentCart.push(newItem);
+                  }
                 }
               
                 updatedField = currentCart.filter(c => parseInt(c.qty) > 0);
                 break;
-              }              
+              }                           
 
             default:
                 return response(400, { error: 'Unsupported updateType' });
