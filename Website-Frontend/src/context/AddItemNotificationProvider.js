@@ -2,6 +2,7 @@ import React, { createContext, useState, useEffect } from 'react';
 
 const defaultState = {
   open: false,
+  product: null,
 };
 
 export const NotificationContext = createContext(defaultState);
@@ -9,8 +10,11 @@ export const NotificationContext = createContext(defaultState);
 export const NotificationProvider = ({ children }) => {
   const [state, setState] = useState(defaultState);
 
-  const showNotification = () => {
-    setState({ ...state, open: true });
+  const showNotification = (productData) => {
+    setState({
+      open: true,
+      product: productData, // includes color and size now
+    });
   };
 
   const closeNotification = () => {

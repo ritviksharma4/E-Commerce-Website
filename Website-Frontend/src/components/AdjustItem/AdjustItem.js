@@ -1,22 +1,20 @@
-import React, { useState } from 'react';
-
+import React from 'react';
 import Icon from '../Icons/Icon';
 import * as styles from './AdjustItem.module.css';
 
 const AdjustItem = (props) => {
-  const { isTransparent } = props;
-  const [qty, setQty] = useState(1);
+  const { isTransparent, qty, setQty } = props;
 
   const handleOnChange = (e) => {
     const num = parseInt(e.target.value);
-    setQty(num);
+    if (!isNaN(num) && num > 0) {
+      setQty(num);
+    }
   };
 
   return (
     <div
-      className={`${styles.root} ${
-        isTransparent === true ? styles.transparent : ''
-      }`}
+      className={`${styles.root} ${isTransparent === true ? styles.transparent : ''}`}
     >
       <div
         className={styles.iconContainer}
@@ -26,22 +24,22 @@ const AdjustItem = (props) => {
           setQty(qty - 1);
         }}
       >
-        <Icon symbol={'minus'}></Icon>
+        <Icon symbol={'minus'} />
       </div>
       <div className={styles.inputContainer}>
         <input
           className={`${isTransparent === true ? styles.transparentInput : ''}`}
-          onChange={(e) => handleOnChange(e)}
-          type={'number'}
+          onChange={handleOnChange}
+          type="number"
           value={qty}
-        ></input>
+        />
       </div>
       <div
         role={'presentation'}
         onClick={() => setQty(qty + 1)}
         className={styles.iconContainer}
       >
-        <Icon symbol={'plus'}></Icon>
+        <Icon symbol={'plus'} />
       </div>
     </div>
   );

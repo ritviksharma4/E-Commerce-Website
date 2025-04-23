@@ -18,7 +18,7 @@ const SwatchList = (props) => {
   return (
     <div className={styles.root}>
       <span className={styles.label}>
-        Select Colour: {activeSwatch?.title}
+        Select Color: {activeSwatch?.title}
       </span>
       <div className={styles.swatchSelection}>
         {swatchList?.map((colorChoice, index) => (

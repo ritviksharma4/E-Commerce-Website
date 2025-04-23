@@ -61,6 +61,19 @@ const Header = (prop) => {
     setTotalCartItems(loginKey.totalCartItems)
   }, []);
 
+  useEffect(() => {
+    const handleCartUpdate = () => {
+      const loginKey = JSON.parse(localStorage.getItem('velvet_login_key'));
+      setTotalCartItems(loginKey?.totalCartItems || 0);
+    };
+  
+    window.addEventListener('cart-updated', handleCartUpdate);
+  
+    return () => {
+      window.removeEventListener('cart-updated', handleCartUpdate);
+    };
+  }, []);
+
   // disable active menu when show menu is hidden
   useEffect(() => {
     if (showMenu === false) setActiveMenu(false);
@@ -233,7 +246,7 @@ const Header = (prop) => {
 
       {/* minicart container */}
       <Drawer visible={showMiniCart} close={() => setShowMiniCart(false)}>
-        <MiniCart />
+      {showMiniCart && <MiniCart />}
       </Drawer>
 
       {/* mobile menu */}

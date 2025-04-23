@@ -5,22 +5,20 @@ import AddItemNotificationContext from '../../context/AddItemNotificationProvide
 
 import Button from '../Button';
 import Icon from '../Icons/Icon';
+import { isAuth } from '../../helpers/general';
 
 import * as styles from './AddNotification.module.css';
 import { toOptimizedImage } from '../../helpers/general';
 
 const AddNotification = (props) => {
-  const sampleCartItem = {
-    image: '/products/pdp1.jpeg',
-    alt: '',
-    name: 'Lambswool Crew Neck Jumper',
-    price: 220,
-    color: 'Anthracite Melange',
-    size: 'XS',
-  };
 
   const ctxAddItemNotification = useContext(AddItemNotificationContext);
   const showNotif = ctxAddItemNotification.state?.open;
+  const product = ctxAddItemNotification.state?.product;
+  const user = isAuth() ? JSON.parse(localStorage.getItem("velvet_login_key")) : "" 
+  const currentTotalCartItems = user.totalCartItems
+  console.log("Notification Product: ", product);
+  if (!product) return null;
 
   return (
     <div
@@ -30,25 +28,28 @@ const AddNotification = (props) => {
     >
       <div className={styles.header}>
         <div className={styles.iconContainer}>
-          <Icon symbol={'check'}></Icon>
+          <Icon symbol={'check'} />
         </div>
         <span>Item added to bag</span>
       </div>
 
       <div className={styles.newItemContainer}>
         <div className={styles.imageContainer}>
-          <img alt={sampleCartItem.alt} src={toOptimizedImage(sampleCartItem.image)} />
+          <img
+            alt={product.alt || ''}
+            src={toOptimizedImage(product.image)}
+          />
         </div>
         <div className={styles.detailContainer}>
-          <span className={styles.name}>{sampleCartItem.name}</span>
-          <span className={styles.meta}>Color: {sampleCartItem.color}</span>
-          <span className={styles.meta}>Size: {sampleCartItem.size}</span>
+          <span className={styles.name}>{product.name}</span>
+          <span className={styles.meta}>Color: {product.color}</span>
+          <span className={styles.meta}>Size: {product.size.toUpperCase()}</span>
         </div>
       </div>
 
       <div className={styles.actionContainer}>
         <Button onClick={props.openCart} level={'secondary'}>
-          View My Bag (1)
+          View My Bag ({currentTotalCartItems})
         </Button>
         <Button level="primary" href="/cart">
           Checkout

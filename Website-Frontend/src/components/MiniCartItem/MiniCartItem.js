@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { navigate } from 'gatsby';
-import AdjustItem from '../AdjustItem';
+import AdjustItemForCart from '../AdjustItemForCart/AdjustItemForCart';
 import CurrencyFormatter from '../CurrencyFormatter';
 import RemoveItem from '../RemoveItem';
 
@@ -9,14 +9,13 @@ import * as styles from './MiniCartItem.module.css';
 import { toOptimizedImage } from '../../helpers/general';
 
 const MiniCartItem = (props) => {
-  const { image, alt, name, price, color, size } = props;
-
+  const { image, alt, name, price, color, size, productCode, qty, setCartItems, setLoading} = props;
   return (
     <div className={styles.root}>
       <div
         className={styles.imageContainer}
         role={'presentation'}
-        onClick={() => navigate('/product/sample')}
+        onClick={() => navigate(`/product/${productCode}`)}
       >
         <img src={toOptimizedImage(image)} alt={alt} />
       </div>
@@ -32,12 +31,26 @@ const MiniCartItem = (props) => {
             <span className={styles.size}>{size}</span>
           </span>
         </div>
-        <div className={styles.adjustItemContainer}>
-          <AdjustItem />
+        <div className={styles.AdjustItemForCartContainer}>
+        <AdjustItemForCart
+          productCode={productCode}
+          color={color}
+          size={size}
+          quantity={qty}
+          setCartItems={setCartItems}
+          setLoading={setLoading}
+        />
         </div>
       </div>
       <div className={styles.closeContainer}>
-        <RemoveItem />
+        <RemoveItem 
+          productCode={productCode}
+          color={color}
+          size={size}
+          quantity={qty}
+          setCartItems={setCartItems}
+          setLoading={setLoading}
+        />
       </div>
     </div>
   );

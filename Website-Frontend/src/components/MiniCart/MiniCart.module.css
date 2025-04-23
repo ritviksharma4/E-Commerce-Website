@@ -1,6 +1,8 @@
 .root {
+    display: flex;
+    flex-direction: column;
     height: 100%;
-    overflow-y: hidden;
+    overflow: hidden; /* Keep this */
 }
 
 .blurredBackground {
@@ -28,7 +30,7 @@
 .cartItemsContainer {
     margin: 0px 16px 16px 16px;
     overflow-y: auto;
-    height: 65%;
+    flex-grow: 1; /* 👈 This is key */
 }
 
 .cartItemsContainer > div {
@@ -37,9 +39,6 @@
 
 .summaryContainer {
     width: 100%;
-    position: absolute;
-    bottom: 16px;
-    left: 0px;
 }
 
 .totalContainer {

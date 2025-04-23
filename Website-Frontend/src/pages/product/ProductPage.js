@@ -48,6 +48,36 @@ const ProductPage = ({ params }) => {
       .join(' ');
   };
 
+  const handleAddToBag = async () => {
+    const user = JSON.parse(localStorage.getItem('velvet_login_key') || '{}');
+    const email = user.email || null;
+
+    const updateUserCartItems = await fetch(UPDATE_USER_SHOPPING_HISTORY, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ 
+        email, 
+        "updateType": {
+          "cartItems": {
+            productCode,
+            "color": activeSwatch?.title,
+            "size": activeSize,
+            "qty": qty,
+            "action": "add"
+          }
+        }   
+      }),
+    });
+    console.log("Response for Adding to Cart: ", updateUserCartItems)
+    const existingLoginKey = JSON.parse(localStorage.getItem('velvet_login_key')) || {};
+    const updatedLoginKey = {
+      ...existingLoginKey,
+      totalCartItems: existingLoginKey.totalCartItems + qty
+    };
+    localStorage.setItem('velvet_login_key', JSON.stringify(updatedLoginKey));
+    window.dispatchEvent(new Event('cart-updated'));
+  };
+
   useEffect(() => {
     const fetchProduct = async () => {
       try {
@@ -237,7 +267,12 @@ const ProductPage = ({ params }) => {
                   <Button
                     onClick={() => {
                       if (isAuth()) {
-                        showNotification();
+                        handleAddToBag();
+                        showNotification({
+                          ...product,
+                          color: activeSwatch?.title,
+                          size: activeSize
+                        });
                       } else {
                         window.location.href = '/login';
                       }

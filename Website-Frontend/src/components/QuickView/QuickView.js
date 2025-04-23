@@ -15,6 +15,7 @@ import AddItemNotificationContext from '../../context/AddItemNotificationProvide
 import * as styles from './QuickView.module.css';
 import { toOptimizedImage } from '../../helpers/general';
 import { unmarshall } from '@aws-sdk/util-dynamodb';
+import { isAuth } from '../../helpers/general';
 
 const REGION = process.env.GATSBY_APP_AWS_REGION;
 const IDENTITY_POOL_ID = process.env.GATSBY_APP_COGNITO_IDENTITY_POOL_ID;
@@ -32,6 +33,7 @@ const client = new DynamoDBClient({
 const QuickView = ({ close, buttonTitle = 'Add to Bag', product: initialProduct }) => {
   const ctxAddItemNotification = useContext(AddItemNotificationContext);
   const showNotification = ctxAddItemNotification.showNotification;
+  const UPDATE_USER_SHOPPING_HISTORY = process.env.GATSBY_APP_UPDATE_SHOPPING_HISTORY_FOR_USER
 
   const [product, setProduct] = useState(initialProduct);
   const [loading, setLoading] = useState(false);
@@ -87,9 +89,38 @@ const QuickView = ({ close, buttonTitle = 'Add to Bag', product: initialProduct 
     }
   }, []);
 
-  const handleAddToBag = () => {
+  const handleAddToBag = async () => {
+    const user = JSON.parse(localStorage.getItem('velvet_login_key') || '{}');
+    const email = user.email || null;
+
+    const updateUserCartItems = await fetch(UPDATE_USER_SHOPPING_HISTORY, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ 
+        email, 
+        "updateType": {
+          "cartItems": {
+            "productCode": product.productCode,
+            "color": activeSwatch?.title,
+            "size": activeSize,
+            "qty": 1,
+            "action": "add"
+          }
+        }   
+      }),
+    });
+    console.log("Response for Adding to Cart: ", updateUserCartItems)
+    const existingLoginKey = JSON.parse(localStorage.getItem('velvet_login_key')) || {};
+    const updatedLoginKey = {
+      ...existingLoginKey,
+      totalCartItems: existingLoginKey.totalCartItems + 1
+    };
+    localStorage.setItem('velvet_login_key', JSON.stringify(updatedLoginKey));
+    window.dispatchEvent(new Event('cart-updated'));
     close();
-    showNotification();
+    product.color = activeSwatch?.title;
+    product.size = activeSize;
+    showNotification(product);
   };
 
   const handleColorChange = (swatch) => {
@@ -144,7 +175,17 @@ const QuickView = ({ close, buttonTitle = 'Add to Bag', product: initialProduct 
               />
             </div>
 
-            <Button onClick={handleAddToBag} fullWidth level={'primary'}>
+            <Button
+              onClick={() => {
+                if (isAuth()) {
+                  handleAddToBag();
+                } else {
+                  window.location.href = '/login';
+                }
+              }}
+              fullWidth
+              level={'primary'}
+            >
               {buttonTitle}
             </Button>
           </>

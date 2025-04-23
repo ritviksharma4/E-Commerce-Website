@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, navigate } from 'gatsby';
 
 import Config from '../../config.json';
@@ -17,12 +17,23 @@ const MobileNavigation = (props) => {
   const [subMenu, setSubMenu] = useState();
   const [category, setCategory] = useState();
   const [depth, setDepth] = useState(0);
+  const [userName, setUserName] = useState("");
 
   const handleLogout = () => {
     window.localStorage.removeItem('velvet_login_key');
-    navigate('/');
+    navigate('/login');
     close();
   };
+  useEffect(() => {
+    if (!isAuth()) {
+      navigate('/login');
+      return;
+    }
+    let loginKey = window.localStorage.getItem("velvet_login_key");
+    loginKey = JSON.parse(loginKey);
+    console.log("Login Key: ", loginKey.firstName)
+    setUserName(loginKey.firstName);
+  }, []);
 
   return (
     <div className={styles.root}>
@@ -41,7 +52,7 @@ const MobileNavigation = (props) => {
               role={'presentation'}
               onClick={() => setDepth(-1)}
             >
-              <span className={styles.welcomeMessage}>Welcome, John</span>
+              <span className={styles.welcomeMessage}>Welcome, {userName}</span>
               <Icon symbol={'caret'}></Icon>
             </div>
           )}
