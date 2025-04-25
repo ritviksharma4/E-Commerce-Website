@@ -33,6 +33,20 @@
     line-height: 17px;
 }
 
+.chartModal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 999;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.2);
+    max-height: 90vh;
+    overflow-y: auto;
+    padding: 24px;
+}
+
 @media (max-width: 1000px) {
     .sizeSelection {
         display: grid;

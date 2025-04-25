@@ -87,6 +87,27 @@ const Footer = (prop) => {
                   />
                 </form>
                 <div className={styles.socialContainer}>
+
+                  {Config.social.leetcode && (
+                    <div
+                      onClick={() => handleSocialClick('leetcode')}
+                      role={'presentation'}
+                      className={styles.socialIconContainer}
+                    >
+                      <Icon symbol={'leetcode'}></Icon>
+                    </div>
+                  )}
+                  
+                  {Config.social.medium && (
+                    <div
+                      onClick={() => handleSocialClick('medium')}
+                      role={'presentation'}
+                      className={styles.socialIconContainer}
+                    >
+                      <Icon symbol={'medium'}></Icon>
+                    </div>
+                  )}
+                  
                   {Config.social.youtube && (
                     <div
                       onClick={() => handleSocialClick('youtube')}
@@ -96,36 +117,37 @@ const Footer = (prop) => {
                       <Icon symbol={'youtube'}></Icon>
                     </div>
                   )}
-
-                  {Config.social.instagram && (
+                  
+                  {Config.social.github && (
                     <div
-                      onClick={() => handleSocialClick('instagram')}
+                      onClick={() => handleSocialClick('github')}
                       role={'presentation'}
                       className={styles.socialIconContainer}
                     >
-                      <Icon symbol={'instagram'}></Icon>
+                      <Icon symbol={'github'}></Icon>
                     </div>
                   )}
-
-                  {Config.social.facebook && (
+                  
+                  {Config.social.linkedin && (
                     <div
-                      onClick={() => handleSocialClick('facebook')}
+                      onClick={() => handleSocialClick('linkedin')}
                       role={'presentation'}
                       className={styles.socialIconContainer}
                     >
-                      <Icon symbol={'facebook'}></Icon>
+                      <Icon symbol={'linkedin'}></Icon>
                     </div>
                   )}
 
-                  {Config.social.twitter && (
+                  {Config.social.portfolio && (
                     <div
-                      onClick={() => handleSocialClick('twitter')}
+                      onClick={() => handleSocialClick('portfolio')}
                       role={'presentation'}
                       className={styles.socialIconContainer}
                     >
-                      <Icon symbol={'twitter'}></Icon>
+                      <Icon symbol={'portfolio'}></Icon>
                     </div>
                   )}
+
                 </div>
               </div>
             </div>

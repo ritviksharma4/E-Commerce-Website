@@ -115,7 +115,7 @@ const OrderItem = (props) => {
                   <span className={styles.itemName}>{item.productCode}</span>
                   <div className={styles.orderItemMeta}>
                     <span className={styles.itemQuantity}>Qty: {qty}</span>
-                    <span className={styles.itemQuantity}>Size: {item.size}</span>
+                    <span className={styles.itemQuantity}>Size: {item.size.toUpperCase()}</span>
                     <div className={styles.itemTotalMobile}>
                       <CurrencyFormatter amount={price * qty} />
                     </div>

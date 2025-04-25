@@ -250,11 +250,13 @@ const ProductPage = ({ params }) => {
               />
 
               <div className={styles.sizeContainer}>
-                <SizeList
-                  sizeList={product.sizeOptions}
-                  activeSize={activeSize}
-                  setActiveSize={setActiveSize}
-                />
+              <SizeList
+                sizeList={product.sizeOptions}
+                activeSize={activeSize}
+                setActiveSize={setActiveSize}
+                category={product.category}
+                subCategory={product.subCategory}
+              />
               </div>
 
               <div className={styles.quantityContainer}>

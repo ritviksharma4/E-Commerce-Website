@@ -28,6 +28,11 @@ import Search from './Search';
 import Twitter from './Twitter';
 import TwitterInverse from './TwitterInverse';
 import User from './User';
+import Linkedin from './Linkedin';
+import Medium from './Medium';
+import Leetcode from './Leetcode';
+import Github from './Github';
+import Portfolio from './Portfolio';
 import Youtube from './Youtube';
 
 function Icon(props) {
@@ -86,6 +91,16 @@ function Icon(props) {
       return <TwitterInverse />;
     case 'user':
       return <User />;
+    case 'linkedin':
+      return <Linkedin />;
+    case 'github':
+      return <Github />;
+    case 'medium':
+      return <Medium />;
+    case 'leetcode':
+      return <Leetcode />;
+    case 'portfolio':
+      return <Portfolio />;
     case 'youtube':
       return <Youtube />;
     default:

@@ -6,10 +6,12 @@
     { "value": "english", "label": "English" }
   ],
   "social": {
-    "facebook": "https://ritvik-sharma.com",
-    "instagram": "https://ritvik-sharma.com",
-    "twitter": "https://ritvik-sharma.com",
-    "youtube": "https://ritvik-sharma.com"
+    "portfolio": "https://ritvik-sharma.com",
+    "linkedin": "https://www.linkedin.com/in/ritviksharma4/",
+    "github": "https://github.com/ritviksharma4",
+    "youtube": "https://www.youtube.com/@ritz182",
+    "medium": "https://medium.com/@ritviksharma4",
+    "leetcode": "https://leetcode.com/u/ritviksharma4/"
   },
   "paymentOptions": {
     "visa": true,
