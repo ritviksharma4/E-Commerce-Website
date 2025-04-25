@@ -109,7 +109,6 @@ const QuickView = ({ close, buttonTitle = 'Add to Bag', product: initialProduct 
         }   
       }),
     });
-    console.log("Response for Adding to Cart: ", updateUserCartItems)
     const existingLoginKey = JSON.parse(localStorage.getItem('velvet_login_key')) || {};
     const updatedLoginKey = {
       ...existingLoginKey,
@@ -137,7 +136,6 @@ const QuickView = ({ close, buttonTitle = 'Add to Bag', product: initialProduct 
   const image = product?.image;
   const alt = product?.gallery;
   const colorOptions = product?.colorOptions || [];
-  const sizeOptions = product?.sizeOptions || [];
 
   return (
     <div className={styles.root}>

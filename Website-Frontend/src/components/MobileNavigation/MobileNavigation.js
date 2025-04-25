@@ -31,7 +31,6 @@ const MobileNavigation = (props) => {
     }
     let loginKey = window.localStorage.getItem("velvet_login_key");
     loginKey = JSON.parse(loginKey);
-    console.log("Login Key: ", loginKey.firstName)
     setUserName(loginKey.firstName);
   }, []);
 

@@ -18,7 +18,6 @@ const ProductCardGrid = (props) => {
   };
 
   const handleQuickViewClick = (product) => {
-    console.log("Product Deets: ", product)
     setSelectedProduct(product);
     setShowQuickView(true);
   };

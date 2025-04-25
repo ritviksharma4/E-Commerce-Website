@@ -40,7 +40,6 @@ const Viewed = () => {
           }),
         });
         const result = await response.json();
-        console.log("Result:", JSON.stringify(result, null, 2));
         let data = JSON.stringify(result);
         data = JSON.parse(data)
 

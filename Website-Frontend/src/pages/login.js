@@ -113,8 +113,6 @@ const LoginPage = () => {
           lastName: data.lastName || '',
           totalCartItems: data.totalCartItems || 0
         };
-        console.log("Login Data: ", data)
-        console.log("Creating LoginKey: ", loginKey)
   
         localStorage.setItem('velvet_login_key', JSON.stringify(loginKey));
       } else if (data.waitTime) {

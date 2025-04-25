@@ -63,8 +63,6 @@ const DressesWomenPage = () => {
         lambdaResponse = {};
       }
 
-      console.log("Lambda Response for Dresses: ", lambdaResponse)
-
       if (Array.isArray(lambdaResponse)) {
         items = lambdaResponse;
       } else if (typeof lambdaResponse.body === 'string') {

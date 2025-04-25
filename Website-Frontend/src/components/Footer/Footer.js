@@ -16,7 +16,6 @@ const Footer = (prop) => {
   const subscribeHandler = (e) => {
     e.preventDefault();
     setEmail('');
-    console.log('Subscribe this email: ', email);
   };
 
   const handleSocialClick = (platform) => {

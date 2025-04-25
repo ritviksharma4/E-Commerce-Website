@@ -32,7 +32,6 @@ const FavoriteCardGrid = (props) => {
 
   const handleConfirmDelete = async () => {
     if (selectedToDelete) {
-      console.log('Deleting:', selectedToDelete); 
       try {
         const localUser = JSON.parse(localStorage.getItem('velvet_login_key'));
         const email = localUser?.email;
@@ -58,7 +57,6 @@ const FavoriteCardGrid = (props) => {
         });
 
         const result = await response.json();
-        console.log("Result after Deleting Item from WishList: ", result);
         if (result && result.wishlistItems) {
           setShowDelete(false);
           setSelectedToDelete(null);

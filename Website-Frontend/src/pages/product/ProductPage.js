@@ -52,7 +52,7 @@ const ProductPage = ({ params }) => {
     const user = JSON.parse(localStorage.getItem('velvet_login_key') || '{}');
     const email = user.email || null;
 
-    const updateUserCartItems = await fetch(UPDATE_USER_SHOPPING_HISTORY, {
+    await fetch(UPDATE_USER_SHOPPING_HISTORY, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ 
@@ -68,7 +68,6 @@ const ProductPage = ({ params }) => {
         }   
       }),
     });
-    console.log("Response for Adding to Cart: ", updateUserCartItems)
     const existingLoginKey = JSON.parse(localStorage.getItem('velvet_login_key')) || {};
     const updatedLoginKey = {
       ...existingLoginKey,
@@ -89,19 +88,16 @@ const ProductPage = ({ params }) => {
         const user = JSON.parse(localStorage.getItem('velvet_login_key') || '{}');
         const email = user.email || null;
 
-        const updateUserHistory = await fetch(UPDATE_USER_SHOPPING_HISTORY, {
+        await fetch(UPDATE_USER_SHOPPING_HISTORY, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ 
             email, 
             "updateType": {
               "recentlyViewed": productCode
-            } ,
-            
+            },
            }),
         });
-
-        console.log("Updating User's Recently Viewed History: ", updateUserHistory)
 
         const response = await fetch(LAMBDA_ENDPOINT, {
           method: 'POST',
@@ -117,9 +113,6 @@ const ProductPage = ({ params }) => {
         }
 
         const productData = data.product;
-        console.log("Product Code: ", productCode);
-        console.log("Product category: ", productData.category);
-        console.log("Product Subcategory: ", productData.subCategory);
 
         setProduct(productData);
         setIsWishlist(productData.isInWishlist);
@@ -157,7 +150,6 @@ const ProductPage = ({ params }) => {
         });
 
         const newData = await refetch.json();
-        console.log("Final Suggestions: ", newData.suggestions);
         setSuggestions(newData.suggestions || []);
       } catch (err) {
         console.error('Error fetching suggestions:', err);
@@ -181,9 +173,8 @@ const ProductPage = ({ params }) => {
     const email = user.email || null;
   
     const action = nextWishlistState ? "add" : "remove";
-    console.log("Latest Wishlist action: ", action);
   
-    const updateUserHistory = await fetch(UPDATE_USER_SHOPPING_HISTORY, {
+    await fetch(UPDATE_USER_SHOPPING_HISTORY, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ 
@@ -196,8 +187,6 @@ const ProductPage = ({ params }) => {
         },
       }),
     });
-  
-    console.log("Updating User's Wishlist: ", updateUserHistory);
   };
 
   if (!product) return <LuxuryLoader />;

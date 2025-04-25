@@ -44,7 +44,6 @@ const FavoritesPage = () => {
         });
 
         const result = await response.json();
-        console.log("Result: ", result)
         setWishlistItems(result.wishlistItems || []);
       } catch (error) {
         console.error('Failed to fetch wishlist:', error);

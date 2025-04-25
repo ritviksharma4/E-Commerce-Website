@@ -11,7 +11,6 @@ const ProductCard = (props) => {
   const [isWishlist, setIsWishlist] = useState(isInWishlist);
   const UPDATE_USER_SHOPPING_HISTORY = process.env.GATSBY_APP_UPDATE_SHOPPING_HISTORY_FOR_USER
 
-  console.log("IsInWishList: ", isInWishlist)
   const {
     image,
     imageAlt,
@@ -46,7 +45,6 @@ const ProductCard = (props) => {
     const email = user.email || null;
   
     const action = nextWishlistState ? "add" : "remove";
-    console.log("Latest Wishlist action: ", action);
   
     const updateUserHistory = await fetch(UPDATE_USER_SHOPPING_HISTORY, {
       method: 'POST',
@@ -62,7 +60,6 @@ const ProductCard = (props) => {
       }),
     });
   
-    console.log("Updating User's Wishlist: ", updateUserHistory);
 
   };
 

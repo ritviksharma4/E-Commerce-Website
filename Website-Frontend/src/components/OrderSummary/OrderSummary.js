@@ -87,8 +87,6 @@ const OrderSummary = ({ cartItems, setLoading }) => {
       localStorage.setItem('velvet_login_key', JSON.stringify(updatedLoginKey));
       window.dispatchEvent(new Event('cart-updated'));
 
-      console.log('Order submitted:', result);
-
       navigate('/orderConfirm');
     } catch (err) {
       console.error('Checkout Error:', err);

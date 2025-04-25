@@ -40,7 +40,6 @@ const MiniCart = () => {
             requestType: 'cartItems',
           }),
         });
-        console.log("Response in Minicart: ", response)
 
         const data = await response.json();
         setCartItems(data.cartItems || []);

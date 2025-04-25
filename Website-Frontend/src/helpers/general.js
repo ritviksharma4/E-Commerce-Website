@@ -50,7 +50,6 @@ function isAuth() {
       const validEmailList = ["ritvik.sharma1@velvet.com", "ritvik.sharma2@velvet.com", "ritvik.sharma3@velvet.com", "ritvik.sharma4@velvet.com", "ritvik.sharma5@velvet.com"];
       if (loginKey) {
         if (!validEmailList.includes(loginKey.email)) {
-          console.log("Unrecognizable email: ", loginKey.email)
           return false
         }
         const currentTime = new Date().getTime();
@@ -58,25 +57,21 @@ function isAuth() {
         const fiveMinutes = 5 * 60 * 1000; // 5 minutes in milliseconds
 
         if (timeElapsed < fiveMinutes) {
-          console.log("Key is valid")
-          return true; // Key is valid
+          return true;
         } else {
-          console.log("Key is now invalid")
           localStorage.removeItem('velvet_login_key'); // Remove expired key
-          return false; // Key expired
+          return false;
         }
       }
-      return false; // No key found
+      return false;
     };
 
-    return isLoginKeyValid(); // Check if the login key is valid
+    return isLoginKeyValid();
   }
-  return false; // Better default for SSR: unauthenticated
+  return false;
 }
 
 /**
- * Adds a query param to URLs which is captured by redirect rules
- * (when running in Netlify - otherwise it's harmless)
  * 
  * @param {String} imageUrl
  * @returns {String}

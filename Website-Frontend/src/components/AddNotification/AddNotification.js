@@ -17,7 +17,6 @@ const AddNotification = (props) => {
   const product = ctxAddItemNotification.state?.product;
   const user = isAuth() ? JSON.parse(localStorage.getItem("velvet_login_key")) : "" 
   const currentTotalCartItems = user.totalCartItems
-  console.log("Notification Product: ", product);
   if (!product) return null;
 
   return (

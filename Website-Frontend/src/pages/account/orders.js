@@ -48,7 +48,6 @@ const OrderPage = () => {
         });
 
         const data = await response.json();
-        console.log("Order Data: ", data)
         
         // Format the dates for each order
         const formattedOrders = data.orderHistory.map((order) => ({
