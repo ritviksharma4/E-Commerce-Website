@@ -1,84 +1,76 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import * as styles from './orders.module.css';
 
 import AccountLayout from '../../components/AccountLayout/AccountLayout';
 import Breadcrumbs from '../../components/Breadcrumbs';
 import Layout from '../../components/Layout/Layout';
 import OrderItem from '../../components/OrderItem/OrderItem';
+import LuxuryLoader from '../../components/Loading/LuxuriousLoader';
 import { isAuth } from '../../helpers/general';
 import { navigate } from 'gatsby';
 
-const OrderPage = (props) => {
-  if (isAuth() === false) {
-    navigate('/login');
+const OrderPage = () => {
+  const [loading, setLoading] = useState(true);
+  const [orders, setOrders] = useState([]);
+  const LAMBDA_ENDPOINT = process.env.GATSBY_APP_GET_SHOPPING_HISTORY_FOR_USER
+
+  // Utility function to format timestamps into 'Apr 23, 2025' format
+  const formatDate = (timestamp) => {
+    const date = new Date(timestamp);
+    return date.toLocaleDateString('en-US', {
+      weekday: 'short',
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
+    });
+  };
+
+  useEffect(() => {
+    if (!isAuth()) {
+      navigate('/login');
+      return;
+    }
+
+    const fetchOrders = async () => {
+      setLoading(true);
+      try {
+        const email = JSON.parse(localStorage.getItem('velvet_login_key'))?.email;
+
+        const response = await fetch(LAMBDA_ENDPOINT, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            email,
+            requestType: 'orderHistory',
+          }),
+        });
+
+        const data = await response.json();
+        console.log("Order Data: ", data)
+        
+        // Format the dates for each order
+        const formattedOrders = data.orderHistory.map((order) => ({
+          ...order,
+          orderPlaced: formatDate(order.orderPlacedDate),
+          lastUpdate: formatDate(order.orderPlacedDate), // Using the same timestamp for lastUpdate
+        }));
+
+        setOrders(formattedOrders); // Set the formatted orders
+      } catch (err) {
+        console.error('Failed to fetch order history:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchOrders();
+  }, [LAMBDA_ENDPOINT]);
+
+  if (loading) {
+    return <LuxuryLoader />;
   }
-
-  const sampleOrder1 = {
-    id: '2',
-    orderPlaced: 'Oct 12, 2021',
-    lastUpdate: 'Oct 12, 2021',
-    status: 'pending',
-    items: [
-      {
-        image: '/products/shirt1.jpg',
-        alt: 'order 1 product 1',
-        name: 'Lambswool Crew Neck Jumper',
-        quantity: '2',
-        price: '100',
-      },
-      {
-        image: '/products/shirt2.jpg',
-        alt: 'order 1 product 2',
-        name: 'Lambswool Crew Neck Jumper',
-        quantity: '1',
-        price: '300',
-      },
-    ],
-    shippingAddress: {
-      name: 'John Doe',
-      address: '1 Steam Mill Lane, Haymerket',
-      postal: '2000',
-      state: 'NSW',
-      country: 'Australia',
-    },
-    billingAddress: {
-      name: 'John Doe',
-      address: '1 Steam Mill Lane, Haymerket',
-      postal: '2000',
-      state: 'NSW',
-      country: 'Australia',
-    },
-  };
-
-  const sampleOrder2 = {
-    id: '1',
-    orderPlaced: 'Oct 11, 2021',
-    lastUpdate: 'Oct 11, 2021',
-    status: 'pending',
-    items: [
-      {
-        image: '/products/shirt1.jpg',
-        alt: 'order 1 product 1',
-        name: 'Lambswool Crew Neck Jumper',
-        quantity: '2',
-        price: '100',
-      },
-    ],
-    shippingAddress: {
-      name: 'John Doe',
-      address: '1 Steam Mill Lane, Haymerket',
-      postal: '2000',
-      state: 'NSW',
-      country: 'Australia',
-    },
-    billingAddress: {
-      name: 'John Doe',
-      address: '1 Steam Mill Lane, Haymerket',
-      postal: '2000',
-      state: 'NSW',
-      country: 'Australia',
-    },
-  };
 
   return (
     <Layout>
@@ -91,15 +83,23 @@ const OrderPage = (props) => {
           ]}
         />
         <h1>Orders</h1>
-        <div className={`${styles.tableHeaderContainer} ${styles.gridStyle}`}>
-          <span className={styles.tableHeader}>Order #</span>
-          <span className={styles.tableHeader}>Order Placed</span>
-          <span className={styles.tableHeader}>Last Update</span>
-          <span className={styles.tableHeader}>Status</span>
-        </div>
 
-        <OrderItem order={sampleOrder1} headerStyling={styles.gridStyle} />
-        <OrderItem order={sampleOrder2} headerStyling={styles.gridStyle} />
+        {orders.length === 0 ? (
+          <p>No orders found.</p>
+        ) : (
+          <>
+            <div className={`${styles.tableHeaderContainer} ${styles.gridStyle}`}>
+              <span className={styles.tableHeader}>Order #</span>
+              <span className={styles.tableHeader}>Order Placed</span>
+              <span className={styles.tableHeader}>Last Update</span>
+              <span className={styles.tableHeader}>Status</span>
+            </div>
+
+            {orders.map((order, index) => (
+              <OrderItem key={order.orderId || index} order={order} headerStyling={styles.gridStyle} />
+            ))}
+          </>
+        )}
       </AccountLayout>
     </Layout>
   );

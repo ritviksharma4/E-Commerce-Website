@@ -56,7 +56,7 @@ const LoginPage = () => {
 
       // Mock login
       if (loginForm.email !== 'error@example.com') {
-        // Store velvet_login_key in localStorage with a timestamp for expiry check
+
         const existingLoginKey = JSON.parse(localStorage.getItem('velvet_login_key')) || {};
         const updatedLoginKey = {
           ...existingLoginKey,
@@ -105,7 +105,6 @@ const LoginPage = () => {
         setLoginForm({ email: data.email, password: data.password });
         setHasUsedGuestLogin(true); // Disable the button
   
-        // Store all required fields in localStorage
         const loginKey = {
           timestamp: new Date().getTime(),
           email: data.email,

@@ -79,7 +79,9 @@ const CartPage = () => {
     }
   };
 
-  return (
+  return loading ? (
+    <LuxuryLoader />
+  ) : (
     <div>
       <div className={styles.contentContainer}>
         <Container size={'large'} spacing={'min'}>
@@ -87,9 +89,7 @@ const CartPage = () => {
             <div className={styles.shoppingContainer}>
               <Link className={styles.shopLink} to={'/'}>
                 <Icon symbol={'arrow'} />
-                <span className={styles.continueShopping}>
-                  Continue Shopping
-                </span>
+                <span className={styles.continueShopping}>Continue Shopping</span>
               </Link>
             </div>
             <Brand />
@@ -99,40 +99,35 @@ const CartPage = () => {
               </Link>
             </div>
           </div>
+  
           <div className={styles.summaryContainer}>
             <h3>My Bag</h3>
             <div className={styles.cartContainer}>
-              {loading ? (
-                <LuxuryLoader />
-              ) : (
-                <>
-                  <div className={styles.cartItemsContainer}>
-                    {cartItems.length > 0 ? (
-                      cartItems.map((item, index) => (
-                        <CartItem
-                          key={index}
-                          image={item.image}
-                          alt={item.name}
-                          name={item.name}
-                          price={item.price}
-                          color={item.color}
-                          size={item.size}
-                          qty={item.qty}
-                          productCode={item.productCode}
-                          setCartItems={setCartItems} 
-                          setLoading={setLoading}
-                          onUpdateQty={(newQty) =>
-                            handleUpdateQty(item.productCode, item.color, item.size, newQty)
-                          }
-                        />
-                      ))
-                    ) : (
-                      <p>Your cart is empty.</p>
-                    )}
-                  </div>
-                  <OrderSummary cartItems={cartItems} />
-                </>
-              )}
+              <div className={styles.cartItemsContainer}>
+                {cartItems.length > 0 ? (
+                  cartItems.map((item, index) => (
+                    <CartItem
+                      key={index}
+                      image={item.image}
+                      alt={item.name}
+                      name={item.name}
+                      price={item.price}
+                      color={item.color}
+                      size={item.size}
+                      qty={item.qty}
+                      productCode={item.productCode}
+                      setCartItems={setCartItems}
+                      setLoading={setLoading}
+                      onUpdateQty={(newQty) =>
+                        handleUpdateQty(item.productCode, item.color, item.size, newQty)
+                      }
+                    />
+                  ))
+                ) : (
+                  <p>Your cart is empty.</p>
+                )}
+              </div>
+              <OrderSummary cartItems={cartItems} setLoading={setLoading} />
             </div>
           </div>
         </Container>

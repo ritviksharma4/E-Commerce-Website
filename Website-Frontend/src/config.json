@@ -1,21 +1,15 @@
 {
   "currencyList": [
-    { "value": "USD", "label": "United States (US $)" },
-    { "value": "AUS", "label": "Australia (AUS $)" },
-    { "value": "CAD", "label": "Canada (CAD $)" },
-    { "value": "EUR", "label": "Germany (EUR €)" },
-    { "value": "HKD", "label": "Hong Kong (HKD $)" }
+    { "value": "USD", "label": "United States (US $)" }
   ],
   "languageList": [
-    { "value": "english", "label": "English" },
-    { "value": "german", "label": "Deutsch" },
-    { "value": "mandarin", "label": "普通话" }
+    { "value": "english", "label": "English" }
   ],
   "social": {
-    "facebook": "",
-    "instagram": "",
-    "twitter": "",
-    "youtube": ""
+    "facebook": "https://ritvik-sharma.com",
+    "instagram": "https://ritvik-sharma.com",
+    "twitter": "https://ritvik-sharma.com",
+    "youtube": "https://ritvik-sharma.com"
   },
   "paymentOptions": {
     "visa": true,
