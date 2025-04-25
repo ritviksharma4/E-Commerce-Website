@@ -1,12 +1,16 @@
 import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
 import { DynamoDBDocumentClient, ScanCommand, GetCommand } from '@aws-sdk/lib-dynamodb';
+import { S3Client, GetObjectCommand } from '@aws-sdk/client-s3';
+import { Readable } from 'stream'; // for converting stream to JSON
 
 const REGION = 'ap-south-1';
 const PRODUCT_TABLE = 'velvet-e-commerce-website-product-data';
 const HISTORY_TABLE = 'velvet-ecommerce-guest-shopping-history';
+const S3_BUCKET = "velvet-e-commerce-website-images"
 
 const client = new DynamoDBClient({ region: REGION });
 const docClient = DynamoDBDocumentClient.from(client);
+const s3Client = new S3Client({ region: REGION });
 
 // Extract wishlist productCodes from list of maps
 function extractWishlistProductCodes(wishlistItems) {
@@ -21,6 +25,16 @@ const CORS_HEADERS = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
   "Access-Control-Allow-Headers": "Content-Type",
+};
+
+// Helper to read S3 stream into JSON
+const streamToJSON = async (stream) => {
+  const chunks = [];
+  for await (const chunk of stream) {
+    chunks.push(chunk);
+  }
+  const buffer = Buffer.concat(chunks);
+  return JSON.parse(buffer.toString('utf-8'));
 };
 
 export const handler = async (event) => {
@@ -43,7 +57,42 @@ export const handler = async (event) => {
       body = event;
     }
 
-    const { email, category, subCategory, productCode } = body;
+    const { requestType, email, category, subCategory, productCode } = body;
+
+    if (requestType === 'sizeChart') {
+      if (!category || !subCategory) {
+        return {
+          statusCode: 400,
+          headers: CORS_HEADERS,
+          body: JSON.stringify({ message: 'Category and subCategory are required for size chart.' }),
+        };
+      }
+
+      const key = `SizeChart/${category}/${subCategory}/chart.json`;
+
+      try {
+        const command = new GetObjectCommand({
+          Bucket: S3_BUCKET,
+          Key: key,
+        });
+        console.log("Command: ", command);
+        const data = await s3Client.send(command);
+        const chartData = await streamToJSON(data.Body);
+
+        return {
+          statusCode: 200,
+          headers: CORS_HEADERS,
+          body: JSON.stringify(chartData),
+        };
+      } catch (err) {
+        console.error('Failed to fetch size chart:', err);
+        return {
+          statusCode: 404,
+          headers: CORS_HEADERS,
+          body: JSON.stringify({ message: 'Size chart not found for given category and subCategory.' }),
+        };
+      }
+    }
 
     if (!email) {
       return {
