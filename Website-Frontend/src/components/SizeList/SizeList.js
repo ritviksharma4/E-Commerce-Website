@@ -8,7 +8,7 @@ const SizeList = (props) => {
 
   const [showChart, setShowChart] = useState(false); // ✅ Local toggle state
 
-  const validSizes = ["xs", "s", "m", "l", "xl"];
+  const validSizes = ["xxs", "xs", "s", "m", "l", "xl", "xxl"];
 
   return (
     <div className={styles.root}>

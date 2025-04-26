@@ -1,13 +1,16 @@
 .root {
-    padding: 8px 28px;
-    border: 1px solid var(--bg-light-gray);
-    cursor: pointer;
-    transition: all ease-in-out 0.3s;
+    width: 100%;
+    height: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
-    position: relative; /* Keep it relative for positioning the cross */
-}
+    background-color: white;
+    border: 1px solid var(--standard-black);
+    border-radius: 4px;
+    font-size: 12px; /* Adjust for 20px/48px boxes */
+    cursor: pointer;
+    box-sizing: border-box; /* SUPER IMPORTANT */
+  }
 
 .option {
     font-weight: 500;
@@ -35,6 +38,25 @@
     transform-origin: center center; /* Set the origin to the center */
 }
 
+.isActive {
+    background-color: black;
+    color: white;
+  }
+  
+  .isUnavailable {
+    opacity: 0.3;
+    pointer-events: none;
+  }
+  
+  .option {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-transform: uppercase; /* Optional: make "XS", "S" etc consistent */
+    width: 100%;
+    height: 100%;
+  }
+
 .root.isUnavailable::before {
     transform: translate(-50%, -50%) rotate(25deg); /* First diagonal line */
 }
@@ -49,3 +71,9 @@
     color: var(--standard-white);
     background-color: var(--standard-gold);
 }
+
+@media (max-width: 600px) {
+    .root {
+      font-size: 10px;
+    }
+  }
