@@ -37,10 +37,8 @@ export const handler = async (event) => {
     let body;
     console.log(event);
     if (event.body) {
-      // Lambda invoked via API Gateway
       body = typeof event.body === 'string' ? JSON.parse(event.body) : event.body;
     } else {
-      // Lambda invoked directly with JSON object
       body = event;
     }
 

@@ -9,7 +9,7 @@ import { Link } from 'gatsby';
 
 const ProductCardGrid = (props) => {
   const [showQuickView, setShowQuickView] = useState(false);
-  const [selectedProduct, setSelectedProduct] = useState(null); // New state
+  const [selectedProduct, setSelectedProduct] = useState(null);
 
   const { height, columns = 3, data, spacing, showSlider = false } = props;
 

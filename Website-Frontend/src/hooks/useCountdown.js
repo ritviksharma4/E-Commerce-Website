@@ -5,17 +5,17 @@ export const useCountdown = (waitTime) => {
 
   useEffect(() => {
     if (waitTime !== null && waitTime !== undefined) {
-      setTimeLeft(waitTime); // Set the initial time
+      setTimeLeft(waitTime);
     }
   }, [waitTime]);
 
   useEffect(() => {
-    if (timeLeft <= 0) return; // Stop when countdown hits 0
+    if (timeLeft <= 0) return;
 
     const interval = setInterval(() => {
       setTimeLeft((prevTime) => {
         if (prevTime > 0) return prevTime - 1;
-        clearInterval(interval); // Stop interval when 0
+        clearInterval(interval);
         return 0;
       });
     }, 1000);

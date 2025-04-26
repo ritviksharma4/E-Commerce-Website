@@ -11,7 +11,6 @@ const OrderItem = (props) => {
   const { headerStyling, order } = props;
   const [collapsed, setCollapsed] = useState(false);
 
-  // Convert to number safely and compute total
   let computedTotal = 0;
   for (let x = 0; x < order.items.length; x++) {
     const price = parseFloat(order.items[x].price || 0);

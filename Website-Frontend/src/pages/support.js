@@ -63,7 +63,6 @@ const SupportPage = (props) => {
       }
     }
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props.location]);
 
   return (

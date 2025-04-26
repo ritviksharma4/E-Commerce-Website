@@ -14,7 +14,7 @@ const FavoriteCardGrid = (props) => {
   const [showQuickView, setShowQuickView] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [showDelete, setShowDelete] = useState(false);
-  const [selectedToDelete, setSelectedToDelete] = useState(null); // holds productCode
+  const [selectedToDelete, setSelectedToDelete] = useState(null);
   const LAMBDA_ENDPOINT = process.env.GATSBY_APP_UPDATE_SHOPPING_HISTORY_FOR_USER
   const [loading, setLoading] = useState(false);
     

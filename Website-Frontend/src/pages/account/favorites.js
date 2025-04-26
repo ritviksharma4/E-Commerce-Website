@@ -7,7 +7,6 @@ import Breadcrumbs from '../../components/Breadcrumbs';
 import Container from '../../components/Container';
 import LuxuryLoader from '../../components/Loading/LuxuriousLoader';
 import Banner from '../../components/Banner'
-// import Modal from '../../components/Modal';
 import FavoriteCardGrid from '../../components/FavoriteCardGrid/FavoriteCardGrid';
 import { isAuth } from '../../helpers/general';
 

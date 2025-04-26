@@ -49,7 +49,7 @@ const JacketsMenPage = () => {
         body: JSON.stringify({
           email: email,
           category: 'men',
-          subCategory: 'jackets', // Added subCategory here
+          subCategory: 'jackets',
         }),
       });
 

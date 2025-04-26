@@ -7,7 +7,7 @@ const BoxOption = (props) => {
   return (
     <div
       className={`${styles.root} ${isActive === true ? styles.isActive : ''} ${!isAvailable ? styles.isUnavailable : ''}`}
-      onClick={() => isAvailable && setActive(data)} // Only allow click if available
+      onClick={() => isAvailable && setActive(data)}
       role={'presentation'}
     >
       <span className={styles.option}>{data}</span>

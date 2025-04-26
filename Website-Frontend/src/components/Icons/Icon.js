@@ -1,6 +1,5 @@
 import React from 'react';
 
-// Alphabetical order please
 import Arrow from './Arrow';
 import Bag from './Bag';
 import BagPlus from './BagPlus';

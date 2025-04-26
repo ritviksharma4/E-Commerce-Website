@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import BoxOption from "../BoxOption";
-import SizeChart from "../SizeChart"; // ✅ Import SizeChart
+import SizeChart from "../SizeChart";
 import * as styles from "./SizeList.module.css";
 
 const SizeList = (props) => {
   const { setActiveSize, activeSize, sizeList, category, subCategory } = props;
 
-  const [showChart, setShowChart] = useState(false); // ✅ Local toggle state
+  const [showChart, setShowChart] = useState(false);
 
   const validSizes = ["xxs", "xs", "s", "m", "l", "xl", "xxl"];
 
@@ -16,7 +16,7 @@ const SizeList = (props) => {
         <span className={styles.label}>Size</span>
         <span
           className={`${styles.label} ${styles.guide}`}
-          onClick={() => setShowChart(true)} // ✅ Toggle open
+          onClick={() => setShowChart(true)}
           style={{ cursor: 'pointer' }}
         >
           Size Guide

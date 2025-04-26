@@ -1,7 +1,6 @@
 import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
 import { DynamoDBDocumentClient, ScanCommand, GetCommand } from '@aws-sdk/lib-dynamodb';
 import { S3Client, GetObjectCommand } from '@aws-sdk/client-s3';
-import { Readable } from 'stream'; // for converting stream to JSON
 
 const REGION = 'ap-south-1';
 const PRODUCT_TABLE = 'velvet-e-commerce-website-product-data';
@@ -12,7 +11,6 @@ const client = new DynamoDBClient({ region: REGION });
 const docClient = DynamoDBDocumentClient.from(client);
 const s3Client = new S3Client({ region: REGION });
 
-// Extract wishlist productCodes from list of maps
 function extractWishlistProductCodes(wishlistItems) {
   if (!Array.isArray(wishlistItems)) return [];
   return wishlistItems
@@ -20,14 +18,12 @@ function extractWishlistProductCodes(wishlistItems) {
     .map(item => item.productCode);
 }
 
-// Common CORS headers
 const CORS_HEADERS = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
   "Access-Control-Allow-Headers": "Content-Type",
 };
 
-// Helper to read S3 stream into JSON
 const streamToJSON = async (stream) => {
   const chunks = [];
   for await (const chunk of stream) {
@@ -40,7 +36,6 @@ const streamToJSON = async (stream) => {
 export const handler = async (event) => {
   console.log("Event of current Request: ", event);
 
-  // Handle preflight OPTIONS request
   if (event.requestContext?.http?.method === 'OPTIONS') {
     return {
       statusCode: 200,
@@ -102,7 +97,6 @@ export const handler = async (event) => {
       };
     }
 
-    // Get user wishlist
     let wishlistProductCodes = [];
     try {
       const userData = await docClient.send(
@@ -117,7 +111,6 @@ export const handler = async (event) => {
       console.error('Failed to get wishlist', err);
     }
 
-    // Scan product table
     const scanParams = {
       TableName: PRODUCT_TABLE,
     };
@@ -125,7 +118,6 @@ export const handler = async (event) => {
     const scanResult = await docClient.send(new ScanCommand(scanParams));
     let allProducts = scanResult.Items || [];
 
-    // Filter by category, subCategory, and productCode (if present)
     let products = allProducts.filter((item) => {
       const matchCategory = category ? item.category === category : true;
       const matchSubCategory = subCategory ? item.subCategory === subCategory : true;
@@ -133,7 +125,6 @@ export const handler = async (event) => {
       return matchCategory && matchSubCategory && matchProductCode;
     });
 
-    // Add isInWishlist flag
     const result = products.map((item) => ({
       ...item,
       isInWishlist: wishlistProductCodes.includes(item.productCode),
@@ -157,7 +148,6 @@ export const handler = async (event) => {
         };
       }
 
-      // Prepare suggestions
       const sameSubCategory = allProducts.filter(p =>
         p.productCode !== productCode &&
         p.category === category &&
@@ -171,7 +161,6 @@ export const handler = async (event) => {
         !sameSubCategory.find(s => s.productCode === p.productCode)
       );
 
-      // Shuffle helper
       const shuffle = (arr) => {
         return arr
           .map((item) => ({ item, sortKey: Math.random() }))

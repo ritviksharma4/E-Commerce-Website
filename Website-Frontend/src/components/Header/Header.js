@@ -74,14 +74,12 @@ const Header = (prop) => {
     };
   }, []);
 
-  // disable active menu when show menu is hidden
   useEffect(() => {
     if (showMenu === false) setActiveMenu(false);
   }, [showMenu]);
 
   
 
-  // hide menu onscroll
   useEffect(() => {
     const onScroll = () => {
       setShowMenu(false);
@@ -93,14 +91,12 @@ const Header = (prop) => {
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
-  //listen for show search and delay trigger of focus due to CSS visiblity property
   useEffect(() => {
     if (showSearch === true) {
       setTimeout(() => {
         searchRef.current.focus();
       }, 250);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [showSearch]);
 
   return (
@@ -136,7 +132,6 @@ const Header = (prop) => {
             role={'presentation'}
             onClick={() => {
               setMobileMenu(!mobileMenu);
-              // setDepth(0);
             }}
             className={styles.burgerIcon}
           >
@@ -186,7 +181,6 @@ const Header = (prop) => {
           </div>
         </div>
 
-        {/* search container */}
         <div
           className={`${styles.searchContainer} ${
             showSearch === true ? styles.show : styles.hide
@@ -230,7 +224,6 @@ const Header = (prop) => {
         </div>
       </Container>
 
-      {/* menu container */}
       <div
         role={'presentation'}
         onMouseLeave={() => setShowMenu(false)}
@@ -244,12 +237,10 @@ const Header = (prop) => {
         </Container>
       </div>
 
-      {/* minicart container */}
       <Drawer visible={showMiniCart} close={() => setShowMiniCart(false)}>
       {showMiniCart && <MiniCart />}
       </Drawer>
 
-      {/* mobile menu */}
       <div className={styles.mobileMenuContainer}>
         <Drawer
           hideCross

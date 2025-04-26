@@ -26,7 +26,6 @@ const TrousersMenPage = () => {
 
   const LAMBDA_ENDPOINT = process.env.GATSBY_APP_GET_PRODUCT_DETAILS_FOR_USER;
 
-  // Function to restore scroll position
   const restoreScroll = () => {
     const scrollY = sessionStorage.getItem('trousersMen_scrollY');
     if (scrollY) {
@@ -50,7 +49,7 @@ const TrousersMenPage = () => {
         body: JSON.stringify({
           email: email,
           category: 'men',
-          subCategory: 'trousers', // Additional parameter
+          subCategory: 'trousers',
         }),
       });
   
@@ -78,7 +77,6 @@ const TrousersMenPage = () => {
         items = lambdaResponse.products;
       }
   
-      // Set products and also cache to sessionStorage
       setAllProducts(items);
       setTotalCount(items.length);
   
@@ -88,7 +86,7 @@ const TrousersMenPage = () => {
     } catch (error) {
       console.error('Error fetching men’s trousers from Lambda:', error);
     } finally {
-      setLoading(false);  // End loading after fetch
+      setLoading(false);
     }
   }, [LAMBDA_ENDPOINT]);
 

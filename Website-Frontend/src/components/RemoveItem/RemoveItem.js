@@ -54,7 +54,7 @@ const RemoveItem = (props) => {
         totalCartItems: totalCartItems
       };
       localStorage.setItem('velvet_login_key', JSON.stringify(updatedLoginKey));
-      setCartItems(updatedCartItems); // Update the cart state
+      setCartItems(updatedCartItems);
       window.dispatchEvent(new Event('cart-updated'));
 
     } catch (error) {

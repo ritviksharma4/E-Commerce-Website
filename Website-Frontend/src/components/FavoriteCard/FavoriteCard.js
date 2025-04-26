@@ -19,7 +19,7 @@ const FavoriteCard = (props) => {
 
   const handleRouteToProduct = (e) => {
     e.preventDefault();
-    e.stopPropagation(); // Just in case
+    e.stopPropagation();
     navigate(`/product/${productCode}`);
   };
 
@@ -32,7 +32,6 @@ const FavoriteCard = (props) => {
   return (
     <div className={styles.root}>
       <div className={styles.imageContainer} role="presentation">
-        {/* ✅ Only the image itself routes */}
         <img
           style={{ height: `${height}px` }}
           src={toOptimizedImage(image)}
@@ -45,11 +44,10 @@ const FavoriteCard = (props) => {
               handleRouteToProduct();
             }
           }}
-          aria-label={imageAlt || 'Product Image'}  // Ensure there's an accessible label
+          aria-label={imageAlt || 'Product Image'}
         />
 
 
-        {/* ✅ Quick View Icon */}
         <div
           tabIndex={0}
           className={styles.bagContainer}
@@ -57,7 +55,7 @@ const FavoriteCard = (props) => {
           onClick={handleQuickView}
           onKeyDown={(e) => {
             if (e.key === 'Enter' || e.key === ' ') {
-              handleQuickView();  // Trigger click when Enter or Space is pressed
+              handleQuickView();
             }
           }}
         >

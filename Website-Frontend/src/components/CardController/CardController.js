@@ -39,7 +39,6 @@ const CardController = (props) => {
           <div className={styles.filterContainer}>
             {filterState &&
               filterState.map((filter, categoryIndex) => {
-                // if number of filter per category is less than 4 maintain single layout
                 const colNum = filter.items.length >= 4 ? 2 : 1;
                 return (
                   <div key={`category-${categoryIndex}`}>

@@ -75,7 +75,6 @@ const AllClothingsMenPage = () => {
         items = lambdaResponse.products;
       }
   
-      // Set products and also cache to sessionStorage
       setAllProducts(items);
       setTotalCount(items.length);
   
@@ -85,7 +84,7 @@ const AllClothingsMenPage = () => {
     } catch (error) {
       console.error('Error fetching men’s products from Lambda:', error);
     } finally {
-      setLoading(false);  // End loading after fetch
+      setLoading(false);
     }
   }, [LAMBDA_ENDPOINT]);
 

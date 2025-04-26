@@ -66,7 +66,6 @@ const SignupPage = (props) => {
       setErrorForm(errorState);
       navigate('/accountSuccess');
       window.localStorage.setItem('key', 'sampleToken');
-      //create account endpoint
     } else {
       setErrorForm(tempError);
     }

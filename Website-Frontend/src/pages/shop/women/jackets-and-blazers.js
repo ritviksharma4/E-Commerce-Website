@@ -48,7 +48,7 @@ const JacketsBlazersWomenPage = () => {
         body: JSON.stringify({
           email: email,
           category: 'women',
-          subCategory: 'jackets-and-blazers',  // Added subCategory parameter
+          subCategory: 'jackets-and-blazers',
         }),
       });
 
@@ -76,7 +76,6 @@ const JacketsBlazersWomenPage = () => {
         items = lambdaResponse.products;
       }
 
-      // Set products and also cache to sessionStorage
       setAllProducts(items);
       setTotalCount(items.length);
 
@@ -86,7 +85,7 @@ const JacketsBlazersWomenPage = () => {
     } catch (error) {
       console.error('Error fetching women’s jackets & blazers from Lambda:', error);
     } finally {
-      setLoading(false);  // End loading after fetch
+      setLoading(false);
     }
   }, [LAMBDA_ENDPOINT]);
 

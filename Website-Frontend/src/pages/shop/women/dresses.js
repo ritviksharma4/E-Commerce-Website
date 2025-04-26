@@ -48,7 +48,7 @@ const DressesWomenPage = () => {
         body: JSON.stringify({
           email: email,
           category: 'women',
-          subCategory: 'dresses',  // Add subCategory for dresses
+          subCategory: 'dresses',
         }),
       });
 
@@ -76,7 +76,6 @@ const DressesWomenPage = () => {
         items = lambdaResponse.products;
       }
 
-      // Set products and also cache to sessionStorage
       setAllProducts(items);
       setTotalCount(items.length);
 
@@ -86,7 +85,7 @@ const DressesWomenPage = () => {
     } catch (error) {
       console.error('Error fetching women’s dresses from Lambda:', error);
     } finally {
-      setLoading(false);  // End loading after fetch
+      setLoading(false);
     }
   }, [LAMBDA_ENDPOINT]);
 

@@ -22,12 +22,10 @@ const LoginPage = () => {
 
   const { timeLeft, startCountdown, stopCountdown } = useCountdown(waitTime);
 
-  // Handle input change
   const handleChange = (id, e) => {
     setLoginForm({ ...loginForm, [id]: e });
   };
 
-  // Format the time in minutes:seconds
   const formatTime = (seconds) => {
     if (!Number.isFinite(seconds)) return '0:00';
     const minutes = Math.floor(seconds / 60);
@@ -35,7 +33,6 @@ const LoginPage = () => {
     return `${minutes}:${secs < 10 ? '0' : ''}${secs}`;
   };
 
-  // Handle form submission
   const handleSubmit = (e) => {
     e.preventDefault();
     let validForm = true;
@@ -54,7 +51,6 @@ const LoginPage = () => {
     if (validForm) {
       setErrorForm(errorState);
 
-      // Mock login
       if (loginForm.email !== 'error@example.com') {
 
         const existingLoginKey = JSON.parse(localStorage.getItem('velvet_login_key')) || {};
@@ -75,25 +71,23 @@ const LoginPage = () => {
     }
   };
 
-  // Check if the velvet_login_key is valid (expires after 5 minutes)
   const isLoginKeyValid = () => {
     const loginKey = JSON.parse(localStorage.getItem('velvet_login_key'));
     if (loginKey) {
       const currentTime = new Date().getTime();
       const timeElapsed = currentTime - loginKey.timestamp;
-      const fiveMinutes = 5 * 60 * 1000; // 5 minutes in milliseconds
+      const fiveMinutes = 5 * 60 * 1000;
 
       if (timeElapsed < fiveMinutes) {
-        return true; // Key is valid
+        return true;
       } else {
-        localStorage.removeItem('velvet_login_key'); // Remove expired key
-        return false; // Key expired
+        localStorage.removeItem('velvet_login_key');
+        return false;
       }
     }
-    return false; // No key found
+    return false;
   };
 
-  // Get Guest Login
   const getGuestLogin = async () => {
     setIsGuestLoginLoading(true);
     try {
@@ -103,7 +97,7 @@ const LoginPage = () => {
   
       if (data.email) {
         setLoginForm({ email: data.email, password: data.password });
-        setHasUsedGuestLogin(true); // Disable the button
+        setHasUsedGuestLogin(true);
   
         const loginKey = {
           timestamp: new Date().getTime(),
@@ -129,7 +123,6 @@ const LoginPage = () => {
   };
   
 
-  // Reset the countdown when timeLeft reaches 0
   useEffect(() => {
     if (timeLeft === 0) {
       stopCountdown();
@@ -138,10 +131,8 @@ const LoginPage = () => {
     }
   }, [timeLeft, stopCountdown]);
 
-  // UseEffect to check the validity of the login key on component mount
   useEffect(() => {
     if (!isLoginKeyValid()) {
-      // Redirect to login page if the key is not valid
       navigate('/login');
     }
   }, []);
@@ -162,7 +153,6 @@ const LoginPage = () => {
             <span className={styles.boldUnderline}>Session is Valid only for 5 Minutes!</span>
           </span>
 
-          {/* Guest Wait Timer Popup */}
           {isWaiting && (
             <div className={styles.popupOverlay}>
               <div className={styles.popupContent}>

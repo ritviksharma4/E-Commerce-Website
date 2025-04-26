@@ -14,7 +14,6 @@ const OrderPage = () => {
   const [orders, setOrders] = useState([]);
   const LAMBDA_ENDPOINT = process.env.GATSBY_APP_GET_SHOPPING_HISTORY_FOR_USER
 
-  // Utility function to format timestamps into 'Apr 23, 2025' format
   const formatDate = (timestamp) => {
     const date = new Date(timestamp);
     return date.toLocaleDateString('en-US', {
@@ -49,14 +48,13 @@ const OrderPage = () => {
 
         const data = await response.json();
         
-        // Format the dates for each order
         const formattedOrders = data.orderHistory.map((order) => ({
           ...order,
           orderPlaced: formatDate(order.orderPlacedDate),
-          lastUpdate: formatDate(order.orderPlacedDate), // Using the same timestamp for lastUpdate
+          lastUpdate: formatDate(order.orderPlacedDate),
         }));
 
-        setOrders(formattedOrders); // Set the formatted orders
+        setOrders(formattedOrders);
       } catch (err) {
         console.error('Failed to fetch order history:', err);
       } finally {

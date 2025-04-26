@@ -58,7 +58,7 @@ const AdjustItemForCart = ({ isTransparent, quantity, productCode, color, size, 
         totalCartItems: totalCartItems
       };
       localStorage.setItem('velvet_login_key', JSON.stringify(updatedLoginKey));
-      setCartItems(updatedCartItems); // Update the cart state
+      setCartItems(updatedCartItems);
       window.dispatchEvent(new Event('cart-updated'));
 
     } catch (error) {
@@ -85,7 +85,6 @@ const AdjustItemForCart = ({ isTransparent, quantity, productCode, color, size, 
     if (newQty >= 1) {
       handleQtyChange(newQty);
     } else {
-      // If qty is 1 and we want to decrement, remove the item from the cart
       handleQtyChange(0);
     }
   };

@@ -54,12 +54,12 @@ function isAuth() {
         }
         const currentTime = new Date().getTime();
         const timeElapsed = currentTime - loginKey.timestamp;
-        const fiveMinutes = 5 * 60 * 1000; // 5 minutes in milliseconds
+        const fiveMinutes = 5 * 60 * 1000;
 
         if (timeElapsed < fiveMinutes) {
           return true;
         } else {
-          localStorage.removeItem('velvet_login_key'); // Remove expired key
+          localStorage.removeItem('velvet_login_key');
           return false;
         }
       }

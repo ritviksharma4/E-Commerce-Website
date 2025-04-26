@@ -19,18 +19,16 @@ const AddressPage = () => {
   const [showDelete, setShowDelete] = useState(false);
 
   useEffect(() => {
-    // Redirect to login if not authenticated
     if (isAuth() === false) {
       navigate('/login');
       return;
     }
 
-    // Load addresses from localStorage velvet_login_key
     const loginData = JSON.parse(localStorage.getItem('velvet_login_key'));
     if (loginData && Array.isArray(loginData.addresses)) {
       setAddressList(loginData.addresses);
     } else {
-      setAddressList([]); // fallback
+      setAddressList([]);
     }
   }, []);
 

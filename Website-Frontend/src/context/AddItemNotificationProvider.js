@@ -13,7 +13,7 @@ export const NotificationProvider = ({ children }) => {
   const showNotification = (productData) => {
     setState({
       open: true,
-      product: productData, // includes color and size now
+      product: productData,
     });
   };
 
@@ -27,7 +27,6 @@ export const NotificationProvider = ({ children }) => {
         closeNotification();
       }, 2000);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state]);
 
   return (

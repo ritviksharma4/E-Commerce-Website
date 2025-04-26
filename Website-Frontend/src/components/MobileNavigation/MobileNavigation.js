@@ -5,10 +5,6 @@ import Config from '../../config.json';
 import Icon from '../Icons/Icon';
 import { isAuth } from '../../helpers/general';
 
-//TO DO: refactor this to handle multiple nested links to avoid hardcoding 'depth'
-// have to restructure config.json
-// refactor this
-
 import * as styles from './MobileNavigation.module.css';
 
 const MobileNavigation = (props) => {

@@ -25,7 +25,7 @@ const ProductCard = (props) => {
 
   const handleRouteToProduct = (e) => {
     e.preventDefault();
-    e.stopPropagation(); // Just in case
+    e.stopPropagation();
     navigate(`/product/${productCode}`);
   };
 
@@ -46,7 +46,7 @@ const ProductCard = (props) => {
   
     const action = nextWishlistState ? "add" : "remove";
   
-    const updateUserHistory = await fetch(UPDATE_USER_SHOPPING_HISTORY, {
+    await fetch(UPDATE_USER_SHOPPING_HISTORY, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ 
@@ -79,11 +79,10 @@ const ProductCard = (props) => {
               handleRouteToProduct();
             }
           }}
-          aria-label={imageAlt || 'Product Image'}  // Ensure there's an accessible label
+          aria-label={imageAlt || 'Product Image'}
         />
 
 
-        {/* ✅ Quick View Icon */}
         <div
           tabIndex={0}
           className={styles.bagContainer}
@@ -91,21 +90,20 @@ const ProductCard = (props) => {
           onClick={handleQuickView}
           onKeyDown={(e) => {
             if (e.key === 'Enter' || e.key === ' ') {
-              handleQuickView();  // Trigger click when Enter or Space is pressed
+              handleQuickView();
             }
           }}
         >
           <Icon symbol="bagPlus" />
         </div>
 
-        {/* ✅ Favorite Icon */}
         <div
           className={styles.heartContainer}
           role="button"
           onClick={handleFavorite}
           onKeyDown={(e) => {
             if (e.key === 'Enter' || e.key === ' ') {
-              handleFavorite();  // Trigger click when Enter or Space is pressed
+              handleFavorite();
             }
           }}
           tabIndex={0}

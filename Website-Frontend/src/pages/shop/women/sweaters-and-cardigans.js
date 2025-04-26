@@ -49,7 +49,7 @@ const SweatersCardigansWomenPage = () => {
         body: JSON.stringify({
           email: email,
           category: 'women',
-          subCategory: 'sweaters-and-cardigans', // Added subCategory parameter
+          subCategory: 'sweaters-and-cardigans',
         }),
       });
 
@@ -77,7 +77,6 @@ const SweatersCardigansWomenPage = () => {
         items = lambdaResponse.products;
       }
 
-      // Set products and also cache to sessionStorage
       setAllProducts(items);
       setTotalCount(items.length);
 
@@ -87,7 +86,7 @@ const SweatersCardigansWomenPage = () => {
     } catch (error) {
       console.error('Error fetching sweaters & cardigans products from Lambda:', error);
     } finally {
-      setLoading(false);  // End loading after fetch
+      setLoading(false);
     }
   }, [LAMBDA_ENDPOINT]);
 

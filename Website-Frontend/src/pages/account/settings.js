@@ -37,7 +37,6 @@ const SettingsPage = () => {
   const [updateForm, setUpdateForm] = useState(initialState);
   const [error, setError] = useState(errorState);
 
-  // Load data from localStorage on mount
   useEffect(() => {
     const loginData = JSON.parse(localStorage.getItem('velvet_login_key'));
     if (loginData) {
@@ -74,7 +73,6 @@ const SettingsPage = () => {
     }
 
     if (validForm === true) {
-      // success
       setError(errorState);
       setUpdateForm((prev) => ({
         ...prev,

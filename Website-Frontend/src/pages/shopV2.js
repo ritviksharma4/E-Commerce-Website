@@ -7,7 +7,6 @@ import Breadcrumbs from '../components/Breadcrumbs';
 import Checkbox from '../components/Checkbox';
 import Container from '../components/Container';
 import Layout from '../components/Layout/Layout';
-// import LayoutOption from '../components/LayoutOption';
 import ProductCardGrid from '../components/ProductCardGrid';
 import Button from '../components/Button';
 

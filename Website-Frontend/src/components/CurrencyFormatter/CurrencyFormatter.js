@@ -1,6 +1,5 @@
 import React from 'react';
 import { isNumeric } from '../../helpers/general';
-// import * as styles from './CurrencyFormatter.module.css';
 
 const CurrencyFormatter = ({
   amount,
@@ -11,14 +10,11 @@ const CurrencyFormatter = ({
   let displayAmount =
     (typeof amount !== 'number' && parseFloat(amount?.replace('$', ''))) ||
     amount;
-  /* Set language display */
   const languageCode =
     typeof window !== 'undefined'
       ? window.navigator.language || 'en-AU'
       : 'en-AU';
 
-  /* Format and return */
-  // isolate currency
   const formatObject = new Intl.NumberFormat(languageCode, {
     style: 'currency',
     currency,
@@ -39,7 +35,6 @@ const CurrencyFormatter = ({
       formattedPrice = formattedPrice.replace(`.${decimalValue.value}`, '');
     }
   } else {
-    // new Intl.NumberFormat is not supported; return amount with dollar sign
     formattedPrice = amount;
   }
 

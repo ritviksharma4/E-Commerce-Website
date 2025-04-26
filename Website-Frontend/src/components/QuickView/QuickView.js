@@ -9,7 +9,7 @@ import Button from '../Button';
 import CurrencyFormatter from '../CurrencyFormatter';
 import SizeList from '../SizeList';
 import SwatchList from '../SwatchList';
-import LuxuryLoader from '../../components/Loading/LuxuriousLoader'; // ✅ Added here
+import LuxuryLoader from '../../components/Loading/LuxuriousLoader';
 
 import AddItemNotificationContext from '../../context/AddItemNotificationProvider';
 import * as styles from './QuickView.module.css';
@@ -93,7 +93,7 @@ const QuickView = ({ close, buttonTitle = 'Add to Bag', product: initialProduct 
     const user = JSON.parse(localStorage.getItem('velvet_login_key') || '{}');
     const email = user.email || null;
 
-    const updateUserCartItems = await fetch(UPDATE_USER_SHOPPING_HISTORY, {
+    await fetch(UPDATE_USER_SHOPPING_HISTORY, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ 
@@ -144,7 +144,7 @@ const QuickView = ({ close, buttonTitle = 'Add to Bag', product: initialProduct 
       </div>
       <div className={styles.contentContainer}>
         {loading ? (
-          <LuxuryLoader /> // ✅ Replaced "Loading..." with luxury loader
+          <LuxuryLoader />
         ) : (
           <>
             <div className={styles.productContainer}>
