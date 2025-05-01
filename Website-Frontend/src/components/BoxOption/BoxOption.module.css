@@ -5,11 +5,11 @@
     align-items: center;
     justify-content: center;
     background-color: white;
-    border: 1px solid var(--standard-black);
-    border-radius: 4px;
-    font-size: 12px; /* Adjust for 20px/48px boxes */
+    border: 1px solid var(--bg-light-gray);
+    transition: all ease-in-out 0.3s;
+    font-size: 12px;
     cursor: pointer;
-    box-sizing: border-box; /* SUPER IMPORTANT */
+    box-sizing: border-box;
   }
 
 .option {
@@ -19,22 +19,20 @@
     text-transform: uppercase;
 }
 
-/* Styling for unavailable size */
 .root.isUnavailable {
     position: relative;
-    cursor: not-allowed; /* Disable cursor when hovering over unavailable size */
+    cursor: not-allowed;
 }
 
-/* Cross styling */
 .root.isUnavailable::before,
 .root.isUnavailable::after {
     content: '';
     position: absolute;
     background-color: black;
-    width: 100%; /* Extend beyond the box width to make the cross stretch */
-    height: 1px; /* Thin line for the cross */
-    top: 50%; /* Position the cross in the middle */
-    left: 50%; /* Position the cross in the middle */
+    width: 100%; 
+    height: 1px; 
+    top: 50%; 
+    left: 50%;
     transform-origin: center center; /* Set the origin to the center */
 }
 
@@ -52,20 +50,19 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    text-transform: uppercase; /* Optional: make "XS", "S" etc consistent */
+    text-transform: uppercase;
     width: 100%;
     height: 100%;
   }
 
 .root.isUnavailable::before {
-    transform: translate(-50%, -50%) rotate(25deg); /* First diagonal line */
+    transform: translate(-50%, -50%) rotate(25deg);
 }
 
 .root.isUnavailable::after {
-    transform: translate(-50%, -50%) rotate(-25deg); /* Second diagonal line */
+    transform: translate(-50%, -50%) rotate(-25deg);
 }
 
-/* Hover and active states only for available sizes */
 .root:not(.isUnavailable):hover,
 .root:not(.isUnavailable).isActive {
     color: var(--standard-white);

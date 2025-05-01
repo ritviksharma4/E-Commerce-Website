@@ -8,7 +8,7 @@ const SizeList = (props) => {
 
   const [showChart, setShowChart] = useState(false);
 
-  const validSizes = ["xxs", "xs", "s", "m", "l", "xl", "xxl"];
+  const validSizes = ["xxs", "xs", "s", "m", "l", "xl", "xxl", "onesize"];
 
   return (
     <div className={styles.root}>

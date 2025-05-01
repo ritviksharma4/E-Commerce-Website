@@ -46,13 +46,14 @@ export const handler = async (event) => {
 
   try {
     let body;
+    let result;
     if (event.body) {
       body = typeof event.body === 'string' ? JSON.parse(event.body) : event.body;
     } else {
       body = event;
     }
 
-    const { requestType, email, category, subCategory, productCode } = body;
+    const { requestType, email, category, subCategory, productCode, filters } = body;
 
     if (requestType === 'sizeChart') {
       if (!category || !subCategory) {
@@ -118,18 +119,90 @@ export const handler = async (event) => {
     const scanResult = await docClient.send(new ScanCommand(scanParams));
     let allProducts = scanResult.Items || [];
 
-    let products = allProducts.filter((item) => {
-      const matchCategory = category ? item.category === category : true;
-      const matchSubCategory = subCategory ? item.subCategory === subCategory : true;
-      const matchProductCode = productCode ? item.productCode === productCode : true;
-      return matchCategory && matchSubCategory && matchProductCode;
-    });
+    if (!filters) {
+      let products = allProducts.filter((item) => {
+        const matchCategory = category ? item.category === category : true;
+        const matchSubCategory = subCategory ? item.subCategory === subCategory : true;
+        const matchProductCode = productCode ? item.productCode === productCode : true;
+        return matchCategory && matchSubCategory && matchProductCode;
+      });
+  
+      result = products.map((item) => ({
+        ...item,
+        isInWishlist: wishlistProductCodes.includes(item.productCode),
+      }));
+    }
 
-    const result = products.map((item) => ({
-      ...item,
-      isInWishlist: wishlistProductCodes.includes(item.productCode),
-    }));
+    else {
+      let colorMappings = {};
+      if (filters.colorOptions && filters.colorOptions.length > 0) {
+        try {
+          const colorMappingCommand = new GetObjectCommand({
+            Bucket: S3_BUCKET,
+            Key: 'color_mappings.json',
+          });
+          const colorMappingData = await s3Client.send(colorMappingCommand);
+          colorMappings = await streamToJSON(colorMappingData.Body);
+        } catch (err) {
+          console.error('Failed to fetch color mappings:', err);
+        }
+      }
 
+      let products = allProducts.filter((item) => {
+        const matchCategory = category ? item.category === category : true;
+        const matchSubCategory = subCategory ? item.subCategory === subCategory : true;
+        const matchProductCode = productCode ? item.productCode === productCode : true;
+
+        let matchesFilters = true;
+
+          if (filters.sizeOptions && filters.sizeOptions.length > 0) {
+            const productSizes = (item.sizeOptions || []).map(size => size.S || size);
+            const sizeMatch = productSizes.some(size => filters.sizeOptions.includes(size));
+            if (!sizeMatch) matchesFilters = false;
+          }
+
+          if (filters.colorOptions && filters.colorOptions.length > 0) {
+          const productColorOptions = (item.colorOptions || []).map(c => ({
+            title: c.M?.title?.S || c.title,
+            productCode: c.M?.productCode?.S || c.productCode
+          }));
+
+          const selfColor = productColorOptions.find(c => c.productCode === (item.productCode?.S || item.productCode));
+
+          if (selfColor) {
+            const productColorTitle = selfColor.title;
+            const allowedTitles = [];
+            for (const filterColor of filters.colorOptions) {
+              const mappedTitles = colorMappings[filterColor] || [];
+              allowedTitles.push(...mappedTitles);
+            }
+
+            if (!allowedTitles.includes(productColorTitle)) {
+              matchesFilters = false;
+            }
+          } else {
+            matchesFilters = false;
+          }
+        }
+        return matchCategory && matchSubCategory && matchProductCode && matchesFilters;
+      });
+
+      const uniqueProducts = [];
+      const seenProductCodes = new Set();
+
+      for (const prod of products) {
+        const code = prod.productCode?.S || prod.productCode;
+        if (!seenProductCodes.has(code)) {
+          seenProductCodes.add(code);
+          uniqueProducts.push(prod);
+        }
+      }
+      result = uniqueProducts.map((item) => ({
+        ...item,
+        isInWishlist: wishlistProductCodes.includes(item.productCode),
+      }));
+    }
+    
     console.log("Result: ", result);
 
     if (!productCode) {

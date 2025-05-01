@@ -23,7 +23,6 @@ const SizeChart = ({ close, category, subCategory }) => {
         }),
       });
       const data = await response.json();
-      console.log("Size Chart Data: ", data)
       setChartData(data);
       setUnit(data.unit || 'cm');
     } catch (error) {

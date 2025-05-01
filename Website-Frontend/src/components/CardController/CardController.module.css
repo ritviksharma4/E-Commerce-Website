@@ -1,3 +1,4 @@
+/* Web View */
 .webRoot {
     z-index: 5;
     position: absolute;
@@ -31,7 +32,6 @@
     padding-top: 100px;
     padding-bottom: 100px;
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
     gap: 24px; 
     justify-items: center;
 }
@@ -71,10 +71,27 @@
     max-height: 0px !important;
 }
 
+.clearFilterContainer {
+    margin-top: 16px;
+    display: flex;
+    justify-content: center;
+}
+
+.clearFilter {
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 17px;
+    text-transform: uppercase;
+    border-bottom: 1px solid var(--standard-black);
+    padding-bottom: 1px;
+    cursor: pointer;
+}
+
 .mobileRoot {
     display: none;
 }
 
+/* Mobile View */
 @media (max-width: 800px) {
     .webRoot {
         display: none;
@@ -107,7 +124,8 @@
     .mobileFilterContainer {
         margin: 0px 16px;
         position: relative;
-        height: 100vh;
+        height: 100%;
+        overflow-y: auto;
     }
 
     .filterName {
@@ -117,19 +135,13 @@
         text-transform: capitalize;
     }
 
-    .mobileButtonContainer {
-        position: absolute;
-        width: 100%;
-        bottom: 24px;
-        left: 0px;
-    }
-
+    /* Ensure the filters are scrollable and not obstructed */
     .mobileFilters {
         overflow-y: auto;
-        max-height: calc(100vh - 200px);
+        max-height: calc(100vh - 120px); /* Adjusted height to leave space for Apply button */
     }
 
-    .filterItemContainer svg{
+    .filterItemContainer svg {
         width: 15px;
         height: 15px;
     }
@@ -174,6 +186,11 @@
         border-top: 1px solid var(--bg-light-gray);
     }
 
+    .mobileButtonContainer {
+        width: 100%;
+        padding: 16px 0px; /* Added padding for space */
+    }
+
     .clearFilterContainer {
         margin-top: 16px;
         display: flex;
@@ -187,5 +204,6 @@
         text-transform: uppercase;
         border-bottom: 1px solid var(--standard-black);
         padding-bottom: 1px;
+        cursor: pointer;
     }
 }

@@ -1,0 +1,17 @@
+{
+    "Beige": ["Beige", "Cream", "Vanilla Sand", "Whipped Ivory", "Burnt Ivory"],
+    "Black": ["Black", "Obsidian Black", "Obsidian Noir", "Velvèt Noir", "Snow Obsidian", "Charcoal Mist", "Noirè Bellè", "Obsidian Fade", "Charcoal", "Black & White"],
+    "Blue": ["Blue", "Light Blue", "Royal Blue", "Royal Deep Blue", "Bluebell Bronze", "Blue River", "Cloudy Sky", "Iceline Indigo", "Sea Blue", "Light Powder Blue"],
+    "Brown": ["Brown", "Leopard", "Cocoa Luxe", "Chocolate Brown", "Golden Mocha", "Coffee Mocha", "Cocoa Drape", "Hazlenut", "Latte"],
+    "Gold": ["Gold", "Golden Drift"],
+    "Green": ["Green", "Forrest Greens", "Olive Green", "Thorneleaf"],
+    "Grey": ["Grey", "Slate Grey", "Charcoal", "Eucalyptus Mist"],
+    "Orange": ["Orange", "Sunrise", "Rosy Ember", "Molten Ember"],
+    "Pink": ["Pink", "Sugar Rose", "Blushing Snow", "Berry Luxe", "Cherry Blossom Mint", "Sugar Pearl"],
+    "Purple": ["Purple", "Lavender", "Lavender Sky", "Violet Cream"],
+    "Red": ["Red", "Maroon", "Crimson Pearl", "Burgundy"],
+    "Turquoise": ["Turquoise"],
+    "White": ["White", "Snow Obsidian", "Lemon Lace", "Sugar Rose", "Lavender Sky", "Blushing Snow", "White Ember", "Black & White"],
+    "Yellow": ["Yellow", "Leopard", "Bluebell Bronze", "Golden Mocha", "Lemon Lace", "Sunshine", "Crazy Yellow"],
+    "Multi-Colored": ["Cherry Blossom Mint", "Sugar Pearl", "Iceline Indigo", "Bronze Obsidian", "Molten Ember", "Sugar Bloom", "Bluebell Bronze"]
+}

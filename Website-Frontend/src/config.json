@@ -141,14 +141,23 @@
   ],
   "filters": [
     {
-      "category": "colour",
+      "category": "color",
       "items": [
-        { "name": "Black", "value": true },
+        { "name": "Beige", "value": false },
+        { "name": "Black", "value": false },
+        { "name": "Blue", "value": false },
+        { "name": "Brown", "value": false },
+        { "name": "Gold", "value": false },
         { "name": "Green", "value": false },
-        { "name": "Dark Blue", "value": false },
-        { "name": "Blue", "value": true },
         { "name": "Grey", "value": false },
-        { "name": "Red", "value": false }
+        { "name": "Orange", "value": false },
+        { "name": "Pink", "value": false },
+        { "name": "Purple", "value": false },
+        { "name": "Red", "value": false },
+        { "name": "Turquoise", "value": false },
+        { "name": "White", "value": false },
+        { "name": "Yellow", "value": false },
+        { "name": "Multi-Colored", "value": false }
       ]
     },
 
@@ -162,15 +171,7 @@
         { "name": "L", "value": false },
         { "name": "XL", "value": false },
         { "name": "XXL", "value": false },
-        { "name": "Onesize", "value": false }
-      ]
-    },
-    {
-      "category": "gender",
-      "items": [
-        { "name": "Male", "value": false },
-        { "name": "Female", "value": false },
-        { "name": "Unisex", "value": false }
+        { "name": "OneSize", "value": false }
       ]
     }
   ]

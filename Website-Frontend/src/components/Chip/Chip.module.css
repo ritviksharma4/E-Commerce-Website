@@ -9,6 +9,8 @@
     cursor: pointer;
     transition: background-color ease-in-out 0.3s;
     margin-top: 8px;
+    margin-right: 8px; /* space between chips */
+    margin-bottom: 8px;
 }
 
 .root span {
