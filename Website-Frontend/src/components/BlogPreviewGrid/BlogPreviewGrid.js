@@ -4,7 +4,8 @@ import * as styles from './BlogPreviewGrid.module.css';
 import BlogPreview from '../BlogPreview';
 
 const BlogPreviewGrid = (props) => {
-  const { data, hideReadMoreOnWeb, showExcerpt } = props;
+  const { data, hideReadMoreOnWeb, showExcerpt, ctaAction, onClick } = props;
+  const clickHandler = ctaAction || onClick;
   return (
     <div className={styles.root}>
       {data &&
@@ -15,11 +16,12 @@ const BlogPreviewGrid = (props) => {
               image={blog.image}
               altImage={blog.alt}
               title={blog.title}
-              link={blog.link}
+              link={blog.urlPath}
               category={blog.category}
               excerpt={blog.excerpt}
               hideReadMoreOnWeb={hideReadMoreOnWeb}
               showExcerpt={showExcerpt}
+              onClick={() => clickHandler && clickHandler(blog)}
             />
           );
         })}

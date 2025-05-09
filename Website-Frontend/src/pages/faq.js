@@ -23,7 +23,7 @@ const FaqPage = (props) => {
               <h3>Deliveries</h3>
               <p>
                 To review the status of your order please visit the "My Orders"
-                section of your Sunspel Account. You should receive an email
+                section of your Velvét Account. You should receive an email
                 notification when your package is dispatched. Please check your
                 email inbox and your junk filter.
               </p>
@@ -43,7 +43,7 @@ const FaqPage = (props) => {
               <h3>Returns & Exchanges</h3>
               <p>
                 To review the status of your order please visit the "My Orders"
-                section of your Sunspel Account. You should receive an email
+                section of your Velvét Account. You should receive an email
                 notification when your package is dispatched. Please check your
                 email inbox and your junk filter.
               </p>
@@ -62,7 +62,7 @@ const FaqPage = (props) => {
               <h3>Shipping Rates</h3>
               <p>
                 To review the status of your order please visit the "My Orders"
-                section of your Sunspel Account. You should receive an email
+                section of your Velvét Account. You should receive an email
                 notification when your package is dispatched. Please check your
                 email inbox and your junk filter.
               </p>

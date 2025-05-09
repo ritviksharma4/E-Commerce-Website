@@ -1,4 +1,4 @@
-# ✨ Velvèt Threads – E-commerce Web Application
+# ✨ Velvét Threads – E-commerce Web Application
 
 A fully-featured, luxury-themed E-Commerce platform built with modern technologies and hosted entirely on AWS infrastructure. Built for high performance, user-centric design, and scalable cloud integration.
 
@@ -76,7 +76,7 @@ GATSBY_APP_GET_SHOPPING_HISTORY_FOR_USER=https://your-lambda-url
 GATSBY_APP_UPDATE_SHOPPING_HISTORY_FOR_USER=https://your-lambda-url
 ```
 
-# 📈 Future Improvements for Velvèt Threads E-commerce Platform
+# 📈 Future Improvements for Velvét Threads E-commerce Platform
 
 This document outlines upcoming features and enhancements to be added to the Luxe Threads e-commerce platform to further elevate user experience, administrative control, and business intelligence.
 

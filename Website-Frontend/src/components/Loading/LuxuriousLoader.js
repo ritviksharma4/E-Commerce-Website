@@ -4,7 +4,7 @@ import * as styles from './LuxuryLoader.module.css';
 const LuxuryLoader = () => {
   return (
     <div className={styles.loaderContainer}>
-      <div className={styles.logo}>Velvèt</div>
+      <div className={styles.logo}>Velvét</div>
 
       <div className={styles.content}>
         <div className={styles.cube}></div>

@@ -1,12 +1,29 @@
 .root {
     display: flex;
-    justify-content: center;
+    align-items: flex-end; /* Align to bottom vertically */
+    justify-content: center; /* Keep centered horizontally */
     cursor: pointer;
+    height: 100%; /* Ensure it uses full header height */
+    padding-bottom: 0px; /* Optional: fine-tune distance from bottom */
+}
+
+.brandWrapper {
+    display: flex;
+    align-items: flex-end; /* Align Brand to bottom */
+    justify-content: center;
+    height: 100%;
 }
 
 @media (max-width: 800px) {
     .root svg {
-        width: 90px;
-        height: 16.67px;
+        width: 150px;
+        height: 50px;
+    }
+}
+
+@media (max-width: 700px) {
+    .root svg {
+        width: 150px;
+        height: 40px;
     }
 }

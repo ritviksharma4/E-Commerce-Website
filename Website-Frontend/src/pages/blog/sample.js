@@ -14,7 +14,7 @@ const SamplePage = (props) => {
           <div className={styles.blogContainer}>
             <Blog
               category={'design'}
-              title={'Friends of Velvet: Flora Fricker'}
+              title={'Friends of Velvét: Flora Fricker'}
               image={'/blogFeatured.png'}
               alt={''}
             >
@@ -23,15 +23,13 @@ const SamplePage = (props) => {
                   London-based floral designer Flora Fricker champions seasonal
                   British flowers and UK producers in her beautiful and
                   sustainable creations. This season, we worked with Flora to
-                  style Sunspel stores for Christmas, for which she produced
+                  style Velvét stores for Christmas, for which she produced
                   eye-catching sustainably sourced wreaths.
                 </p>
                 <p className={styles.blogParagraph}>
-                  Delaware limited liability company (The Velvet) collects
+                  India limited company (The Velvét) collects
                   personal information that you voluntarily provide when
-                  applying or registering for an account with The Upside or
-                  making a purchase on The Upside website; www.theupside.com
-                  (the Website).
+                  applying or registering for an account.
                 </p>
                 <p className={styles.blogParagraph}>
                   This Privacy Policy (Privacy Policy) outlines how your

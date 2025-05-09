@@ -4,6 +4,10 @@ import * as styles from './support.module.css';
 
 import Banner from '../components/Banner';
 import Contact from '../components/Contact';
+import PaymentsAndSecurity from '../components/PaymentsAndSecurity';
+import Shipping from '../components/Shipping';
+import Returns from '../components/Returns'
+import TermsAndConditions from '../components/TermsAndConditions'
 import Layout from '../components/Layout/Layout';
 import ThemeLink from '../components/ThemeLink';
 import Policy from '../components/Policy';
@@ -32,16 +36,16 @@ const SupportPage = (props) => {
         tempElement = <Policy />;
         break;
       case 'shipping':
-        tempElement = <Policy />;
+        tempElement = <Shipping />;
         break;
       case 'returns':
-        tempElement = <Policy />;
+        tempElement = <Returns />;
         break;
       case 'payments':
-        tempElement = <Policy />;
+        tempElement = <PaymentsAndSecurity />;
         break;
       case 'terms':
-        tempElement = <Policy />;
+        tempElement = <TermsAndConditions />;
         break;
       default:
         break;

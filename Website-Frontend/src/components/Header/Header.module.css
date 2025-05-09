@@ -22,7 +22,7 @@
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     align-items: center;
-    padding: 48px 0px 48px 0px;
+    padding: 25px 0px 25px 0px;
     margin: 0 auto;
 }
 

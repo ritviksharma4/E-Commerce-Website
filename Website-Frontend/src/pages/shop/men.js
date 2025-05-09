@@ -337,7 +337,7 @@ const AllClothingsMenPage = () => {
               </div>
               
               {/* Displaying the chips for active filters */}
-              <div className={styles.chipContainer}>
+              <div className={styles.chipsContainer}>
                 {['colors', 'sizes', 'genders'].map((categoryKey) => 
                   (savedFilters[categoryKey] || []).map((filterName) => (
                     <Chip

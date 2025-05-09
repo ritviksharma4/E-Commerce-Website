@@ -4,7 +4,7 @@ require("dotenv").config({
 
 module.exports = {
   siteMetadata: {
-    title: `Gatsby Velvet Ecommerce Website`,
+    title: `Gatsby Velvét Ecommerce Website`,
     siteUrl: `https://ritvik-sharma.com/`,
   },
   plugins: [

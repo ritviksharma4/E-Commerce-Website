@@ -119,7 +119,7 @@ const MobileNavigation = (props) => {
               <div className={styles.navFooter}>
                 <Link to={'/account/favorites'}>
                   <Icon symbol={'heart'} />
-                  Favorites (0)
+                  Favorites
                 </Link>
               </div>
             </div>

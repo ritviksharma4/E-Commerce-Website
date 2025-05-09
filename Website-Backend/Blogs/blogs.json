@@ -1,0 +1,200 @@
+[
+    {
+      "title": "Velvét Wins Global Design Award 2025",
+      "category": "design",
+      "alt": "Velvét wins global design award",
+      "image": "https://velvet-e-commerce-website-images.s3.ap-south-1.amazonaws.com/Blogs/velvet_global_design_award/blog_design_award.png",
+      "link": "/blog/velvet_global_design_award",
+      "excerpt": "Founder Ritvik Sharma's Velvét brand takes home the 2025 Global Design Excellence Award, redefining luxury fashion with timeless elegance.",
+      "urlPath": "velvet_global_design_award"
+    },
+    {
+      "title": "Velvét's Minimal Luxe Collection Sets Design Trends",
+      "category": "design",
+      "alt": "Velvét minimal luxe",
+      "image": "https://velvet-e-commerce-website-images.s3.ap-south-1.amazonaws.com/Blogs/minimal_luxe_trends/blog_minimal_luxe.png",
+      "link": "/blog/minimal_luxe_trends",
+      "excerpt": "Velvét’s latest Minimal Luxe collection is reshaping fashion aesthetics worldwide with its clean lines and rich textures.",
+      "urlPath": "minimal_luxe_trends"
+    },
+    {
+      "title": "Velvét Bags Best Sustainable Design Title",
+      "category": "design",
+      "alt": "Best sustainable design",
+      "image": "https://velvet-e-commerce-website-images.s3.ap-south-1.amazonaws.com/Blogs/sustainable_design_award/blog_sustainable.png",
+      "link": "/blog/sustainable_design_award",
+      "excerpt": "Velvét continues to lead sustainable fashion by winning the Best Sustainable Design award at the Eco-Fashion Summit 2025.",
+      "urlPath": "sustainable_design_award"
+    },
+    {
+      "title": "Inside Velvét’s Atelier: Where Luxury is Crafted",
+      "category": "design",
+      "alt": "Velvét atelier craftsmanship",
+      "image": "https://velvet-e-commerce-website-images.s3.ap-south-1.amazonaws.com/Blogs/inside_velvet_atelier/blog_atelier.png",
+      "link": "/blog/inside_velvet_atelier",
+      "excerpt": "Take an exclusive peek inside Velvét’s atelier where master artisans craft each piece with meticulous care and attention to detail.",
+      "urlPath": "inside_velvet_atelier"
+    },
+    {
+      "title": "Velvét Redefines All-Season Fashion",
+      "category": "design",
+      "alt": "Velvét all season clothing",
+      "image": "https://velvet-e-commerce-website-images.s3.ap-south-1.amazonaws.com/Blogs/all_season_redefined/blog_allseason.png",
+      "link": "/blog/all_season_redefined",
+      "excerpt": "Velvét’s design philosophy breaks fashion calendars with versatile pieces fit for every season, making headlines in the industry.",
+      "urlPath": "all_season_redefined"
+    },
+    {
+      "title": "Velvét's Monochrome Elegance Makes a Comeback",
+      "category": "design",
+      "alt": "Velvét monochrome collection",
+      "image": "https://velvet-e-commerce-website-images.s3.ap-south-1.amazonaws.com/Blogs/monochrome_comeback/blog_monochrome.png",
+      "link": "/blog/monochrome_comeback",
+      "excerpt": "Velvét revives classic monochrome styles with a modern twist, turning heads at fashion weeks in Milan and Paris.",
+      "urlPath": "monochrome_comeback"
+    },
+    {
+      "title": "Velvét x Gigi Hadid: Iconic Capsule Collection",
+      "category": "collaboration",
+      "alt": "Velvét and Gigi Hadid collaboration",
+      "image": "https://velvet-e-commerce-website-images.s3.ap-south-1.amazonaws.com/Blogs/velvet_gigi_collab/blog_gigi_collab.png",
+      "link": "/blog/velvet_gigi_collab",
+      "excerpt": "Supermodel Gigi Hadid teams up with Velvét founder Ritvik Sharma to create an exclusive capsule collection celebrating elegance and versatility.",
+      "urlPath": "velvet_gigi_collab"
+    },
+    {
+      "title": "Velvét x David Beckham: The Luxe Sports Edit",
+      "category": "collaboration",
+      "alt": "Velvét and David Beckham collection",
+      "image": "https://velvet-e-commerce-website-images.s3.ap-south-1.amazonaws.com/Blogs/velvet_beckham_collab/blog_beckham_collab.png",
+      "link": "/blog/velvet_beckham_collab",
+      "excerpt": "Football legend David Beckham and Velvét launch a luxe sportswear collection blending athleticism and fine tailoring.",
+      "urlPath": "velvet_beckham_collab"
+    },  
+    {
+      "title": "Velvét Dresses Zendaya for Cannes 2025",
+      "category": "collaboration",
+      "alt": "Zendaya wearing Velvét",
+      "image": "https://velvet-e-commerce-website-images.s3.ap-south-1.amazonaws.com/Blogs/velvet_zendaya_cannes/blog_zendaya_cannes.png",
+      "link": "/blog/velvet_zendaya_cannes",
+      "excerpt": "Actress Zendaya stuns in custom Velvét couture by Ritvik Sharma at the 2025 Cannes Film Festival, making headlines worldwide.",
+      "urlPath": "velvet_zendaya_cannes"
+    },
+    {
+      "title": "Velvét x Pharrell Williams: Eco-Luxury Drop",
+      "category": "collaboration",
+      "alt": "Velvét and Pharrell eco drop",
+      "image": "https://velvet-e-commerce-website-images.s3.ap-south-1.amazonaws.com/Blogs/velvet_pharrell_collab/blog_pharrell_collab.png",
+      "link": "/velvet_pharrell_collab/velvet_pharrell_collab",
+      "excerpt": "Pharrell Williams and Velvét co-create an eco-conscious luxury collection championing sustainability and style.",
+      "urlPath": "velvet_pharrell_collab"
+    },
+    {
+      "title": "Velvét x Kate Moss: Iconic 90s Revival",
+      "category": "collaboration",
+      "alt": "Velvét and Kate Moss 90s collection",
+      "image": "https://velvet-e-commerce-website-images.s3.ap-south-1.amazonaws.com/Blogs/velvet_katemoss_collab/blog_katemoss_collab.png",
+      "link": "/blog/velvet_katemoss_collab",
+      "excerpt": "Supermodel Kate Moss joins Velvét to bring back 90s chic with a contemporary luxury twist in an exclusive collaboration.",
+      "urlPath": "velvet_katemoss_collab"
+    },
+    {
+      "title": "Velvét x BTS: Asia’s Biggest Fashion Collab",
+      "category": "collaboration",
+      "alt": "Velvét and BTS collaboration",
+      "image": "https://velvet-e-commerce-website-images.s3.ap-south-1.amazonaws.com/Blogs/velvet_bts_collab/blog_bts_collab.png",
+      "link": "/blog/velvet_bts_collab",
+      "excerpt": "Global superstars BTS team up with Velvét to create a luxury streetwear line that sells out in minutes across Asia.",
+      "urlPath": "velvet_bts_collab"
+    },
+    {
+      "title": "Ritvik Sharma on Building a Global Luxury Brand",
+      "category": "interview",
+      "alt": "Interview with Ritvik Sharma",
+      "image": "https://velvet-e-commerce-website-images.s3.ap-south-1.amazonaws.com/Blogs/ritvik_globalbrand/blog_ritvik_globalbrand.png",
+      "link": "/blog/ritvik_globalbrand",
+      "excerpt": "Velvét founder Ritvik Sharma shares his journey from a dreamer to a global fashion powerhouse in this exclusive sit-down.",
+      "urlPath": "ritvik_globalbrand"
+    },
+    {
+      "title": "Forbes 30 Under 30: Ritvik Sharma Shares His Success Mantras",
+      "category": "interview",
+      "alt": "Forbes interviews Ritvik Sharma",
+      "image": "https://velvet-e-commerce-website-images.s3.ap-south-1.amazonaws.com/Blogs/forbes30_ritvik/blog_forbes30_ritvik.png",
+      "link": "/blog/forbes30_ritvik",
+      "excerpt": "Featured in Forbes 30 Under 30, Ritvik Sharma discusses discipline, creativity, and business strategies behind Velv\u00e8t's dominance.",
+      "urlPath": "forbes30_ritvik"
+    },
+    {
+      "title": "Behind Velvét: Ritvik Sharma Talks Design Philosophy",
+      "category": "interview",
+      "alt": "Ritvik Sharma design insights",
+      "image": "https://velvet-e-commerce-website-images.s3.ap-south-1.amazonaws.com/Blogs/ritvik_designphilosophy/blog_ritvik_designphilosophy.png",
+      "link": "/blog/ritvik_designphilosophy",
+      "excerpt": "Founder Ritvik Sharma unpacks Velv\u00e8t\u2019s design ethos\u2014where classic tailoring meets cutting-edge fabric technology.",
+      "urlPath": "ritvik_designphilosophy"
+    },
+    {
+      "title": "BBC Talks to Ritvik Sharma: India\u2019s Rising Fashion Tycoon",
+      "category": "interview",
+      "alt": "BBC interview with Ritvik Sharma",
+      "image": "https://velvet-e-commerce-website-images.s3.ap-south-1.amazonaws.com/Blogs/bbc_ritvik/blog_bbc_ritvik.png",
+      "link": "/blog/bbc_ritvik",
+      "excerpt": "BBC spotlights Ritvik Sharma, founder of Velv\u00e8t, as India\u2019s new global face in luxury fashion.",
+      "urlPath": "bbc_ritvik"
+    },
+    {
+      "title": "Vogue\u2019s Power Interview: Ritvik Sharma on 2025 Trends",
+      "category": "interview",
+      "alt": "Vogue interviews Ritvik Sharma",
+      "image": "https://velvet-e-commerce-website-images.s3.ap-south-1.amazonaws.com/Blogs/vogue_ritvik/blog_vogue_ritvik.png",
+      "link": "/blog/vogue_ritvik",
+      "excerpt": "Vogue catches up with Velv\u00e8t's Ritvik Sharma to predict 2025\u2019s hottest fashion trends and luxury\u2019s new direction.",
+      "urlPath": "vogue_ritvik"
+    },
+    {
+      "title": "Velv\u00e8t Wins Best Luxury Designer Brand 2025",
+      "category": "news",
+      "alt": "Velvét brand wins award",
+      "image": "https://velvet-e-commerce-website-images.s3.ap-south-1.amazonaws.com/Blogs/velvet_award_winner/blog_award_winner.png",
+      "link": "/blog/velvet_award_winner",
+      "excerpt": "Velv\u00e8t, helmed by Ritvik Sharma, clinches the \u2018Best Luxury Designer Brand\u2019 award at the Global Fashion Awards 2025.",
+      "urlPath": "velvet_award_winner"
+    },
+    {
+      "title": "Velv\u00e8t Opens First Flagship Store in Paris",
+      "category": "news",
+      "alt": "Velvét Paris flagship store",
+      "image": "https://velvet-e-commerce-website-images.s3.ap-south-1.amazonaws.com/Blogs/velvet_paris_store/blog_paris_store.png",
+      "link": "/blog/velvet_paris_store",
+      "excerpt": "Velv\u00e8t launches its first Paris flagship, bringing its all-season luxury to the heart of Europe\u2019s fashion capital.",
+      "urlPath": "velvet_paris_store"
+    },
+    {
+      "title": "Velv\u00e8t Breaks Sales Records in 2025 Q1",
+      "category": "news",
+      "alt": "Velvét sales surge",
+      "image": "https://velvet-e-commerce-website-images.s3.ap-south-1.amazonaws.com/Blogs/velvet_sales_record/blog_sales_record.png",
+      "link": "/blog/velvet_sales_record",
+      "excerpt": "Velv\u00e8t posts record-breaking Q1 revenue, driven by its global collaborations and innovative product lines.",
+      "urlPath": "velvet_sales_record"
+    },
+    {
+      "title": "Velv\u00e8t Becomes Official Sponsor of Milan Fashion Week",
+      "category": "news",
+      "alt": "Velvét Milan sponsorship",
+      "image": "https://velvet-e-commerce-website-images.s3.ap-south-1.amazonaws.com/Blogs/velvet_milan_sponsor/blog_milan_sponsor.png",
+      "link": "/blog/velvet_milan_sponsor",
+      "excerpt": "Velv\u00e8t partners with Milan Fashion Week as an official sponsor, further strengthening its European presence.",
+      "urlPath": "velvet_milan_sponsor"
+    },
+    {
+      "title": "Velv\u00e8t Announces Sustainable Fashion Pledge 2030",
+      "category": "news",
+      "alt": "Velvét sustainability pledge",
+      "image": "https://velvet-e-commerce-website-images.s3.ap-south-1.amazonaws.com/Blogs/velvet_sustainability_pledge/blog_sustainability_pledge.png",
+      "link": "/blog/velvet_sustainability_pledge",
+      "excerpt": "Velv\u00e8t commits to using 100% sustainable materials by 2030 in a bold industry-leading pledge.",
+      "urlPath": "velvet_sustainability_pledge"
+    }
+]

@@ -1,0 +1,92 @@
+.root {
+
+}
+
+.blogContainer {
+    margin-top: 80px;
+}
+
+.excerpt {
+    font-weight: normal;
+    font-size: 32px;
+    line-height: 42px;
+    font-family: var(--standard-header);
+}
+
+.blogParagraph {
+    margin: 0 0 1.5em 0;
+    line-height: 1.8;
+    font-size: 1rem;
+    color: #333;
+}
+
+.imagesContainer {
+    display: grid;
+    gap: 24px;
+    grid-template-columns: repeat(2, 1fr);
+    margin: 48px 0px;
+}
+
+.imageContainer {
+    width: 100%;
+    max-width: 800px;
+    margin: 48px auto; /* Added vertical margin for breathing space */
+    padding: 8px;
+    border-radius: 8px;
+    background-color: var(--bg-light-gray);
+    text-align: center;
+    /* ✅ Remove flex to avoid unwanted stretching */
+    display: block;
+}
+  
+.imageContainer img {
+    width: auto; /* ✅ Natural width */
+    height: auto; /* ✅ Natural height */
+    max-width: 100%; /* ✅ Shrink if bigger */
+    max-height: 100%;
+    object-fit: contain; 
+    display: block;
+}
+
+.imageContainer img.loaded {
+    opacity: 1;
+    transform: scale(1);
+}
+
+.blogSubHeader {
+    margin-top: 2.5em; /* ✅ adds space ABOVE */
+    margin-bottom: 0.2em; /* ✅ no big gap BELOW */
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #000;
+}
+
+.content {
+    width: 90%;
+    margin: 0 auto;
+}
+
+@media (max-width: 800px) {
+    .imagesContainer {
+        grid-template-columns: 1fr;
+    }
+
+    .excerpt {
+        font-size: 22px;
+        line-height: 28px;
+    }
+
+    .content {
+        width: 100%;
+    }
+
+    .blogParagraph {
+        font-size: 14px;
+        line-height: 24px;
+    }
+
+    .imageContainer {
+        height: auto;
+    }
+    
+}

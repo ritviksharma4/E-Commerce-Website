@@ -23,6 +23,11 @@
     background-position: center;
 }
 
+.active {
+    font-weight: bold;
+    text-decoration: underline;
+}
+
 .navContainer > div:first-child {
     margin-left: auto;
 }
