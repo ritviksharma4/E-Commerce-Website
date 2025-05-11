@@ -245,6 +245,7 @@ const ProductPage = ({ params }) => {
                 setActiveSize={setActiveSize}
                 category={product.category}
                 subCategory={product.subCategory}
+                productCode={product.productCode}
               />
               </div>
 
@@ -328,7 +329,7 @@ const ProductPage = ({ params }) => {
               'We design our products to look good and to be used on a daily basis. Quality over quantity is a cornerstone of our ethos.'
             }
             ctaText={'learn more'}
-            cta={() => navigate('/blog')}
+            cta={() => navigate('/about/#sustainability')}
             bgColor={'var(--standard-light-grey)'}
           />
         </div>

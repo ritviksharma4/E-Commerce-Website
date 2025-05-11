@@ -172,6 +172,7 @@ const QuickView = ({ close, buttonTitle = 'Add to Bag', product: initialProduct 
               setActiveSize={setActiveSize}
               category={product.category}
               subCategory={product.subCategory}
+              productCode={product.productCode}
             />
             </div>
 

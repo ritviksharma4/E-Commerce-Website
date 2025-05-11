@@ -1,0 +1,7 @@
+{
+    "unit": "cm",
+    "columns": ["Length", "Width", "Height", "Capacity"],
+    "rows": {
+      "OneSize": [19, 5, 10, 1]
+    }
+}  

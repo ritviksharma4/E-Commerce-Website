@@ -10,7 +10,7 @@ A fully-featured, luxury-themed E-Commerce platform built with modern technologi
 - Full product catalog with category and subcategory navigation (Men, Women, Accessories)
 - Dynamically generated **Product Detail Pages** using product code.
 - **Luxury-style Quick View** modal with product summary.
-- **Size Chart Viewer** in Quick View and Product Page (supports cm/in toggle).
+- **Size Guide Viewer** in Quick View and Product Page (supports cm/in toggle).
 - **Wishlist (Favorites)** with Edit and Remove functionality.
 - **MiniCart** and full **Cart Page** with real-time quantity updates and removal.
 - Responsive layout for All Devices.
@@ -56,7 +56,7 @@ A fully-featured, luxury-themed E-Commerce platform built with modern technologi
 This project is **fully hosted on AWS**:
 
 - Static frontend is deployed via **S3 + CloudFront** for blazing-fast global delivery.
-- Product images and size charts are stored in **S3** under structured directories (`category/subcategory/productCode/`).
+- Product images and size guides are stored in **S3** under structured directories (`category/subcategory/productCode/`).
 - Product metadata is fetched from **DynamoDB** via **Lambda APIs**.
 - User interactions (wishlist, cart, recently viewed) are stored and updated via Lambda functions backed by DynamoDB.
 

@@ -7,6 +7,7 @@ import Container from '../components/Container';
 import Footer from '../components/Footer';
 import Icon from '../components/Icons/Icon';
 import OrderSummary from '../components/OrderSummary';
+import Button from '../components/Button';
 import { isAuth } from '../helpers/general';
 import LuxuryLoader from '../components/Loading/LuxuriousLoader';
 
@@ -79,6 +80,8 @@ const CartPage = () => {
     }
   };
 
+  const isCartEmpty = cartItems.length === 0;
+
   return loading ? (
     <LuxuryLoader />
   ) : (
@@ -99,12 +102,26 @@ const CartPage = () => {
               </Link>
             </div>
           </div>
-  
+
           <div className={styles.summaryContainer}>
             <h3>My Bag</h3>
             <div className={styles.cartContainer}>
               <div className={styles.cartItemsContainer}>
-                {cartItems.length > 0 ? (
+                {isCartEmpty ? (
+                  <div className={styles.emptyCartWrapper}>
+                    <div className={styles.emptyCartPlaceholder}>
+                      <p>It appears your bag is empty — discover timeless pieces crafted just for you.</p>
+                    </div>
+                    <Button 
+                      onClick={() => navigate('/')} 
+                      level={'primary'} 
+                      fullWidth 
+                      className={styles.discoverBtn}
+                    >
+                      Discover Collection
+                    </Button>
+                  </div>
+                ) : (
                   cartItems.map((item, index) => (
                     <CartItem
                       key={index}
@@ -123,11 +140,13 @@ const CartPage = () => {
                       }
                     />
                   ))
-                ) : (
-                  <p>Your cart is empty.</p>
                 )}
               </div>
-              <OrderSummary cartItems={cartItems} setLoading={setLoading} />
+              <OrderSummary 
+                cartItems={cartItems} 
+                setLoading={setLoading} 
+                disableCheckout={isCartEmpty} 
+              />
             </div>
           </div>
         </Container>

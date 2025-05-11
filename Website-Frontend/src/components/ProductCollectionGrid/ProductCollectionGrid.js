@@ -26,9 +26,9 @@ const ProductCollectionGrid = (props) => {
       />
       <ProductCollection
         image={'/collections/collection4.png'}
-        title={'Simple Cotton'}
+        title={'Footwear'}
         text={'SHOP NOW'}
-        link={'/shop/men'}
+        link={'/shop/footwear'}
       />
     </div>
   );

@@ -1,0 +1,199 @@
+.root {
+    margin-top: 16px;
+}
+
+.bannerContainer h2 {
+    margin-bottom: 24px;
+}
+
+.subtitleStyle {
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 17px;
+    margin-top: 32px;
+}
+
+.metaContainer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+}
+
+.controllerContainer {
+    display: flex;
+    gap: 48px;
+}
+
+.iconContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    cursor: pointer;
+}
+
+.iconContainer span {
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 17px;
+}
+
+.sortContainer {
+    cursor: pointer;
+    padding: 8px 12px;
+    transition: all ease-in-out 0.3s;
+}
+
+.itemCount {
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 17px;
+}
+
+.chipsContainer {
+    display: flex;
+    gap: 8px;
+    margin-top: 8px;
+}
+
+.sortOptions {
+    position: absolute;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+    top: 40px;
+    right: 0;
+    opacity: 0;
+    transform: translateY(-10px) scale(0.95);
+    transition: all ease-in-out 0.3s;
+    pointer-events: none;
+    z-index: 10;
+}
+  
+.show {
+    opacity: 1;
+    transform: translateY(0) scale(1.02); /* little pop */
+    pointer-events: auto;
+    transition: all ease-in-out 0.3s;
+}
+
+.sortOptions div {
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: all ease-in-out 0.3s;
+    border-radius: 8px;
+}
+  
+.sortOptions div:hover {
+    color: var(--standard-white);
+    background-color: var(--standard-gold);
+    transform: scale(1.02);
+    transition: all ease-in-out 0.3s;
+}
+
+.sortOptions.show {
+    opacity: 1;
+    transition: all ease-in-out 0.3s;
+    transform: translateY(0) scale(1);
+    pointer-events: auto;
+}
+  
+.sortOption {
+    padding: 12px 16px;
+    cursor: pointer;
+    font-size: 14px;
+    color: #333;
+    transition: all ease-in-out 0.3s;
+}
+  
+.sortOption:hover {
+    background: #f9f9f9;
+    color: #000;
+}
+  
+@keyframes fadeSlide {
+    from {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+}
+
+.rotateCaret {
+    transform: rotate(180deg) scale(1.1);
+    transition: all ease-in-out 0.3s;
+}
+
+.iconContainer svg {
+    transition: transform 0.3s ease;
+}
+
+.productContainer {
+    margin-top: 32px;
+}
+
+.loadMoreContainer {
+    margin-top: 80px;
+    width: 160px;
+    margin: 96px auto 0px auto;
+    text-align: center;
+
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.loadMoreContainer span {
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 17px;
+}
+
+.mobileItemCount {
+    display: none;
+}
+
+@media (max-width: 800px) {
+    .itemCount {
+        display: none;
+    }
+
+    .controllerContainer {
+        gap: 0px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+    }
+
+    .mobileItemCount {
+        display: block;
+        text-align: center;
+        font-weight: 500;
+        font-size: 12px;
+        line-height: 15px;
+        color: var(--grey-placeholder);
+        margin-bottom: 16px;
+    }
+
+    .metaContainer {
+        margin: 0px 8px;
+    }
+
+    .productContainer {
+        margin-left: 8px;
+        margin-right: 8px;
+    }
+
+    .breadcrumbContainer {
+        margin-top: -16px;
+    }
+
+    .breadcrumbContainer > div {
+        display: none;
+    }
+}

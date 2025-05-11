@@ -6,14 +6,15 @@ import Layout from '../../components/Layout/Layout';
 import Breadcrumbs from '../../components/Breadcrumbs';
 import Container from '../../components/Container';
 import LuxuryLoader from '../../components/Loading/LuxuriousLoader';
-import Banner from '../../components/Banner'
+import Banner from '../../components/Banner';
 import FavoriteCardGrid from '../../components/FavoriteCardGrid/FavoriteCardGrid';
 import { isAuth } from '../../helpers/general';
+import Button from '../../components/Button'; // ✅ Import Button
 
 const FavoritesPage = () => {
   const [wishlistItems, setWishlistItems] = useState([]);
   const [loading, setLoading] = useState(true);
-  
+
   const LAMBDA_ENDPOINT = process.env.GATSBY_APP_GET_SHOPPING_HISTORY_FOR_USER;
 
   useEffect(() => {
@@ -62,36 +63,48 @@ const FavoritesPage = () => {
   return (
     <Layout>
       <div className={styles.root}>
-        {loading ? (
-          <LuxuryLoader />  /* Show luxury loader while waiting */
-        ) : (
-          <>
-            <Container size={'large'} spacing={'min'}>
-              <div className={styles.breadcrumbContainer}>
-                <Breadcrumbs
-                  crumbs={[
-                    { link: '/', label: 'Home' },
-                    { label: 'Favorites' },
-                  ]}
-                />
-              </div>
-            </Container>
-            <Banner
-              maxWidth={'650px'}
-              name={`Your Wishlist`}
-              subtitle={
-                'Your wishlist is a private gallery of refined desire — where elegance meets exclusivity, and every piece tells a story of distinction.'
-              }
+        <Container size={'large'} spacing={'min'}>
+          <div className={styles.breadcrumbContainer}>
+            <Breadcrumbs
+              crumbs={[
+                { link: '/', label: 'Home' },
+                { label: 'Favorites' },
+              ]}
             />
-            <Container size={'large'} spacing={'min'}>
-              <div className={styles.metaContainer}>
-              </div>
-              <div className={styles.productContainer}>
-                <FavoriteCardGrid data={wishlistItems} setData={setWishlistItems} />
-              </div>
-            </Container>
-          </>
-        )}
+          </div>
+        </Container>
+
+        <Banner
+          maxWidth={'650px'}
+          name={`Your Wishlist`}
+          subtitle={
+            'Your wishlist is a private gallery of refined desire — where elegance meets exclusivity, and every piece tells a story of distinction.'
+          }
+        />
+
+        <Container size={'large'} spacing={'min'}>
+          <div className={styles.metaContainer}></div>
+
+          {wishlistItems.length > 0 ? (
+            <div className={styles.productContainer}>
+              <FavoriteCardGrid data={wishlistItems} setData={setWishlistItems} />
+            </div>
+          ) : (
+            <div className={styles.emptyContainer}>
+              <p className={styles.emptyText}>
+                Your wishlist is feeling a little lonely. Discover treasures waiting to be adored.
+              </p>
+              <Button
+                onClick={() => navigate('/')}
+                level={'secondary'}
+                className={styles.discoverButton}
+                style={{ width: '50%', minWidth: '200px', maxWidth: '300px', marginTop: '20px' }}
+              >
+                Discover Collection
+              </Button>
+            </div>
+          )}
+        </Container>
       </div>
     </Layout>
   );

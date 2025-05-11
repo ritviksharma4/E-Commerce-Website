@@ -61,17 +61,36 @@ const MiniCart = () => {
 
   if (loading) return <LuxuryLoader />;
 
+  const isCartEmpty = cartItems.length === 0;
+
   return (
     <div className={styles.root}>
       <div className={styles.titleContainer}>
         <h4>My Bag</h4>
       </div>
-      {loading && <LuxuryLoader />}
+
       <div className={styles.cartItemsContainer}>
-        {cartItems.map((item, index) => (
-          <MiniCartItem key={index} setCartItems={setCartItems} setLoading={setLoading} {...item} />
-        ))}
+        {isCartEmpty ? (
+          <div className={styles.emptyCartWrapper}>
+            <div className={styles.emptyCartPlaceholder}>
+              <p>Looks like your bag is feeling light — time to indulge in something exquisite.</p>
+            </div>
+            <Button 
+              onClick={() => navigate('/')} 
+              level={'primary'} 
+              fullWidth 
+              className={styles.discoverBtn}
+            >
+              Discover Collection
+            </Button>
+          </div>
+        ) : (
+          cartItems.map((item, index) => (
+            <MiniCartItem key={index} setCartItems={setCartItems} setLoading={setLoading} {...item} />
+          ))
+        )}
       </div>
+
       <div className={styles.summaryContainer}>
         <div className={styles.blurredBackground}>
           <div className={styles.summaryContent}>
@@ -84,7 +103,12 @@ const MiniCart = () => {
             <span className={styles.taxNotes}>
               Taxes and shipping will be calculated at checkout
             </span>
-            <Button onClick={() => navigate('/cart')} level={'primary'} fullWidth>
+            <Button 
+              onClick={() => navigate('/cart')} 
+              level={'primary'} 
+              fullWidth 
+              disabled={isCartEmpty}
+            >
               checkout
             </Button>
             <div className={styles.linkContainer}>

@@ -1,0 +1,9 @@
+{
+    "unit": "cm",
+    "columns": ["Circumference"],
+    "rows": {
+      "S": [21.3],
+      "M": [22.1],
+      "L": [22.9]
+    }
+}

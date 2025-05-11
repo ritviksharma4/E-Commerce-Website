@@ -125,6 +125,23 @@
               "menuLink": "/shop/accessories/bags"
             }
           ]
+        },
+        {
+          "categoryLabel": "footwear",
+          "submenu": [
+            {
+              "menuLabel": "all footwear",
+              "menuLink": "/shop/footwear"
+            },
+            {
+              "menuLabel": "heels & sandals",
+              "menuLink": "/shop/footwear/heels-and-sandals"
+            },
+            {
+              "menuLabel": "shoes",
+              "menuLink": "/shop/footwear/shoes"
+            }
+          ]
         }
       ]
     },

@@ -1,0 +1,7 @@
+{
+    "unit": "cm",
+    "columns": ["Bracelet Length", "Circumference", "Diameter"],
+    "rows": {
+      "OneSize": [15.5, 15.5, 4.8]
+    }
+}  

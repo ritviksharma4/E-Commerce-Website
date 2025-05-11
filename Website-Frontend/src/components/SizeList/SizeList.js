@@ -4,11 +4,21 @@ import SizeChart from "../SizeChart";
 import * as styles from "./SizeList.module.css";
 
 const SizeList = (props) => {
-  const { setActiveSize, activeSize, sizeList, category, subCategory } = props;
+  const { setActiveSize, activeSize, sizeList, category, subCategory, productCode } = props;
 
   const [showChart, setShowChart] = useState(false);
 
-  const validSizes = ["xxs", "xs", "s", "m", "l", "xl", "xxl", "onesize"];
+  const standardSizes = ["xxs", "xs", "s", "m", "l", "xl", "xxl"];
+  const hasOneSize = sizeList.includes("onesize");
+  const hasStandardSizes = sizeList.some(size => standardSizes.includes(size));
+
+  // Decide which sizes to show
+  let sizesToRender = [];
+  if (hasOneSize && !hasStandardSizes) {
+    sizesToRender = ["onesize"];
+  } else {
+    sizesToRender = standardSizes;
+  }
 
   return (
     <div className={styles.root}>
@@ -24,7 +34,7 @@ const SizeList = (props) => {
       </div>
 
       <div className={styles.sizeSelection}>
-        {validSizes.map((sizeOption, index) => {
+        {sizesToRender.map((sizeOption, index) => {
           const isAvailable = sizeList.includes(sizeOption);
           return (
             <BoxOption
@@ -43,6 +53,7 @@ const SizeList = (props) => {
           <SizeChart
             category={category}
             subCategory={subCategory}
+            productCode={productCode}
             close={() => setShowChart(false)}
           />
         </div>

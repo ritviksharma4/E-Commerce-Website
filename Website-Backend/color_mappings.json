@@ -1,11 +1,5 @@
 {
-    "Beige": [
-        "Beige", 
-        "Cream", 
-        "Vanilla Sand", 
-        "Whipped Ivory", 
-        "Burnt Ivory"
-    ],
+    "Beige": ["Beige", "Cream", "Vanilla Sand", "Whipped Ivory", "Burnt Ivory"],
     "Black": [
         "Black",
         "Obsidian Black",

@@ -60,7 +60,7 @@ export const handler = async (event) => {
         return {
           statusCode: 400,
           headers: CORS_HEADERS,
-          body: JSON.stringify({ message: 'Category and subCategory are required for size chart.' }),
+          body: JSON.stringify({ message: 'Category and subCategory are required for size guide.' }),
         };
       }
 
@@ -81,7 +81,7 @@ export const handler = async (event) => {
           body: JSON.stringify(chartData),
         };
       } catch (err) {
-        console.error('Failed to fetch size chart:', err);
+        console.error('Failed to fetch size guide:', err);
         return {
           statusCode: 404,
           headers: CORS_HEADERS,
