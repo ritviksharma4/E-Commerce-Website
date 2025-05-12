@@ -75,7 +75,8 @@ const CardController = (props) => {
     // Trigger filter change event
     const filtersObj = {
       colors: [],
-      sizes: []
+      sizes: [],
+      genders: []
     };
     if (typeof onFilterChange === 'function') {
       onFilterChange(filtersObj);
@@ -85,21 +86,13 @@ const CardController = (props) => {
   const saveAndTrigger = (onFilterChange) => {
     updateLocalStorage(filterState);
 
-    const filtersObj = {
-      colors: [],
-      sizes: []
-    };
+    const filtersObj = {};
 
     filterState.forEach((filterCategory) => {
-      if (filterCategory.category.toLowerCase().includes('color')) {
-        filtersObj.colors = filterCategory.items
-          .filter((item) => item.value)
-          .map((item) => item.name);
-      } else if (filterCategory.category.toLowerCase().includes('size')) {
-        filtersObj.sizes = filterCategory.items
-          .filter((item) => item.value)
-          .map((item) => item.name);
-      }
+      const key = filterCategory.category.toLowerCase() + 's'; // e.g., 'colors', 'sizes', 'genders'
+      filtersObj[key] = filterCategory.items
+        .filter((item) => item.value)
+        .map((item) => item.name);
     });
 
     if (typeof onFilterChange === 'function') {
@@ -158,6 +151,7 @@ const CardController = (props) => {
             onClick={() => {
               saveAndTrigger(props.onFilterChange);
               closeFilter();
+              window.scrollTo(0, 0);
             }}
             className={styles.customButtonStyling}
             level="primary"

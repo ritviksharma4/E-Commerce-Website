@@ -177,7 +177,6 @@
         { "name": "Multi-Colored", "value": false }
       ]
     },
-
     {
       "category": "size",
       "items": [
@@ -189,6 +188,14 @@
         { "name": "XL", "value": false },
         { "name": "XXL", "value": false },
         { "name": "OneSize", "value": false }
+      ]
+    },
+    {
+      "category": "gender",
+      "items": [
+        { "name": "Women", "value": false },
+        { "name": "Men", "value": false },
+        { "name": "Unisex", "value": false }
       ]
     }
   ]

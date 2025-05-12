@@ -4,7 +4,10 @@ import * as styles from './SizeChart.module.css';
 
 const LAMBDA_ENDPOINT = process.env.GATSBY_APP_GET_PRODUCT_DETAILS_FOR_USER;
 
-const SizeChart = ({ close, category, subCategory, productCode }) => {
+const SizeChart = ({ close, category, subCategory, productCode, type }) => {
+  if (!type) {
+    type = "";
+  }
   const [loading, setLoading] = useState(true);
   const [chartData, setChartData] = useState(null);
   const [unit, setUnit] = useState('cm');
@@ -129,7 +132,7 @@ const SizeChart = ({ close, category, subCategory, productCode }) => {
 
       <div className={styles.contentContainer}>
         {loading ? (
-          <LuxuryLoader />
+          <LuxuryLoader type={type}/>
         ) : chartData ? (
           <div className={styles.productContainer}>
             <div className={styles.toggleWrapper}>

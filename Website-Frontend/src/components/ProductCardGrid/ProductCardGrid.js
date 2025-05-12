@@ -1,6 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useLayoutEffect } from 'react';
 import * as styles from './ProductCardGrid.module.css';
-
 import Drawer from '../Drawer';
 import ProductCard from '../ProductCard';
 import QuickView from '../QuickView';
@@ -11,8 +10,7 @@ const ProductCardGrid = (props) => {
   const [showQuickView, setShowQuickView] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
 
-  const { height, columns = 3, data, spacing, showSlider = false } = props;
-
+  const { height, columns = 3, data, spacing, showSlider = false, scrollKey } = props;
   const columnCount = {
     gridTemplateColumns: `repeat(${columns}, 1fr)`,
   };
@@ -22,13 +20,20 @@ const ProductCardGrid = (props) => {
     setShowQuickView(true);
   };
 
+  // Render the product cards
   const renderCards = () => {
     return data.map((product, index) => {
       const productLink = `/product/${product.productCode}`;
 
       return (
         <div className={styles.cardWrapper} key={index}>
-          <Link to={productLink} className={styles.cardLink}>
+          <Link
+            to={productLink}
+            className={styles.cardLink}
+            onMouseDown={() => {
+              sessionStorage.setItem(scrollKey, window.scrollY);
+            }}
+          >
             <ProductCard
               key={index}
               productCode={product.productCode}

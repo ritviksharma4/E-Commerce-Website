@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import BoxOption from "../BoxOption";
 import SizeChart from "../SizeChart";
 import * as styles from "./SizeList.module.css";
@@ -7,6 +7,7 @@ const SizeList = (props) => {
   const { setActiveSize, activeSize, sizeList, category, subCategory, productCode } = props;
 
   const [showChart, setShowChart] = useState(false);
+  const currentScrollPosRef = useRef(0); // Ref to store the current scroll position
 
   const standardSizes = ["xxs", "xs", "s", "m", "l", "xl", "xxl"];
   const hasOneSize = sizeList.includes("onesize");
@@ -20,13 +21,25 @@ const SizeList = (props) => {
     sizesToRender = standardSizes;
   }
 
+  const handleSizeGuideClick = () => {
+    // Store the current scroll position before opening the size chart
+    currentScrollPosRef.current = window.scrollY;
+    setShowChart(true);
+  };
+
+  const handleCloseSizeChart = () => {
+    // Restore the scroll position when closing the size chart
+    window.scrollTo(0, currentScrollPosRef.current);
+    setShowChart(false);
+  };
+
   return (
     <div className={styles.root}>
       <div className={styles.sizeLabelContainer}>
         <span className={styles.label}>Size</span>
         <span
           className={`${styles.label} ${styles.guide}`}
-          onClick={() => setShowChart(true)}
+          onClick={handleSizeGuideClick}
           style={{ cursor: 'pointer' }}
         >
           Size Guide
@@ -54,7 +67,8 @@ const SizeList = (props) => {
             category={category}
             subCategory={subCategory}
             productCode={productCode}
-            close={() => setShowChart(false)}
+            close={handleCloseSizeChart}
+            type={props.type} // Close function that restores scroll
           />
         </div>
       )}

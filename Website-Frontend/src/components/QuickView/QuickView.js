@@ -1,16 +1,11 @@
-import React, { useState, useContext, useEffect, useCallback } from 'react';
-import {
-  DynamoDBClient,
-  QueryCommand
-} from '@aws-sdk/client-dynamodb';
+import React, { useState, useContext, useEffect, useRef, useCallback } from 'react';
+import { DynamoDBClient, QueryCommand } from '@aws-sdk/client-dynamodb';
 import { fromCognitoIdentityPool } from '@aws-sdk/credential-provider-cognito-identity';
-
 import Button from '../Button';
 import CurrencyFormatter from '../CurrencyFormatter';
 import SizeList from '../SizeList';
 import SwatchList from '../SwatchList';
 import LuxuryLoader from '../../components/Loading/LuxuriousLoader';
-
 import AddItemNotificationContext from '../../context/AddItemNotificationProvider';
 import * as styles from './QuickView.module.css';
 import { toOptimizedImage } from '../../helpers/general';
@@ -33,31 +28,40 @@ const client = new DynamoDBClient({
 const QuickView = ({ close, buttonTitle = 'Add to Bag', product: initialProduct }) => {
   const ctxAddItemNotification = useContext(AddItemNotificationContext);
   const showNotification = ctxAddItemNotification.showNotification;
-  const UPDATE_USER_SHOPPING_HISTORY = process.env.GATSBY_APP_UPDATE_SHOPPING_HISTORY_FOR_USER
+  const UPDATE_USER_SHOPPING_HISTORY = process.env.GATSBY_APP_UPDATE_SHOPPING_HISTORY_FOR_USER;
 
   const [product, setProduct] = useState(initialProduct);
   const [loading, setLoading] = useState(false);
-  const [activeSwatch, setActiveSwatch] = useState(() =>
-    initialProduct?.colorOptions?.find((c) => c.productCode === initialProduct?.productCode) ||
-    initialProduct?.colorOptions?.[0]
-  );
   const [activeSize, setActiveSize] = useState(initialProduct?.sizeOptions?.[0]);
+
+  // Ref to hold last active swatch for comparison and prevent unnecessary re-renders
+  const lastActiveSwatchRef = useRef();
+
+  const [activeSwatch, setActiveSwatch] = useState(() => {
+    const defaultSwatch = initialProduct?.colorOptions?.find((c) => c.productCode === initialProduct?.productCode) ||
+      initialProduct?.colorOptions?.[0];
+    lastActiveSwatchRef.current = defaultSwatch; // Initialize ref
+    return defaultSwatch;
+  });
 
   useEffect(() => {
     if (!initialProduct) return;
 
     setProduct(initialProduct);
 
-    const defaultSwatch =
-      initialProduct.colorOptions?.find((c) => c.productCode === initialProduct.productCode) ||
+    const defaultSwatch = initialProduct.colorOptions?.find((c) => c.productCode === initialProduct.productCode) ||
       initialProduct.colorOptions?.[0];
-
+    lastActiveSwatchRef.current = defaultSwatch; // Sync ref
     setActiveSwatch(defaultSwatch);
     setActiveSize(initialProduct.sizeOptions?.[0]);
   }, [initialProduct]);
 
+  // Prevent fetching if the swatch is the same as the last one
   const fetchProductDetails = useCallback(async (productCode) => {
+    if (productCode === product?.productCode) return; // Avoid fetch if product is the same
     setLoading(true);
+    const currentScrollPos = window.scrollY;
+
     try {
       const command = new QueryCommand({
         TableName: TABLE_NAME,
@@ -79,6 +83,11 @@ const QuickView = ({ close, buttonTitle = 'Add to Bag', product: initialProduct 
 
         setActiveSwatch(newDefaultSwatch);
         setActiveSize(newProduct.sizeOptions?.[0]);
+
+        // Reapply scroll position after product update
+        setTimeout(() => {
+          window.scrollTo(0, currentScrollPos);
+        }, 0); // Delay scroll to prevent jump
       } else {
         console.warn('No item found for productCode:', productCode);
       }
@@ -87,7 +96,7 @@ const QuickView = ({ close, buttonTitle = 'Add to Bag', product: initialProduct 
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [product?.productCode]); // Dependency on productCode to refetch when it changes
 
   const handleAddToBag = async () => {
     const user = JSON.parse(localStorage.getItem('velvet_login_key') || '{}');
@@ -96,23 +105,24 @@ const QuickView = ({ close, buttonTitle = 'Add to Bag', product: initialProduct 
     await fetch(UPDATE_USER_SHOPPING_HISTORY, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ 
-        email, 
-        "updateType": {
-          "cartItems": {
-            "productCode": product.productCode,
-            "color": activeSwatch?.title,
-            "size": activeSize,
-            "qty": 1,
-            "action": "add"
-          }
-        }   
+      body: JSON.stringify({
+        email,
+        updateType: {
+          cartItems: {
+            productCode: product.productCode,
+            color: activeSwatch?.title,
+            size: activeSize,
+            qty: 1,
+            action: 'add',
+          },
+        },
       }),
     });
+
     const existingLoginKey = JSON.parse(localStorage.getItem('velvet_login_key')) || {};
     const updatedLoginKey = {
       ...existingLoginKey,
-      totalCartItems: existingLoginKey.totalCartItems + 1
+      totalCartItems: existingLoginKey.totalCartItems + 1,
     };
     localStorage.setItem('velvet_login_key', JSON.stringify(updatedLoginKey));
     window.dispatchEvent(new Event('cart-updated'));
@@ -125,6 +135,7 @@ const QuickView = ({ close, buttonTitle = 'Add to Bag', product: initialProduct 
   const handleColorChange = (swatch) => {
     if (swatch.productCode !== product?.productCode) {
       setActiveSwatch(swatch);
+      lastActiveSwatchRef.current = swatch; // Update the ref
       fetchProductDetails(swatch.productCode);
     }
   };
@@ -144,7 +155,7 @@ const QuickView = ({ close, buttonTitle = 'Add to Bag', product: initialProduct 
       </div>
       <div className={styles.contentContainer}>
         {loading ? (
-          <LuxuryLoader />
+          <LuxuryLoader type={"quickview"}/>
         ) : (
           <>
             <div className={styles.productContainer}>
@@ -162,18 +173,20 @@ const QuickView = ({ close, buttonTitle = 'Add to Bag', product: initialProduct 
                 swatchList={colorOptions}
                 activeSwatch={activeSwatch}
                 setActiveSwatch={handleColorChange}
+                onSwatchClick={handleColorChange}
               />
             </div>
 
             <div className={styles.sectionContainer}>
-            <SizeList
-              sizeList={product.sizeOptions}
-              activeSize={activeSize}
-              setActiveSize={setActiveSize}
-              category={product.category}
-              subCategory={product.subCategory}
-              productCode={product.productCode}
-            />
+              <SizeList
+                sizeList={product.sizeOptions}
+                activeSize={activeSize}
+                setActiveSize={setActiveSize}
+                category={product.category}
+                subCategory={product.subCategory}
+                productCode={product.productCode}
+                type={"quickview"}
+              />
             </div>
 
             <Button

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useRef } from 'react';
+import React, { useState, useEffect, useCallback, useRef, useLayoutEffect } from 'react';
 import * as styles from './dresses.module.css';
 
 import Banner from '../../../components/Banner';
@@ -12,15 +12,16 @@ import ProductCardGrid from '../../../components/ProductCardGrid';
 import Button from '../../../components/Button';
 import Config from '../../../config.json';
 import ColorMappings from '../../../../static/color_mappings.json';
+import LuxuryLoader from '../../../components/Loading/LuxuriousLoader';
 import { isAuth } from '../../../helpers/general';
 import { navigate } from 'gatsby';
-import LuxuryLoader from '../../../components/Loading/LuxuriousLoader';
 
 const ITEMS_PER_PAGE = 6;
 
 const DressesWomenPage = () => {
   const [showFilter, setShowFilter] = useState(false);
   const [allProducts, setAllProducts] = useState([]);
+  const [ready, setReady] = useState(false);
   const [allFilteredProducts, setAllFilteredProducts] = useState([]);
   const [visibleProducts, setVisibleProducts] = useState([]);
   const [totalCount, setTotalCount] = useState(0);
@@ -32,20 +33,17 @@ const DressesWomenPage = () => {
   const [filtering, setFiltering] = useState(false);
   const [filterVersion, setFilterVersion] = useState(0);
   const [showSortOptions, setShowSortOptions] = useState(false);
-  const [sortOption, setSortOption] = useState('');
+  const [sortOption, setSortOption] = useState(sessionStorage.getItem(`${window.location.pathname}_sortOption`) || ''); // Retrieve sort option from sessionStorage
   const sortRef = useRef(null);
   const LAMBDA_ENDPOINT = process.env.GATSBY_APP_GET_PRODUCT_DETAILS_FOR_USER;
+  const [loadMoreClicked, setLoadMoreClicked] = useState(false);
 
-  const restoreScroll = () => {
-    const scrollY = sessionStorage.getItem('dresses_scrollY');
-    if (scrollY) {
-      window.scrollTo(0, parseInt(scrollY));
-    }
+  const getLoadedItemCount = () => {
+    return parseInt(sessionStorage.getItem('dresses_loadedItemCount')) || ITEMS_PER_PAGE;
   };
 
   const fetchProducts = useCallback(async () => {
-   
-    const savedIndex = parseInt(sessionStorage.getItem('dresses_loadedItemCount')) || ITEMS_PER_PAGE;
+    const savedIndex = getLoadedItemCount();
 
     try {
       const user = JSON.parse(localStorage.getItem('velvet_login_key') || '{}');
@@ -54,11 +52,7 @@ const DressesWomenPage = () => {
       const response = await fetch(LAMBDA_ENDPOINT, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          email: email,
-          category: 'women',
-          subCategory: 'dresses',
-        }),
+        body: JSON.stringify({ email, category: 'women', subCategory: 'dresses' }),
       });
 
       const text = await response.text();
@@ -87,17 +81,35 @@ const DressesWomenPage = () => {
 
       setAllProducts(items);
       setTotalCount(items.length);
-      setAllFilteredProducts(items);
-
-      const loadedItems = items.slice(0, savedIndex);
-      setVisibleProducts(loadedItems);
-      setTimeout(restoreScroll, 0);
+      setAllFilteredProducts([]); // Start empty
+      setVisibleProducts([]);     // Start empty
+      setReady(true);             // Mark ready, but products show after filters
+      setFilterVersion(prev => prev + 1); 
     } catch (error) {
-      console.error('Error fetching women’s dresses from Lambda:', error);
+      console.error('Error fetching dresses from Lambda:', error);
     } finally {
       setLoading(false);
     }
   }, [LAMBDA_ENDPOINT]);
+
+  useEffect(() => {
+    if (loadMoreClicked) {
+      setLoadMoreClicked(false); // ✅ Reset after skipping restore once
+    }
+  }, [loadMoreClicked]);
+
+  // ✅ Restore scroll position per page
+  useLayoutEffect(() => {
+    if (ready && visibleProducts.length > 0 && !loadMoreClicked) {
+      const storageKey = `${window.location.pathname}_scrollY`;
+      const savedScrollY = sessionStorage.getItem(storageKey);
+      if (savedScrollY) {
+        window.scrollTo(0, parseInt(savedScrollY, 10));
+      } else {
+        window.scrollTo(0, 0);
+      }
+    }
+  }, [ready, visibleProducts.length]);
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -105,13 +117,13 @@ const DressesWomenPage = () => {
         setShowSortOptions(false);
       }
     };
-  
+
     if (showSortOptions) {
       document.addEventListener('mousedown', handleClickOutside);
     } else {
       document.removeEventListener('mousedown', handleClickOutside);
     }
-  
+
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
@@ -124,7 +136,9 @@ const DressesWomenPage = () => {
     }
     window.addEventListener('keydown', escapeHandler);
     fetchProducts();
-    return () => window.removeEventListener('keydown', escapeHandler);
+    return () => {
+      window.removeEventListener('keydown', escapeHandler);
+    };
   }, [fetchProducts]);
 
   const escapeHandler = (e) => {
@@ -132,6 +146,7 @@ const DressesWomenPage = () => {
   };
 
   const handleLoadMore = () => {
+    setLoadMoreClicked(true);
     const newCount = visibleProducts.length + ITEMS_PER_PAGE;
     const updated = allFilteredProducts.slice(0, newCount);
     setVisibleProducts(updated);
@@ -139,83 +154,117 @@ const DressesWomenPage = () => {
   };
 
   const handleSortChange = (option) => {
+    setLoadMoreClicked(true);
+    sessionStorage.setItem(`${window.location.pathname}_scrollY`, "0");
+    window.scrollTo(0, 0);
     setSortOption(option);
     setShowSortOptions(false);
+    sessionStorage.setItem(`${window.location.pathname}_sortOption`, option); // Store sort option in sessionStorage
+
     setFiltering(true);
-  
+
     setTimeout(() => {
       let sorted = [...allFilteredProducts];
-  
+
       if (option === 'lowToHigh') {
         sorted.sort((a, b) => (a.price || 0) - (b.price || 0));
       } else if (option === 'highToLow') {
         sorted.sort((a, b) => (b.price || 0) - (a.price || 0));
+      } else if (option === 'reset') {
+        applyFilters();
+        setFiltering(false);
+        return; 
       }
-  
+
+      const loadedCount = getLoadedItemCount();
       setAllFilteredProducts(sorted);
-      setVisibleProducts(sorted.slice(0, ITEMS_PER_PAGE));
+      setVisibleProducts(sorted.slice(0, loadedCount));
       setTotalCount(sorted.length);
       setFiltering(false);
+      setReady(true);
     }, 300);
   };
 
-  useEffect(() => {
-    const storeScroll = () => {
-      sessionStorage.setItem('dresses_scrollY', window.scrollY.toString());
-    };
-    window.addEventListener('scroll', storeScroll);
-    return () => window.removeEventListener('scroll', storeScroll);
+  const applySort = useCallback((productsToSort) => {
+    let sorted = [...productsToSort];
+    const option = sessionStorage.getItem(`${window.location.pathname}_sortOption`) || '';
+
+    if (option === 'lowToHigh') {
+      sorted.sort((a, b) => (a.price || 0) - (b.price || 0));
+    } else if (option === 'highToLow') {
+      sorted.sort((a, b) => (b.price || 0) - (a.price || 0));
+    } else {
+      return productsToSort; // No sort applied
+    }
+
+    return sorted;
   }, []);
 
   const applyFilters = useCallback(() => {
     setFiltering(true);
-  
     setTimeout(() => {
       let activeColors = savedFilters?.colors || [];
       let activeSizes = savedFilters?.sizes || [];
-  
+      let activeGenders = savedFilters?.genders || [];
+
       const filtered = allProducts.filter((product) => {
         const selectedColorTitle = product.colorOptions.find(opt => opt.productCode === product.productCode)?.title;
-  
+
         const matchesColor = (() => {
           if (activeColors.length === 0) return true;
-  
+
           return activeColors.some((selectedColor) => {
             const mappedTitles = ColorMappings[selectedColor] || [];
             return mappedTitles.includes(selectedColorTitle);
           });
         })();
-  
+
         const matchesSize = (() => {
           if (activeSizes.length === 0) return true;
-  
+
           return product.sizeOptions.some((size) =>
             activeSizes.some(
               (selectedSize) => selectedSize.toLowerCase() === size.toLowerCase()
             )
           );
         })();
-  
-        return matchesColor && matchesSize;
+
+        const matchesGender = (() => {
+          if (activeGenders.length === 0) return true;
+
+          let productGender = (product.gender || product.category || '').toLowerCase();
+
+          return activeGenders.some(
+            (selectedGender) => selectedGender.toLowerCase() === productGender
+          );
+        })();
+
+        return matchesColor && matchesSize && matchesGender;
       });
-  
-      setAllFilteredProducts(filtered);
-      setVisibleProducts(filtered.slice(0, ITEMS_PER_PAGE));
-      setTotalCount(filtered.length);
+
+      const savedIndex = getLoadedItemCount();
+      const sortedFiltered = applySort(filtered);
+      setAllFilteredProducts(sortedFiltered);
+      setVisibleProducts(sortedFiltered.slice(0, savedIndex));
+      setTotalCount(sortedFiltered.length);
       setFiltering(false);
     }, 500);
   }, [allProducts, savedFilters]);
 
   useEffect(() => {
-      applyFilters();
-    }, [allProducts, applyFilters, filterVersion]);
-  
+    const savedSort = sessionStorage.getItem(`${window.location.pathname}_sortOption`) || '';
+    setSortOption(savedSort);
+    applyFilters();
+  }, [allProducts, applyFilters, filterVersion]);
+
   const handleFilterChange = (newFilters) => {
+    setLoadMoreClicked(true);
+    sessionStorage.setItem(`${window.location.pathname}_scrollY`, "0");
     if (!newFilters || typeof newFilters !== 'object') {
       console.error("Invalid filters provided:", newFilters);
       return;
     }
-  
+
     const storageKey = "velvet_login_key.filters.women.dresses";
     localStorage.setItem(storageKey, JSON.stringify(newFilters));
     setSavedFilters(newFilters);
@@ -225,28 +274,29 @@ const DressesWomenPage = () => {
   const handleRemoveFilter = (filterCategory, filterName) => {  
     const storageKeySimple = "velvet_login_key.filters.women.dresses";
     let updatedFilters = { ...savedFilters };
-  
+
     const categoryMap = {
       color: "colors",
-      size: "sizes"
+      size: "sizes",
+      gender: "genders"
     };
-  
+
     const savedKey = categoryMap[filterCategory];
-  
+
     if (savedKey && updatedFilters[savedKey]) {
       updatedFilters[savedKey] = updatedFilters[savedKey].filter(
         item => item.toLowerCase() !== filterName.toLowerCase()
       );
     }
-  
+
     localStorage.setItem(storageKeySimple, JSON.stringify(updatedFilters));
-  
+
     setSavedFilters(updatedFilters);
     setFilterVersion(prev => prev + 1);
-  
+
     const userObj = JSON.parse(localStorage.getItem('velvet_login_key') || '{}');
     const detailedFilters = userObj.filters?.women?.dresses || [];
-  
+
     detailedFilters.forEach((filterCategoryObj) => {
       if (filterCategoryObj.category.toLowerCase().includes(filterCategory.toLowerCase())) {
         filterCategoryObj.items.forEach((item) => {
@@ -256,29 +306,25 @@ const DressesWomenPage = () => {
         });
       }
     });
-  
+
     if (!userObj.filters) userObj.filters = {};
     if (!userObj.filters.women) userObj.filters.women = {};
     userObj.filters.women.dresses = detailedFilters;
-  
+
     localStorage.setItem('velvet_login_key', JSON.stringify(userObj));
   };
 
   return (
     <Layout>
       <div className={styles.root}>
-        {loading || filtering ? (
+        {!ready ? (
           <LuxuryLoader />
         ) : (
           <>
             <Container size={'large'} spacing={'min'}>
               <div className={styles.breadcrumbContainer}>
                 <Breadcrumbs
-                  crumbs={[
-                    { link: '/', label: 'Home' },
-                    { link: '/shop/women', label: 'Women' },
-                    { label: 'Dresses' },
-                  ]}
+                  crumbs={[{ link: '/', label: 'Home' }, { link: '/shop/women', label: 'Women' }, { label: 'Dresses' }]}
                 />
               </div>
             </Container>
@@ -286,7 +332,7 @@ const DressesWomenPage = () => {
               maxWidth={'650px'}
               name={`Women's Dresses`}
               subtitle={
-                'Look to our Women’s Dresses for modern takes on one-and-done dressing. From midis in bold prints to dramatic floor-sweeping styles and easy all-in-ones, our edit covers every mood.'
+                "Look to our Women’s Dresses for modern takes on one-and-done dressing. From midis in bold prints to dramatic floor-sweeping styles and easy all-in-ones, our edit covers every mood."
               }
             />
             <Container size={'large'} spacing={'min'}>
@@ -332,12 +378,17 @@ const DressesWomenPage = () => {
                       >
                         Price: High → Low
                       </div>
+                      <div
+                        className={styles.sortOption}
+                        role="presentation"
+                        onClick={() => handleSortChange('reset')}
+                      >
+                        Reset
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
-              
-              {/* Displaying the chips for active filters */}
               <div className={styles.chipsContainer}>
                 {['colors', 'sizes', 'genders'].map((categoryKey) => 
                   (savedFilters[categoryKey] || []).map((filterName) => (
@@ -371,7 +422,7 @@ const DressesWomenPage = () => {
                 <span className={styles.mobileItemCount}>
                   {visibleProducts.length}/{totalCount} items
                 </span>
-                <ProductCardGrid data={visibleProducts} />
+                <ProductCardGrid data={visibleProducts} scrollKey={`${window.location.pathname}_scrollY`}/>
               </div>
               {visibleProducts.length < totalCount && (
                 <div className={styles.loadMoreContainer}>

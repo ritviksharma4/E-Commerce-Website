@@ -59,7 +59,7 @@ const MiniCart = () => {
     }, 0);
   };
 
-  if (loading) return <LuxuryLoader />;
+  if (loading) return <LuxuryLoader type={"quickview"}/>;
 
   const isCartEmpty = cartItems.length === 0;
 
