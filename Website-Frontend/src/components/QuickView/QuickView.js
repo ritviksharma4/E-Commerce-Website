@@ -1,6 +1,4 @@
 import React, { useState, useContext, useEffect, useRef, useCallback } from 'react';
-import { DynamoDBClient, QueryCommand } from '@aws-sdk/client-dynamodb';
-import { fromCognitoIdentityPool } from '@aws-sdk/credential-provider-cognito-identity';
 import Button from '../Button';
 import CurrencyFormatter from '../CurrencyFormatter';
 import SizeList from '../SizeList';
@@ -8,39 +6,29 @@ import SwatchList from '../SwatchList';
 import LuxuryLoader from '../../components/Loading/LuxuriousLoader';
 import AddItemNotificationContext from '../../context/AddItemNotificationProvider';
 import * as styles from './QuickView.module.css';
-import { toOptimizedImage } from '../../helpers/general';
-import { unmarshall } from '@aws-sdk/util-dynamodb';
-import { isAuth } from '../../helpers/general';
+import { toOptimizedImage, isAuth } from '../../helpers/general';
 
 const REGION = process.env.GATSBY_APP_AWS_REGION;
 const IDENTITY_POOL_ID = process.env.GATSBY_APP_COGNITO_IDENTITY_POOL_ID;
 const TABLE_NAME = process.env.GATSBY_APP_DYNAMODB_TABLE;
 const S3_BUCKET = process.env.GATSBY_APP_S3_BUCKET_NAME;
 
-const client = new DynamoDBClient({
-  region: REGION,
-  credentials: fromCognitoIdentityPool({
-    clientConfig: { region: REGION },
-    identityPoolId: IDENTITY_POOL_ID,
-  }),
-});
-
 const QuickView = ({ close, buttonTitle = 'Add to Bag', product: initialProduct }) => {
   const ctxAddItemNotification = useContext(AddItemNotificationContext);
   const showNotification = ctxAddItemNotification.showNotification;
   const UPDATE_USER_SHOPPING_HISTORY = process.env.GATSBY_APP_UPDATE_SHOPPING_HISTORY_FOR_USER;
-
+  console.log(`Initial Product: ${JSON.stringify(initialProduct)}`);
   const [product, setProduct] = useState(initialProduct);
   const [loading, setLoading] = useState(false);
   const [activeSize, setActiveSize] = useState(initialProduct?.sizeOptions?.[0]);
 
-  // Ref to hold last active swatch for comparison and prevent unnecessary re-renders
   const lastActiveSwatchRef = useRef();
 
   const [activeSwatch, setActiveSwatch] = useState(() => {
-    const defaultSwatch = initialProduct?.colorOptions?.find((c) => c.productCode === initialProduct?.productCode) ||
+    const defaultSwatch =
+      initialProduct?.colorOptions?.find((c) => c.productCode === initialProduct?.productCode) ||
       initialProduct?.colorOptions?.[0];
-    lastActiveSwatchRef.current = defaultSwatch; // Initialize ref
+    lastActiveSwatchRef.current = defaultSwatch;
     return defaultSwatch;
   });
 
@@ -49,20 +37,46 @@ const QuickView = ({ close, buttonTitle = 'Add to Bag', product: initialProduct 
 
     setProduct(initialProduct);
 
-    const defaultSwatch = initialProduct.colorOptions?.find((c) => c.productCode === initialProduct.productCode) ||
+    const defaultSwatch =
+      initialProduct.colorOptions?.find((c) => c.productCode === initialProduct.productCode) ||
       initialProduct.colorOptions?.[0];
-    lastActiveSwatchRef.current = defaultSwatch; // Sync ref
+    lastActiveSwatchRef.current = defaultSwatch;
     setActiveSwatch(defaultSwatch);
     setActiveSize(initialProduct.sizeOptions?.[0]);
   }, [initialProduct]);
 
-  // Prevent fetching if the swatch is the same as the last one
   const fetchProductDetails = useCallback(async (productCode) => {
-    if (productCode === product?.productCode) return; // Avoid fetch if product is the same
+    if (productCode === product?.productCode) return;
     setLoading(true);
+
+    // Protect against SSR build (no window)
+    if (typeof window === 'undefined') {
+      setLoading(false);
+      return;
+    }
+
     const currentScrollPos = window.scrollY;
 
     try {
+      // Dynamically import AWS SDK modules at runtime (client-only)
+      const [
+        { DynamoDBClient, QueryCommand },
+        { fromCognitoIdentityPool },
+        { unmarshall }
+      ] = await Promise.all([
+        import('@aws-sdk/client-dynamodb'),
+        import('@aws-sdk/credential-provider-cognito-identity'),
+        import('@aws-sdk/util-dynamodb'),
+      ]);
+
+      const client = new DynamoDBClient({
+        region: REGION,
+        credentials: fromCognitoIdentityPool({
+          clientConfig: { region: REGION },
+          identityPoolId: IDENTITY_POOL_ID,
+        }),
+      });
+
       const command = new QueryCommand({
         TableName: TABLE_NAME,
         KeyConditionExpression: 'productCode = :productCode',
@@ -75,6 +89,7 @@ const QuickView = ({ close, buttonTitle = 'Add to Bag', product: initialProduct 
       if (response.Items && response.Items.length > 0) {
         const newProduct = unmarshall(response.Items[0]);
         newProduct.imageUrl = `https://${S3_BUCKET}.s3.${REGION}.amazonaws.com/${newProduct.category}/${newProduct.subCategory}/${newProduct.productCode}/display.jpg`;
+
         setProduct(newProduct);
 
         const newDefaultSwatch =
@@ -84,10 +99,9 @@ const QuickView = ({ close, buttonTitle = 'Add to Bag', product: initialProduct 
         setActiveSwatch(newDefaultSwatch);
         setActiveSize(newProduct.sizeOptions?.[0]);
 
-        // Reapply scroll position after product update
         setTimeout(() => {
           window.scrollTo(0, currentScrollPos);
-        }, 0); // Delay scroll to prevent jump
+        }, 0);
       } else {
         console.warn('No item found for productCode:', productCode);
       }
@@ -96,7 +110,7 @@ const QuickView = ({ close, buttonTitle = 'Add to Bag', product: initialProduct 
     } finally {
       setLoading(false);
     }
-  }, [product?.productCode]); // Dependency on productCode to refetch when it changes
+  }, [product?.productCode]);
 
   const handleAddToBag = async () => {
     const user = JSON.parse(localStorage.getItem('velvet_login_key') || '{}');
@@ -122,7 +136,7 @@ const QuickView = ({ close, buttonTitle = 'Add to Bag', product: initialProduct 
     const existingLoginKey = JSON.parse(localStorage.getItem('velvet_login_key')) || {};
     const updatedLoginKey = {
       ...existingLoginKey,
-      totalCartItems: existingLoginKey.totalCartItems + 1,
+      totalCartItems: (existingLoginKey.totalCartItems || 0) + 1,
     };
     localStorage.setItem('velvet_login_key', JSON.stringify(updatedLoginKey));
     window.dispatchEvent(new Event('cart-updated'));
@@ -135,7 +149,7 @@ const QuickView = ({ close, buttonTitle = 'Add to Bag', product: initialProduct 
   const handleColorChange = (swatch) => {
     if (swatch.productCode !== product?.productCode) {
       setActiveSwatch(swatch);
-      lastActiveSwatchRef.current = swatch; // Update the ref
+      lastActiveSwatchRef.current = swatch;
       fetchProductDetails(swatch.productCode);
     }
   };
@@ -155,7 +169,7 @@ const QuickView = ({ close, buttonTitle = 'Add to Bag', product: initialProduct 
       </div>
       <div className={styles.contentContainer}>
         {loading ? (
-          <LuxuryLoader type={"quickview"}/>
+          <LuxuryLoader type={"quickview"} />
         ) : (
           <>
             <div className={styles.productContainer}>

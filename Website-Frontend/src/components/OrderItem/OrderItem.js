@@ -111,7 +111,7 @@ const OrderItem = (props) => {
                   />
                 </div>
                 <div>
-                  <span className={styles.itemName}>{item.productCode}</span>
+                  <span className={styles.itemName}>{item.name}</span>
                   <div className={styles.orderItemMeta}>
                     <span className={styles.itemQuantity}>Qty: {qty}</span>
                     <span className={styles.itemQuantity}>Size: {item.size.toUpperCase()}</span>

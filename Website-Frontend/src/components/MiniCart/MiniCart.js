@@ -76,7 +76,15 @@ const MiniCart = () => {
               <p>Looks like your bag is feeling light — time to indulge in something exquisite.</p>
             </div>
             <Button 
-              onClick={() => navigate('/')} 
+              onClick={() => {
+                if (window.location.pathname === '/') {
+                  window.scrollTo({ top: 0, behavior: 'smooth' });
+                  // Add a timeout to allow scroll before unmounting
+                  setTimeout(() => window.location.reload(), 200);
+                } else {
+                  navigate('/');
+                }
+              }}
               level={'primary'} 
               fullWidth 
               className={styles.discoverBtn}
@@ -112,7 +120,18 @@ const MiniCart = () => {
               checkout
             </Button>
             <div className={styles.linkContainer}>
-              <Link to="/">continue shopping</Link>
+              <Link
+                to="/"
+                onClick={(e) => {
+                  if (window.location.pathname === '/') {
+                    e.preventDefault();
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                    setTimeout(() => window.location.reload(), 200);
+                  }
+                }}
+              >
+                continue shopping
+              </Link>
             </div>
           </div>
         </div>

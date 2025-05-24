@@ -12,7 +12,7 @@ import Layout from '../components/Layout/Layout';
 import FormInputField from '../components/FormInputField/FormInputField';
 import Button from '../components/Button';
 
-const SignupPage = (props) => {
+const SignupPage = () => {
   const initialState = {
     firstName: '',
     lastName: '',
@@ -31,8 +31,7 @@ const SignupPage = (props) => {
   const [errorForm, setErrorForm] = useState(errorState);
 
   const handleChange = (id, e) => {
-    const tempForm = { ...signupForm, [id]: e };
-    setSignupForm(tempForm);
+    setSignupForm(prev => ({ ...prev, [id]: e }));
   };
 
   const handleSubmit = (e) => {
@@ -40,32 +39,34 @@ const SignupPage = (props) => {
     let validForm = true;
     const tempError = { ...errorState };
 
-    if (isEmpty(signupForm.firstName) === true) {
+    if (isEmpty(signupForm.firstName)) {
       tempError.firstName = 'Field required';
       validForm = false;
     }
 
-    if (isEmpty(signupForm.lastName) === true) {
+    if (isEmpty(signupForm.lastName)) {
       tempError.lastName = 'Field required';
       validForm = false;
     }
 
-    if (validateEmail(signupForm.email) !== true) {
+    if (!validateEmail(signupForm.email)) {
       tempError.email =
         'Please use a valid email address, such as user@example.com.';
       validForm = false;
     }
 
-    if (validateStrongPassword(signupForm.password) !== true) {
+    if (!validateStrongPassword(signupForm.password)) {
       tempError.password =
         'Password must have at least 8 characters, 1 lowercase, 1 uppercase and 1 numeric character.';
       validForm = false;
     }
 
-    if (validForm === true) {
+    if (validForm) {
       setErrorForm(errorState);
+      if (typeof window !== 'undefined') {
+        window.localStorage.setItem('key', 'sampleToken');
+      }
       navigate('/accountSuccess');
-      window.localStorage.setItem('key', 'sampleToken');
     } else {
       setErrorForm(tempError);
     }
@@ -82,53 +83,53 @@ const SignupPage = (props) => {
           <form
             noValidate
             className={styles.signupForm}
-            onSubmit={(e) => handleSubmit(e)}
+            onSubmit={handleSubmit}
           >
             <FormInputField
-              id={'firstName'}
+              id="firstName"
               value={signupForm.firstName}
-              handleChange={(id, e) => handleChange(id, e)}
-              type={'input'}
-              labelName={'First Name'}
+              handleChange={handleChange}
+              type="input"
+              labelName="First Name"
               error={errorForm.firstName}
             />
 
             <FormInputField
-              id={'lastName'}
+              id="lastName"
               value={signupForm.lastName}
-              handleChange={(id, e) => handleChange(id, e)}
-              type={'input'}
-              labelName={'Last Name'}
+              handleChange={handleChange}
+              type="input"
+              labelName="Last Name"
               error={errorForm.lastName}
             />
 
             <FormInputField
-              id={'email'}
+              id="email"
               value={signupForm.email}
-              handleChange={(id, e) => handleChange(id, e)}
-              type={'email'}
-              labelName={'Email'}
+              handleChange={handleChange}
+              type="email"
+              labelName="Email"
               error={errorForm.email}
             />
 
             <FormInputField
-              id={'password'}
+              id="password"
               value={signupForm.password}
-              handleChange={(id, e) => handleChange(id, e)}
-              type={'password'}
-              labelName={'Password'}
+              handleChange={handleChange}
+              type="password"
+              labelName="Password"
               error={errorForm.password}
             />
 
-            <Button fullWidth type={'submit'} level={'primary'}>
+            <Button fullWidth type="submit" level="primary">
               create account
             </Button>
             <span className={styles.reminder}>Have an account?</span>
             <Button
-              type={'button'}
+              type="button"
               onClick={() => navigate('/login')}
               fullWidth
-              level={'secondary'}
+              level="secondary"
             >
               log in
             </Button>

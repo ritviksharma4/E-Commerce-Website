@@ -52,17 +52,19 @@ const LoginPage = () => {
       setErrorForm(errorState);
 
       if (loginForm.email !== 'error@example.com') {
-
-        const existingLoginKey = JSON.parse(localStorage.getItem('velvet_login_key')) || {};
-        const updatedLoginKey = {
-          ...existingLoginKey,
-          timestamp: new Date().getTime()
-        };
-        localStorage.setItem('velvet_login_key', JSON.stringify(updatedLoginKey));
-
-        navigate('/account');
+        if (typeof window !== 'undefined') {
+          const existingLoginKey = JSON.parse(localStorage.getItem('velvet_login_key')) || {};
+          const updatedLoginKey = {
+            ...existingLoginKey,
+            timestamp: new Date().getTime(),
+          };
+          localStorage.setItem('velvet_login_key', JSON.stringify(updatedLoginKey));
+        }
+        navigate('/');
       } else {
-        window.scrollTo(0, 0);
+        if (typeof window !== 'undefined') {
+          window.scrollTo(0, 0);
+        }
         setErrorMessage('There is no such account associated with this email address');
       }
     } else {
@@ -72,6 +74,8 @@ const LoginPage = () => {
   };
 
   const isLoginKeyValid = () => {
+    if (typeof window === 'undefined') return false;
+
     const loginKey = JSON.parse(localStorage.getItem('velvet_login_key'));
     if (loginKey) {
       const currentTime = new Date().getTime();
@@ -94,21 +98,23 @@ const LoginPage = () => {
       const lambdaUrl = process.env.GATSBY_APP_GET_GUEST_LOGIN_ENDPOINT;
       const response = await fetch(lambdaUrl);
       const data = await response.json();
-  
+
       if (data.email) {
         setLoginForm({ email: data.email, password: data.password });
         setHasUsedGuestLogin(true);
-  
-        const loginKey = {
-          timestamp: new Date().getTime(),
-          email: data.email,
-          addresses: data.addresses || [],
-          firstName: data.firstName || '',
-          lastName: data.lastName || '',
-          totalCartItems: data.totalCartItems || 0
-        };
-  
-        localStorage.setItem('velvet_login_key', JSON.stringify(loginKey));
+
+        if (typeof window !== 'undefined') {
+          const loginKey = {
+            timestamp: new Date().getTime(),
+            email: data.email,
+            addresses: data.addresses || [],
+            firstName: data.firstName || '',
+            lastName: data.lastName || '',
+            totalCartItems: data.totalCartItems || 0,
+          };
+
+          localStorage.setItem('velvet_login_key', JSON.stringify(loginKey));
+        }
       } else if (data.waitTime) {
         setWaitTime(data.waitTime);
         setIsWaiting(true);
@@ -121,7 +127,6 @@ const LoginPage = () => {
       setIsGuestLoginLoading(false);
     }
   };
-  
 
   useEffect(() => {
     if (timeLeft === 0) {
@@ -132,7 +137,7 @@ const LoginPage = () => {
   }, [timeLeft, stopCountdown]);
 
   useEffect(() => {
-    if (!isLoginKeyValid()) {
+    if (typeof window !== 'undefined' && !isLoginKeyValid()) {
       navigate('/login');
     }
   }, []);

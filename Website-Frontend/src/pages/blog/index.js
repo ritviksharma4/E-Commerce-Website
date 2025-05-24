@@ -11,12 +11,14 @@ import * as styles from './index.module.css';
 import { toOptimizedImage } from '../../helpers/general';
 
 const BlogPage = () => {
+  const [isClient, setIsClient] = useState(false);
   const [allBlogs, setAllBlogs] = useState([]); 
   const [filteredBlogs, setFilteredBlogs] = useState([]); 
   const [activeCategory, setActiveCategory] = useState('all'); 
   const [loading, setLoading] = useState(true); 
 
   useEffect(() => {
+    setIsClient(true); // ensures client-side rendering
     const fetchBlogs = async () => {
       try {
         setLoading(true); // Start loading
@@ -64,7 +66,7 @@ const BlogPage = () => {
 
   return (
     <Layout disablePaddingBottom>
-      {loading ? (
+      {loading || !isClient ? (
         <LuxuryLoader />
       ) : (   
         <div className={styles.root}>

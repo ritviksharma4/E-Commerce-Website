@@ -16,25 +16,35 @@ import * as styles from './cart.module.css';
 const CartPage = () => {
   const [cartItems, setCartItems] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [email, setEmail] = useState(null);
 
   const GET_LAMBDA_ENDPOINT = process.env.GATSBY_APP_GET_SHOPPING_HISTORY_FOR_USER;
   const UPDATE_LAMBDA_ENDPOINT = process.env.GATSBY_APP_UPDATE_SHOPPING_HISTORY_FOR_USER;
 
-  const email = JSON.parse(localStorage.getItem('velvet_login_key'))?.email;
-
+  // Get email safely on client side
   useEffect(() => {
+    if (typeof window === 'undefined') return;
+
+    const storedUser = localStorage.getItem('velvet_login_key');
+    const user = storedUser ? JSON.parse(storedUser) : null;
+    const userEmail = user?.email || null;
+    setEmail(userEmail);
+
     if (!isAuth()) {
       navigate('/login');
       return;
     }
+  }, []);
+
+  // Fetch cart items once email is available
+  useEffect(() => {
+    if (!email) return;
 
     const fetchCartItems = async () => {
       try {
         const response = await fetch(GET_LAMBDA_ENDPOINT, {
           method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
+          headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             email,
             requestType: 'cartItems',
@@ -54,12 +64,12 @@ const CartPage = () => {
   }, [GET_LAMBDA_ENDPOINT, email]);
 
   const handleUpdateQty = async (productCode, color, size, newQty) => {
+    if (!email) return;
+
     try {
       const response = await fetch(UPDATE_LAMBDA_ENDPOINT, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           email,
           updateType: {
@@ -82,12 +92,15 @@ const CartPage = () => {
 
   const isCartEmpty = cartItems.length === 0;
 
-  return loading ? (
-    <LuxuryLoader />
-  ) : (
+  if (loading) {
+    return <LuxuryLoader />;
+  }
+
+  return (
     <div>
       <div className={styles.contentContainer}>
         <Container size={'large'} spacing={'min'}>
+          {/* Header */}
           <div className={styles.headerContainer}>
             <div className={styles.shoppingContainer}>
               <Link className={styles.shopLink} to={'/'}>
@@ -97,12 +110,11 @@ const CartPage = () => {
             </div>
             <Brand />
             <div className={styles.loginContainer}>
-              <Link to={isAuth() ? '/account/orders/' : '/login'}>
-                Your Account
-              </Link>
+              <Link to={isAuth() ? '/account/orders/' : '/login'}>Your Account</Link>
             </div>
           </div>
 
+          {/* Cart summary */}
           <div className={styles.summaryContainer}>
             <h3>My Bag</h3>
             <div className={styles.cartContainer}>
@@ -110,12 +122,14 @@ const CartPage = () => {
                 {isCartEmpty ? (
                   <div className={styles.emptyCartWrapper}>
                     <div className={styles.emptyCartPlaceholder}>
-                      <p>It appears your bag is empty — discover timeless pieces crafted just for you.</p>
+                      <p>
+                        It appears your bag is empty — discover timeless pieces crafted just for you.
+                      </p>
                     </div>
-                    <Button 
-                      onClick={() => navigate('/')} 
-                      level={'primary'} 
-                      fullWidth 
+                    <Button
+                      onClick={() => navigate('/')}
+                      level={'primary'}
+                      fullWidth
                       className={styles.discoverBtn}
                     >
                       Discover Collection
@@ -142,11 +156,7 @@ const CartPage = () => {
                   ))
                 )}
               </div>
-              <OrderSummary 
-                cartItems={cartItems} 
-                setLoading={setLoading} 
-                disableCheckout={isCartEmpty} 
-              />
+              <OrderSummary cartItems={cartItems} setLoading={setLoading} disableCheckout={isCartEmpty} />
             </div>
           </div>
         </Container>

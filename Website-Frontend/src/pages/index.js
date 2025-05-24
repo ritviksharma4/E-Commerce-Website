@@ -48,9 +48,7 @@ const IndexPage = () => {
   };
 
   const handleArticleClick = (blog) => {
-      console.log("111111111111")
       setLoading(true);
-      console.log("In handle Article Click for main page: ", blog)
       navigate(`/blog/${blog.urlPath}/`);
   };
 

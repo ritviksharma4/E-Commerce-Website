@@ -30,9 +30,9 @@ const Header = (prop) => {
   const searchRef = createRef();
   const bannerMessage = 'Free Shipping Worldwide!';
   const searchSuggestions = [
-    'Oversize sweaters',
-    'Lama Pajamas',
-    'Candles Cinnamon',
+    'Medium Sized Green Shirt For Men',
+    'Black Dresses for Women',
+    'Unisex Shoes',
   ];
 
   const handleHover = (navObject) => {
@@ -48,7 +48,8 @@ const Header = (prop) => {
 
   const handleSearch = (e) => {
     e.preventDefault();
-    navigate(`/search?q=${search}`);
+    navigate(`/search?q=${encodeURIComponent(search)}`);
+    setSearch("");
     setShowSearch(false);
   };
 
@@ -204,7 +205,7 @@ const Header = (prop) => {
                 role={'presentation'}
                 onClick={() => {
                   setShowSearch(false);
-                  navigate(`/search?q=${suggestion}`);
+                  navigate(`/search?q=${encodeURIComponent(suggestion)}`);
                 }}
                 key={index}
                 className={styles.suggestion}

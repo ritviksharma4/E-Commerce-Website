@@ -7,17 +7,11 @@ import Button from '../../components/Button';
 import Breadcrumbs from '../../components/Breadcrumbs';
 import FormInputField from '../../components/FormInputField';
 import Layout from '../../components/Layout/Layout';
+import LuxuryLoader from '../../components/Loading/LuxuriousLoader';
 
-import {
-  validateStrongPassword,
-  isAuth,
-} from '../../helpers/general';
+import { validateStrongPassword, isAuth } from '../../helpers/general';
 
 const SettingsPage = () => {
-  if (isAuth() === false) {
-    navigate('/login');
-  }
-
   const initialState = {
     firstName: '',
     lastName: '',
@@ -36,16 +30,25 @@ const SettingsPage = () => {
 
   const [updateForm, setUpdateForm] = useState(initialState);
   const [error, setError] = useState(errorState);
-
+  const [isClient, setIsClient] = useState(false);
   useEffect(() => {
-    const loginData = JSON.parse(localStorage.getItem('velvet_login_key'));
-    if (loginData) {
-      setUpdateForm((prev) => ({
-        ...prev,
-        firstName: loginData.firstName || '',
-        lastName: loginData.lastName || '',
-        email: loginData.email || '',
-      }));
+    if (typeof window !== 'undefined') {
+      if (!isAuth()) {
+        navigate('/login');
+        return;
+      }
+
+      const loginData = JSON.parse(localStorage.getItem('velvet_login_key'));
+      if (loginData) {
+        setUpdateForm((prev) => ({
+          ...prev,
+          firstName: loginData.firstName || '',
+          lastName: loginData.lastName || '',
+          email: loginData.email || '',
+        }));
+      }
+
+      setIsClient(true);
     }
   }, []);
 
@@ -86,71 +89,75 @@ const SettingsPage = () => {
 
   return (
     <Layout>
-      <AccountLayout>
-        <Breadcrumbs
-          crumbs={[
-            { link: '/', label: 'Home' },
-            { link: '/account', label: 'Account' },
-            { link: '/account/settings', label: 'Settings' },
-          ]}
-        />
-        <h1>Settings (UI Purposes Only!)</h1>
-        <div>
-          <form onSubmit={(e) => handleSubmit(e)} noValidate>
-            <div className={styles.nameSection}>
-              <FormInputField
-                id={'firstName'}
-                value={updateForm.firstName}
-                handleChange={(id, e) => handleChange(id, e)}
-                type={'input'}
-                labelName={'First Name'}
-                readOnly
-              />
-              <FormInputField
-                id={'lastName'}
-                value={updateForm.lastName}
-                handleChange={(id, e) => handleChange(id, e)}
-                type={'input'}
-                labelName={'Last Name'}
-                readOnly
-              />
-              <FormInputField
-                id={'email'}
-                value={updateForm.email}
-                handleChange={(id, e) => handleChange(id, e)}
-                type={'email'}
-                labelName={'Email'}
-                error={error.email}
-                readOnly
-              />
-            </div>
-            <div className={styles.passwordContainer}>
-              <h2>Change Password</h2>
-              <div className={styles.passwordSection}>
+      {!isClient ? (
+        <LuxuryLoader />
+      ) : (
+        <AccountLayout>
+          <Breadcrumbs
+            crumbs={[
+              { link: '/', label: 'Home' },
+              { link: '/account', label: 'Account' },
+              { link: '/account/settings', label: 'Settings' },
+            ]}
+          />
+          <h1>Settings (UI Purposes Only!)</h1>
+          <div>
+            <form onSubmit={(e) => handleSubmit(e)} noValidate>
+              <div className={styles.nameSection}>
                 <FormInputField
-                  id={'password'}
-                  value={updateForm.password}
+                  id={'firstName'}
+                  value={updateForm.firstName}
                   handleChange={(id, e) => handleChange(id, e)}
-                  type={'password'}
-                  labelName={'New Password'}
-                  error={error.password}
+                  type={'input'}
+                  labelName={'First Name'}
+                  readOnly
                 />
                 <FormInputField
-                  id={'confirmPassword'}
-                  value={updateForm.confirmPassword}
+                  id={'lastName'}
+                  value={updateForm.lastName}
                   handleChange={(id, e) => handleChange(id, e)}
-                  type={'password'}
-                  labelName={'Confirm Password'}
-                  error={error.confirmPassword}
+                  type={'input'}
+                  labelName={'Last Name'}
+                  readOnly
                 />
-                <Button level={'primary'} type={'submit'}>
-                  update
-                </Button>
+                <FormInputField
+                  id={'email'}
+                  value={updateForm.email}
+                  handleChange={(id, e) => handleChange(id, e)}
+                  type={'email'}
+                  labelName={'Email'}
+                  error={error.email}
+                  readOnly
+                />
               </div>
-            </div>
-          </form>
-        </div>
-      </AccountLayout>
+              <div className={styles.passwordContainer}>
+                <h2>Change Password</h2>
+                <div className={styles.passwordSection}>
+                  <FormInputField
+                    id={'password'}
+                    value={updateForm.password}
+                    handleChange={(id, e) => handleChange(id, e)}
+                    type={'password'}
+                    labelName={'New Password'}
+                    error={error.password}
+                  />
+                  <FormInputField
+                    id={'confirmPassword'}
+                    value={updateForm.confirmPassword}
+                    handleChange={(id, e) => handleChange(id, e)}
+                    type={'password'}
+                    labelName={'Confirm Password'}
+                    error={error.confirmPassword}
+                  />
+                  <Button level={'primary'} type={'submit'}>
+                    update
+                  </Button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </AccountLayout>
+      )}
     </Layout>
   );
 };

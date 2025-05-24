@@ -19,6 +19,7 @@ import { navigate } from 'gatsby';
 const ITEMS_PER_PAGE = 6;
 
 const HeelsSandalsFootwearPage = () => {
+  const [isClient, setIsClient] = useState(false);
   const [showFilter, setShowFilter] = useState(false);
   const [allProducts, setAllProducts] = useState([]);
   const [ready, setReady] = useState(false);
@@ -26,17 +27,31 @@ const HeelsSandalsFootwearPage = () => {
   const [visibleProducts, setVisibleProducts] = useState([]);
   const [totalCount, setTotalCount] = useState(0);
   const [loading, setLoading] = useState(true);
-  const [savedFilters, setSavedFilters] = useState(() => {
-    const storageKey = "velvet_login_key.filters.footwear.heelsAndSandals";
-    return JSON.parse(localStorage.getItem(storageKey)) || {};
-  });
+  const [savedFilters, setSavedFilters] = useState({});
   const [filtering, setFiltering] = useState(false);
   const [filterVersion, setFilterVersion] = useState(0);
   const [showSortOptions, setShowSortOptions] = useState(false);
-  const [sortOption, setSortOption] = useState(sessionStorage.getItem(`${window.location.pathname}_sortOption`) || ''); // Retrieve sort option from sessionStorage
+  const [sortOption, setSortOption] = useState("");
   const sortRef = useRef(null);
   const LAMBDA_ENDPOINT = process.env.GATSBY_APP_GET_PRODUCT_DETAILS_FOR_USER;
   const [loadMoreClicked, setLoadMoreClicked] = useState(false);
+
+  // On mount, read localStorage and sessionStorage safely
+  useEffect(() => {
+    setIsClient(true); // ensures client-side rendering
+    if (typeof window !== 'undefined') {
+      const storageKey = "velvet_login_key.filters.footwear.heelsAndSandals";
+      try {
+        const storedFilters = JSON.parse(localStorage.getItem(storageKey)) || {};
+        setSavedFilters(storedFilters);
+      } catch {
+        setSavedFilters({});
+      }
+
+      const savedSortOption = sessionStorage.getItem(`${window.location.pathname}_sortOption`) || '';
+      setSortOption(savedSortOption);
+    }
+  }, []);
 
   const getLoadedItemCount = () => {
     return parseInt(sessionStorage.getItem('heelsSandals_loadedItemCount')) || ITEMS_PER_PAGE;
@@ -317,7 +332,7 @@ const HeelsSandalsFootwearPage = () => {
   return (
     <Layout>
       <div className={styles.root}>
-        {!ready ? (
+        {!ready || !isClient ? (
           <LuxuryLoader />
         ) : (
           <>

@@ -1,19 +1,11 @@
 // gatsby-node.js
-const {
-  CognitoIdentityClient
-} = require('@aws-sdk/client-cognito-identity');
-const {
-  fromCognitoIdentityPool
-} = require('@aws-sdk/credential-provider-cognito-identity');
-const {
-  DynamoDBClient,
-  ScanCommand,
-} = require('@aws-sdk/client-dynamodb');
-const { unmarshall } = require('@aws-sdk/util-dynamodb');
 require('dotenv').config();
+
+const path = require('path');
 
 exports.onCreateWebpackConfig = ({ stage, actions, getConfig }) => {
   if (stage === 'develop' || stage === 'build-javascript') {
+    // Your existing MiniCssExtractPlugin fix
     const config = getConfig();
     const miniCssExtractPlugin = config.plugins.find(
       (plugin) => plugin.constructor.name === 'MiniCssExtractPlugin'
@@ -23,4 +15,34 @@ exports.onCreateWebpackConfig = ({ stage, actions, getConfig }) => {
     }
     actions.replaceWebpackConfig(config);
   }
+
+  if (stage === 'build-html') {
+    // Exclude aws-sdk packages from SSR bundle
+    actions.setWebpackConfig({
+      externals: {
+        '@aws-sdk/client-dynamodb': 'none',
+        '@aws-sdk/credential-provider-cognito-identity': 'none',
+        '@aws-sdk/util-dynamodb': 'none',
+      },
+    });
+  }
+
+  // Polyfill Node modules for browser builds (develop/build-javascript)
+  if (stage === 'develop' || stage === 'build-javascript') {
+    actions.setWebpackConfig({
+      resolve: {
+        fallback: {
+          stream: require.resolve('stream-browserify'),
+          crypto: require.resolve('crypto-browserify'),
+          path: require.resolve('path-browserify'),
+          util: require.resolve('util/'),
+        },
+      },
+    });
+  }
+};
+
+exports.createPages = async ({ actions }) => {
+  const { createPage } = actions;
+  // your page creation logic here
 };

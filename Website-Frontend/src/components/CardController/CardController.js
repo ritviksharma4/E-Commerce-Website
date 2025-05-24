@@ -11,11 +11,20 @@ const CardController = (props) => {
   const [category, setCategory] = useState();
   const [filterState, setFilterState] = useState([]);
 
+  // Utility to safely access localStorage only on client side
+  const isBrowser = typeof window !== 'undefined';
+
   const syncFiltersFromLocalStorage = () => {
+    if (!isBrowser) return;
+
     const storageKey = 'velvet_login_key.filters' + '.' + categoryKey + '.' + subcategoryKey;
-    const savedFilters = JSON.parse(localStorage.getItem(storageKey) || '{}');
+    let savedFilters = {};
+    try {
+      savedFilters = JSON.parse(localStorage.getItem(storageKey) || '{}');
+    } catch {
+      savedFilters = {};
+    }
   
-    // Normal case: map saved filters to filterState
     const syncedFilters = filters.map((filterCategory) => {
       const categoryName = filterCategory.category.toLowerCase(); // "color" or "size"
       const selectedNames = savedFilters[categoryName + 's'] || []; // e.g., savedFilters.colors
@@ -32,7 +41,6 @@ const CardController = (props) => {
     setFilterState(syncedFilters);
   };
 
-  // Re-sync filters from localStorage when panel is opened
   useEffect(() => {
     if (visible || props.filtersVersion) {
       syncFiltersFromLocalStorage();
@@ -40,7 +48,14 @@ const CardController = (props) => {
   }, [visible, props.filtersVersion]);
 
   const updateLocalStorage = (updatedFilters) => {
-    const userObj = JSON.parse(localStorage.getItem('velvet_login_key') || '{}');
+    if (!isBrowser) return;
+
+    let userObj = {};
+    try {
+      userObj = JSON.parse(localStorage.getItem('velvet_login_key') || '{}');
+    } catch {
+      userObj = {};
+    }
     if (!userObj.filters) userObj.filters = {};
     if (!userObj.filters[categoryKey]) userObj.filters[categoryKey] = {};
     userObj.filters[categoryKey][subcategoryKey] = updatedFilters;
@@ -55,7 +70,6 @@ const CardController = (props) => {
   };
 
   const resetFilters = () => {
-    // Reset filterState in-memory
     const refreshed = filterState.map((filter) => ({
       ...filter,
       items: filter.items.map(item => ({
@@ -64,15 +78,20 @@ const CardController = (props) => {
       }))
     }));
     setFilterState(refreshed);
-  
-    // Update localStorage
-    const userObj = JSON.parse(localStorage.getItem('velvet_login_key') || '{}');
+
+    if (!isBrowser) return;
+
+    let userObj = {};
+    try {
+      userObj = JSON.parse(localStorage.getItem('velvet_login_key') || '{}');
+    } catch {
+      userObj = {};
+    }
     if (!userObj.filters) userObj.filters = {};
     if (!userObj.filters[categoryKey]) userObj.filters[categoryKey] = {};
     userObj.filters[categoryKey][subcategoryKey] = refreshed;
     localStorage.setItem('velvet_login_key', JSON.stringify(userObj));
-  
-    // Trigger filter change event
+
     const filtersObj = {
       colors: [],
       sizes: [],
@@ -83,13 +102,13 @@ const CardController = (props) => {
     }
   };
 
-  const saveAndTrigger = (onFilterChange) => {
+  const saveAndTrigger = () => {
     updateLocalStorage(filterState);
 
     const filtersObj = {};
 
     filterState.forEach((filterCategory) => {
-      const key = filterCategory.category.toLowerCase() + 's'; // e.g., 'colors', 'sizes', 'genders'
+      const key = filterCategory.category.toLowerCase() + 's';
       filtersObj[key] = filterCategory.items
         .filter((item) => item.value)
         .map((item) => item.name);
@@ -149,7 +168,7 @@ const CardController = (props) => {
         <div className={styles.actionContainer}>
           <Button
             onClick={() => {
-              saveAndTrigger(props.onFilterChange);
+              saveAndTrigger();
               closeFilter();
               window.scrollTo(0, 0);
             }}
@@ -199,7 +218,6 @@ const CardController = (props) => {
                   <span className={styles.mobileCategory}>{category.category}</span>
                 </div>
                 
-                {/* Fix for filtering Multi-colored, OneSize, and other dynamic categories */}
                 {filterState[category.categoryIndex]?.items?.map((item, itemIndex) => (
                   <Checkbox
                     key={itemIndex}
@@ -220,7 +238,7 @@ const CardController = (props) => {
                   fullWidth
                   level="primary"
                   onClick={() => {
-                    saveAndTrigger(onFilterChange);
+                    saveAndTrigger();
                     closeFilter();
                   }}
                 >
@@ -230,7 +248,7 @@ const CardController = (props) => {
                 <div>
                   <Button
                     onClick={() => {
-                      saveAndTrigger(onFilterChange);
+                      saveAndTrigger();
                       closeFilter();
                     }}
                     fullWidth

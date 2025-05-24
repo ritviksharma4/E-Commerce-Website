@@ -11,12 +11,17 @@ import * as styles from './AddNotification.module.css';
 import { toOptimizedImage } from '../../helpers/general';
 
 const AddNotification = (props) => {
-
   const ctxAddItemNotification = useContext(AddItemNotificationContext);
   const showNotif = ctxAddItemNotification.state?.open;
   const product = ctxAddItemNotification.state?.product;
-  const user = isAuth() ? JSON.parse(localStorage.getItem("velvet_login_key")) : "" 
-  const currentTotalCartItems = user.totalCartItems
+
+  let currentTotalCartItems = 0;
+
+  if (typeof window !== 'undefined' && isAuth()) {
+    const user = JSON.parse(localStorage.getItem('velvet_login_key')) || {};
+    currentTotalCartItems = user.totalCartItems || 0;
+  }
+
   if (!product) return null;
 
   return (

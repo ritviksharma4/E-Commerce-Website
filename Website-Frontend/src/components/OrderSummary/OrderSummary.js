@@ -44,6 +44,7 @@ const OrderSummary = ({ cartItems, setLoading, disableCheckout = false }) => {
         addresses[Math.floor(Math.random() * addresses.length)];
 
       const formattedItems = cartItems.map(item => ({
+        name: item.name,
         productCode: item.productCode,
         image: item.image,
         qty: item.qty.toFixed(2),

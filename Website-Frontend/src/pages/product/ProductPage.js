@@ -340,6 +340,6 @@ const ProductPage = ({ params }) => {
 
 export default ProductPage;
 
-export const config = {
+export const config = () => () => ({
   matchPath: "/product/:productCode",
-};
+});
