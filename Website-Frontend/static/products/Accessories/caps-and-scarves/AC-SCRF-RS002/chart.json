@@ -1,0 +1,7 @@
+{
+    "unit": "cm",
+    "columns": ["Length"],
+    "rows": {
+      "OneSize": [45.0]
+    }
+}
