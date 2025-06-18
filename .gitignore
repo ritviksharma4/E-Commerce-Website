@@ -1,6 +1,7 @@
 # Important Credentials
 .env
 *.env
+*.env*
 
 # Compiled class file
 *.class
