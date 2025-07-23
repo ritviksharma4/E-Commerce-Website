@@ -1,0 +1,20 @@
+{
+  "name": "frontend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha Tests/**/*.test.js --require Tests/root-hooks.js --reporter mochawesome"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "chromedriver": "^137.0.4",
+    "selenium-webdriver": "^4.33.0"
+  },
+  "devDependencies": {
+    "chai": "^5.2.0",
+    "mocha": "^11.7.1",
+    "mochawesome": "^7.1.3"
+  }
+}
