@@ -325,6 +325,20 @@ Tests/
   - Proceeds to checkout.
   - Verifies order summary/confirmation is shown.
 
+### 32. **Search: Product Discovery**
+- **Test**: Searches for a specific query and validates results page.
+- **Validation**:
+  - Navigates to `https://velvet.ritvik-sharma.com/`.
+  - Clicks the **search icon button** in the header.
+  - Waits for the search box animation to finish loading.
+  - Clicks into the input field and types: `Large Green Trousers Men`.
+  - Hits the **Enter** key to trigger search.
+  - Waits for the results page to fully load.
+  - Validates presence of **"2 results"** label.
+  - Confirms product card with image `M-TRS-RS004` is visible.
+  - Confirms product card with image `M-TRS-RS008` is visible.
+  - Navigates back to homepage.
+
 ---
 
 
@@ -358,7 +372,7 @@ npm install
 ### 2. Run the Tests
 
 ```bash
-npm test
+npm run test
 ```
 
 or with Mochawesome explicitly:

@@ -1,14 +1,14 @@
 {
   "stats": {
-    "suites": 27,
-    "tests": 27,
-    "passes": 27,
+    "suites": 32,
+    "tests": 32,
+    "passes": 32,
     "pending": 0,
     "failures": 0,
-    "start": "2025-07-23T12:30:13.565Z",
-    "end": "2025-07-23T12:30:52.857Z",
-    "duration": 39292,
-    "testsRegistered": 27,
+    "start": "2025-07-25T18:31:20.770Z",
+    "end": "2025-07-25T18:32:01.270Z",
+    "duration": 40500,
+    "testsRegistered": 32,
     "passPercent": 100,
     "pendingPercent": 0,
     "other": 0,
@@ -18,7 +18,7 @@
   },
   "results": [
     {
-      "uuid": "5184fe32-1919-4810-8cbc-dfed4760446b",
+      "uuid": "93d4bac6-14a4-470f-8bb3-b00d5f963ddc",
       "title": "",
       "fullFile": "",
       "file": "",
@@ -27,7 +27,7 @@
           "title": "\"before all\" hook in \"{root}\"",
           "fullTitle": "\"before all\" hook in \"{root}\"",
           "timedOut": false,
-          "duration": 4255,
+          "duration": 4124,
           "state": null,
           "speed": null,
           "pass": false,
@@ -36,8 +36,8 @@
           "context": null,
           "code": "this.timeout(60000);\nconst driver = await startDriver();\nawait driver.get('https://velvet.ritvik-sharma.com/login/');\nawait loginIfNeeded();",
           "err": {},
-          "uuid": "a31dd04e-f61e-4acb-bc5c-e1ba8a78bc7a",
-          "parentUUID": "5184fe32-1919-4810-8cbc-dfed4760446b",
+          "uuid": "656772de-d97c-4fd2-9cfa-6855949b37ee",
+          "parentUUID": "93d4bac6-14a4-470f-8bb3-b00d5f963ddc",
           "isHook": true,
           "skipped": false
         }
@@ -47,7 +47,7 @@
           "title": "\"after all\" hook in \"{root}\"",
           "fullTitle": "\"after all\" hook in \"{root}\"",
           "timedOut": false,
-          "duration": 111,
+          "duration": 99,
           "state": null,
           "speed": null,
           "pass": false,
@@ -56,8 +56,8 @@
           "context": null,
           "code": "await quitDriver();",
           "err": {},
-          "uuid": "4112c34f-38f7-49af-b3f3-c8990118878f",
-          "parentUUID": "5184fe32-1919-4810-8cbc-dfed4760446b",
+          "uuid": "1f4695eb-0fa3-4f53-a59f-01de367fa1bf",
+          "parentUUID": "93d4bac6-14a4-470f-8bb3-b00d5f963ddc",
           "isHook": true,
           "skipped": false
         }
@@ -65,7 +65,7 @@
       "tests": [],
       "suites": [
         {
-          "uuid": "97164d84-4e63-4d36-81c0-2a34a07ce048",
+          "uuid": "8c53e01a-b773-410d-bc6d-91a908e1a214",
           "title": "Footer - About Us Navigation",
           "fullFile": "C:\\Users\\ashut\\Desktop\\Personal\\github\\E-Commerce-Website\\Unit-Testing\\Frontend\\Tests\\HomePage\\Footer\\about.test.js",
           "file": "\\Tests\\HomePage\\Footer\\about.test.js",
@@ -76,7 +76,7 @@
               "title": "navigates to About Us from footer and returns home",
               "fullTitle": "Footer - About Us Navigation navigates to About Us from footer and returns home",
               "timedOut": false,
-              "duration": 528,
+              "duration": 415,
               "state": "passed",
               "speed": "slow",
               "pass": true,
@@ -85,26 +85,26 @@
               "context": null,
               "code": "const { expect } = await import('chai');\nconst driver = await getDriver();\nawait driver.wait(\n  until.elementLocated(By.xpath(\"//a[@href='/about/']\")),\n  10000\n).then(el => el.click());\nawait driver.wait(until.urlContains('/about'), 10000);\nexpect(await driver.getCurrentUrl()).to.include('/about');\nawait driver.get('https://velvet.ritvik-sharma.com/');",
               "err": {},
-              "uuid": "ed08156c-9575-4538-8e12-60ef6fd43235",
-              "parentUUID": "97164d84-4e63-4d36-81c0-2a34a07ce048",
+              "uuid": "4b5b5d94-2d0d-4fd2-b082-4601170d40b4",
+              "parentUUID": "8c53e01a-b773-410d-bc6d-91a908e1a214",
               "isHook": false,
               "skipped": false
             }
           ],
           "suites": [],
           "passes": [
-            "ed08156c-9575-4538-8e12-60ef6fd43235"
+            "4b5b5d94-2d0d-4fd2-b082-4601170d40b4"
           ],
           "failures": [],
           "pending": [],
           "skipped": [],
-          "duration": 528,
+          "duration": 415,
           "root": false,
           "rootEmpty": false,
           "_timeout": 30000
         },
         {
-          "uuid": "d4d85a9c-7cd0-4593-a79b-3e8148161f99",
+          "uuid": "8ef62e5d-c55c-4a43-b1e0-a5ed4290ff39",
           "title": "Footer - Contact Us Navigation",
           "fullFile": "C:\\Users\\ashut\\Desktop\\Personal\\github\\E-Commerce-Website\\Unit-Testing\\Frontend\\Tests\\HomePage\\Footer\\contactUs.test.js",
           "file": "\\Tests\\HomePage\\Footer\\contactUs.test.js",
@@ -115,7 +115,7 @@
               "title": "navigates to Contact Us from footer and returns home",
               "fullTitle": "Footer - Contact Us Navigation navigates to Contact Us from footer and returns home",
               "timedOut": false,
-              "duration": 577,
+              "duration": 377,
               "state": "passed",
               "speed": "slow",
               "pass": true,
@@ -124,26 +124,26 @@
               "context": null,
               "code": "const { expect } = await import('chai');\nconst driver = await getDriver();\nawait driver.wait(\n  until.elementLocated(By.xpath(\"//a[@href='/support/#contact']\")),\n  10000\n).then(el => el.click());\nawait driver.wait(until.urlContains('/support/#contact'), 10000);\nexpect(await driver.getCurrentUrl()).to.include('/support/#contact');\nawait driver.get('https://velvet.ritvik-sharma.com/');",
               "err": {},
-              "uuid": "e7e20df8-8c1b-4e60-bdd0-7b4622a0a466",
-              "parentUUID": "d4d85a9c-7cd0-4593-a79b-3e8148161f99",
+              "uuid": "e30755a5-304a-4032-8a8d-1647a3e6484b",
+              "parentUUID": "8ef62e5d-c55c-4a43-b1e0-a5ed4290ff39",
               "isHook": false,
               "skipped": false
             }
           ],
           "suites": [],
           "passes": [
-            "e7e20df8-8c1b-4e60-bdd0-7b4622a0a466"
+            "e30755a5-304a-4032-8a8d-1647a3e6484b"
           ],
           "failures": [],
           "pending": [],
           "skipped": [],
-          "duration": 577,
+          "duration": 377,
           "root": false,
           "rootEmpty": false,
           "_timeout": 30000
         },
         {
-          "uuid": "7e618af0-55db-4dcf-add2-724be85b5c7d",
+          "uuid": "84520e04-e31a-4519-b43c-1a8bce9aebd1",
           "title": "Footer - FAQ Navigation",
           "fullFile": "C:\\Users\\ashut\\Desktop\\Personal\\github\\E-Commerce-Website\\Unit-Testing\\Frontend\\Tests\\HomePage\\Footer\\faq.test.js",
           "file": "\\Tests\\HomePage\\Footer\\faq.test.js",
@@ -154,7 +154,7 @@
               "title": "navigates to FAQ from footer and returns home",
               "fullTitle": "Footer - FAQ Navigation navigates to FAQ from footer and returns home",
               "timedOut": false,
-              "duration": 341,
+              "duration": 322,
               "state": "passed",
               "speed": "slow",
               "pass": true,
@@ -163,26 +163,65 @@
               "context": null,
               "code": "const { expect } = await import('chai');\nconst driver = await getDriver();\nawait driver.wait(\n  until.elementLocated(By.xpath(\"//a[@href='/faq/']\")),\n  10000\n).then(el => el.click());\nawait driver.wait(until.urlContains('/faq'), 10000);\nexpect(await driver.getCurrentUrl()).to.include('/faq');\nawait driver.get('https://velvet.ritvik-sharma.com/');",
               "err": {},
-              "uuid": "e4bf8d64-9e75-4035-a64a-d4406ac4cfbe",
-              "parentUUID": "7e618af0-55db-4dcf-add2-724be85b5c7d",
+              "uuid": "c08ba0ca-584b-48bf-8816-01e2b117c79a",
+              "parentUUID": "84520e04-e31a-4519-b43c-1a8bce9aebd1",
               "isHook": false,
               "skipped": false
             }
           ],
           "suites": [],
           "passes": [
-            "e4bf8d64-9e75-4035-a64a-d4406ac4cfbe"
+            "c08ba0ca-584b-48bf-8816-01e2b117c79a"
           ],
           "failures": [],
           "pending": [],
           "skipped": [],
-          "duration": 341,
+          "duration": 322,
           "root": false,
           "rootEmpty": false,
           "_timeout": 30000
         },
         {
-          "uuid": "08c7d09f-a229-481b-b600-08892f62310a",
+          "uuid": "cdb27e19-2080-47fe-a9ea-485794f91470",
+          "title": "Footer - Journal Navigation",
+          "fullFile": "C:\\Users\\ashut\\Desktop\\Personal\\github\\E-Commerce-Website\\Unit-Testing\\Frontend\\Tests\\HomePage\\Footer\\journaI.test.js",
+          "file": "\\Tests\\HomePage\\Footer\\journaI.test.js",
+          "beforeHooks": [],
+          "afterHooks": [],
+          "tests": [
+            {
+              "title": "navigates to Journal from footer and returns home",
+              "fullTitle": "Footer - Journal Navigation navigates to Journal from footer and returns home",
+              "timedOut": false,
+              "duration": 359,
+              "state": "passed",
+              "speed": "slow",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "const { expect } = await import('chai');\nconst driver = await getDriver();\nawait driver.wait(\n  until.elementLocated(By.xpath(\"//a[@href='/blog/']\")),\n  10000\n).then(el => el.click());\nawait driver.wait(until.urlContains('/blog'), 10000);\nexpect(await driver.getCurrentUrl()).to.include('/blog');\nawait driver.get('https://velvet.ritvik-sharma.com/');",
+              "err": {},
+              "uuid": "934570f3-8318-4b92-a8fa-fdd5752f5d40",
+              "parentUUID": "cdb27e19-2080-47fe-a9ea-485794f91470",
+              "isHook": false,
+              "skipped": false
+            }
+          ],
+          "suites": [],
+          "passes": [
+            "934570f3-8318-4b92-a8fa-fdd5752f5d40"
+          ],
+          "failures": [],
+          "pending": [],
+          "skipped": [],
+          "duration": 359,
+          "root": false,
+          "rootEmpty": false,
+          "_timeout": 30000
+        },
+        {
+          "uuid": "4fc5c80e-ab4d-4354-9503-b9246a8fefb6",
           "title": "Footer - Journal Navigation",
           "fullFile": "C:\\Users\\ashut\\Desktop\\Personal\\github\\E-Commerce-Website\\Unit-Testing\\Frontend\\Tests\\HomePage\\Footer\\journal.test.js",
           "file": "\\Tests\\HomePage\\Footer\\journal.test.js",
@@ -193,7 +232,7 @@
               "title": "navigates to Journal from footer and returns home",
               "fullTitle": "Footer - Journal Navigation navigates to Journal from footer and returns home",
               "timedOut": false,
-              "duration": 339,
+              "duration": 319,
               "state": "passed",
               "speed": "slow",
               "pass": true,
@@ -202,26 +241,26 @@
               "context": null,
               "code": "const { expect } = await import('chai');\nconst driver = await getDriver();\nawait driver.wait(\n  until.elementLocated(By.xpath(\"//a[@href='/blog/']\")),\n  10000\n).then(el => el.click());\nawait driver.wait(until.urlContains('/blog'), 10000);\nexpect(await driver.getCurrentUrl()).to.include('/blog');\nawait driver.get('https://velvet.ritvik-sharma.com/');",
               "err": {},
-              "uuid": "b5be732b-f2ed-460a-90c9-dfd8981eef20",
-              "parentUUID": "08c7d09f-a229-481b-b600-08892f62310a",
+              "uuid": "51090cac-97df-46b4-8035-d3bc1276c1f0",
+              "parentUUID": "4fc5c80e-ab4d-4354-9503-b9246a8fefb6",
               "isHook": false,
               "skipped": false
             }
           ],
           "suites": [],
           "passes": [
-            "b5be732b-f2ed-460a-90c9-dfd8981eef20"
+            "51090cac-97df-46b4-8035-d3bc1276c1f0"
           ],
           "failures": [],
           "pending": [],
           "skipped": [],
-          "duration": 339,
+          "duration": 319,
           "root": false,
           "rootEmpty": false,
           "_timeout": 30000
         },
         {
-          "uuid": "5b97054e-a5bf-432c-b45c-32b44a90db4f",
+          "uuid": "85aef43a-692c-44de-9e87-6f5dd1396b7e",
           "title": "Footer - Privacy Policy Navigation",
           "fullFile": "C:\\Users\\ashut\\Desktop\\Personal\\github\\E-Commerce-Website\\Unit-Testing\\Frontend\\Tests\\HomePage\\Footer\\privacyPolicy.test.js",
           "file": "\\Tests\\HomePage\\Footer\\privacyPolicy.test.js",
@@ -232,7 +271,7 @@
               "title": "navigates to Privacy Policy from footer and returns home",
               "fullTitle": "Footer - Privacy Policy Navigation navigates to Privacy Policy from footer and returns home",
               "timedOut": false,
-              "duration": 328,
+              "duration": 331,
               "state": "passed",
               "speed": "slow",
               "pass": true,
@@ -241,26 +280,26 @@
               "context": null,
               "code": "const { expect } = await import('chai');\nconst driver = await getDriver();\nawait driver.wait(\n  until.elementLocated(By.xpath(\"//a[@href='/support/#policy']\")),\n  10000\n).then(el => el.click());\nawait driver.wait(until.urlContains('/support/#policy'), 10000);\nexpect(await driver.getCurrentUrl()).to.include('/support/#policy');\nawait driver.get('https://velvet.ritvik-sharma.com/');",
               "err": {},
-              "uuid": "2b63bd42-d336-4107-a858-eff676ae76ad",
-              "parentUUID": "5b97054e-a5bf-432c-b45c-32b44a90db4f",
+              "uuid": "41a342e8-697e-4495-a435-99e44ec58d03",
+              "parentUUID": "85aef43a-692c-44de-9e87-6f5dd1396b7e",
               "isHook": false,
               "skipped": false
             }
           ],
           "suites": [],
           "passes": [
-            "2b63bd42-d336-4107-a858-eff676ae76ad"
+            "41a342e8-697e-4495-a435-99e44ec58d03"
           ],
           "failures": [],
           "pending": [],
           "skipped": [],
-          "duration": 328,
+          "duration": 331,
           "root": false,
           "rootEmpty": false,
           "_timeout": 30000
         },
         {
-          "uuid": "102b0b80-2d2a-4a38-b78e-691ee3de5670",
+          "uuid": "55ccb75e-4b57-4426-a840-38b805f6f7e2",
           "title": "Footer - Shipping & Returns Navigation",
           "fullFile": "C:\\Users\\ashut\\Desktop\\Personal\\github\\E-Commerce-Website\\Unit-Testing\\Frontend\\Tests\\HomePage\\Footer\\shippingReturns.test.js",
           "file": "\\Tests\\HomePage\\Footer\\shippingReturns.test.js",
@@ -271,7 +310,7 @@
               "title": "navigates to Shipping & Returns from footer and returns home",
               "fullTitle": "Footer - Shipping & Returns Navigation navigates to Shipping & Returns from footer and returns home",
               "timedOut": false,
-              "duration": 142,
+              "duration": 330,
               "state": "passed",
               "speed": "slow",
               "pass": true,
@@ -280,26 +319,26 @@
               "context": null,
               "code": "const { expect } = await import('chai');\nconst driver = await getDriver();\nawait driver.wait(\n  until.elementLocated(By.xpath(\"//a[@href='/support/#returns']\")),\n  10000\n).then(el => el.click());\nawait driver.wait(until.urlContains('/support/#returns'), 10000);\nexpect(await driver.getCurrentUrl()).to.include('/support/#returns');\nawait driver.get('https://velvet.ritvik-sharma.com/');",
               "err": {},
-              "uuid": "5e61b45a-512b-475e-b0be-bcc415f6da7f",
-              "parentUUID": "102b0b80-2d2a-4a38-b78e-691ee3de5670",
+              "uuid": "562502e6-714b-407d-8b57-45dbd8febc01",
+              "parentUUID": "55ccb75e-4b57-4426-a840-38b805f6f7e2",
               "isHook": false,
               "skipped": false
             }
           ],
           "suites": [],
           "passes": [
-            "5e61b45a-512b-475e-b0be-bcc415f6da7f"
+            "562502e6-714b-407d-8b57-45dbd8febc01"
           ],
           "failures": [],
           "pending": [],
           "skipped": [],
-          "duration": 142,
+          "duration": 330,
           "root": false,
           "rootEmpty": false,
           "_timeout": 30000
         },
         {
-          "uuid": "a5602169-f3a8-4106-bb2d-bd9fece00144",
+          "uuid": "8e17f35d-db40-4c07-8642-dcc57f2daf6c",
           "title": "Header - About Navigation",
           "fullFile": "C:\\Users\\ashut\\Desktop\\Personal\\github\\E-Commerce-Website\\Unit-Testing\\Frontend\\Tests\\HomePage\\Header\\about.test.js",
           "file": "\\Tests\\HomePage\\Header\\about.test.js",
@@ -310,7 +349,7 @@
               "title": "navigates to about page and returns home",
               "fullTitle": "Header - About Navigation navigates to about page and returns home",
               "timedOut": false,
-              "duration": 334,
+              "duration": 327,
               "state": "passed",
               "speed": "slow",
               "pass": true,
@@ -319,26 +358,26 @@
               "context": null,
               "code": "const { expect } = await import('chai');\nconst driver = await getDriver();\nconst aboutLink = await driver.wait(\n  until.elementLocated(By.xpath(\"//a[contains(translate(text(), 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz'), 'about')]\")),\n  10000\n);\nawait aboutLink.click();\nawait driver.wait(until.urlContains('/about'), 10000);\nexpect(await driver.getCurrentUrl()).to.include('/about');\nawait driver.get('https://velvet.ritvik-sharma.com/');",
               "err": {},
-              "uuid": "7dc7781a-cf7c-4fcf-aea2-5e5b5233bdc7",
-              "parentUUID": "a5602169-f3a8-4106-bb2d-bd9fece00144",
+              "uuid": "16d371d0-f724-45ae-b641-8e0e2687eefa",
+              "parentUUID": "8e17f35d-db40-4c07-8642-dcc57f2daf6c",
               "isHook": false,
               "skipped": false
             }
           ],
           "suites": [],
           "passes": [
-            "7dc7781a-cf7c-4fcf-aea2-5e5b5233bdc7"
+            "16d371d0-f724-45ae-b641-8e0e2687eefa"
           ],
           "failures": [],
           "pending": [],
           "skipped": [],
-          "duration": 334,
+          "duration": 327,
           "root": false,
           "rootEmpty": false,
           "_timeout": 30000
         },
         {
-          "uuid": "a11d56cf-8bc8-4a07-a14d-c90e5cfc7f9a",
+          "uuid": "dcd76dc0-e513-4e19-b021-2159892f537b",
           "title": "Header - Account Navigation",
           "fullFile": "C:\\Users\\ashut\\Desktop\\Personal\\github\\E-Commerce-Website\\Unit-Testing\\Frontend\\Tests\\HomePage\\Header\\account.test.js",
           "file": "\\Tests\\HomePage\\Header\\account.test.js",
@@ -349,7 +388,7 @@
               "title": "navigates to account orders and returns home",
               "fullTitle": "Header - Account Navigation navigates to account orders and returns home",
               "timedOut": false,
-              "duration": 314,
+              "duration": 560,
               "state": "passed",
               "speed": "slow",
               "pass": true,
@@ -358,26 +397,26 @@
               "context": null,
               "code": "const { expect } = await import('chai');\nconst driver = await getDriver();\nawait driver.get('https://velvet.ritvik-sharma.com/');\nconst accountIcon = await driver.wait(\n  until.elementLocated(By.xpath(\"//a[@aria-label='Account']\")),\n  10000\n);\nawait accountIcon.click();\nawait driver.wait(until.urlContains('/account/orders'), 10000);\nexpect(await driver.getCurrentUrl()).to.include('/account/orders');\nawait driver.get('https://velvet.ritvik-sharma.com/');",
               "err": {},
-              "uuid": "03884e5e-a805-4dfd-aaa6-44a71c6eddda",
-              "parentUUID": "a11d56cf-8bc8-4a07-a14d-c90e5cfc7f9a",
+              "uuid": "45589a46-6d9d-49cb-8e44-21190af27369",
+              "parentUUID": "dcd76dc0-e513-4e19-b021-2159892f537b",
               "isHook": false,
               "skipped": false
             }
           ],
           "suites": [],
           "passes": [
-            "03884e5e-a805-4dfd-aaa6-44a71c6eddda"
+            "45589a46-6d9d-49cb-8e44-21190af27369"
           ],
           "failures": [],
           "pending": [],
           "skipped": [],
-          "duration": 314,
+          "duration": 560,
           "root": false,
           "rootEmpty": false,
           "_timeout": 30000
         },
         {
-          "uuid": "0091cd25-5f75-418f-8ed7-224ad625a1e3",
+          "uuid": "b6a9bc2a-f397-4b27-92c5-78f844a99fc2",
           "title": "Header - Cart Interaction",
           "fullFile": "C:\\Users\\ashut\\Desktop\\Personal\\github\\E-Commerce-Website\\Unit-Testing\\Frontend\\Tests\\HomePage\\Header\\cart.test.js",
           "file": "\\Tests\\HomePage\\Header\\cart.test.js",
@@ -388,7 +427,7 @@
               "title": "opens and closes cart side panel",
               "fullTitle": "Header - Cart Interaction opens and closes cart side panel",
               "timedOut": false,
-              "duration": 2282,
+              "duration": 795,
               "state": "passed",
               "speed": "slow",
               "pass": true,
@@ -397,26 +436,65 @@
               "context": null,
               "code": "const { expect } = await import('chai');\nconst driver = await getDriver();\nconst cartIcon = await driver.wait(\n  until.elementLocated(By.xpath(\"//button[contains(@aria-label, 'Cart')]\")),\n  10000\n);\nawait cartIcon.click();\nconst bagTitle = await driver.wait(\n  until.elementLocated(By.xpath(\"//*[contains(text(), 'My Bag')]\")),\n  10000\n);\nexpect(await bagTitle.isDisplayed()).to.be.true;\nconst closeButton = await driver.wait(\n  until.elementLocated(By.xpath(\"//div[contains(@class, 'Drawer-module--iconContainer')]\")),\n  10000\n);\nawait closeButton.click();\nawait driver.wait(until.urlIs('https://velvet.ritvik-sharma.com/'), 10000);",
               "err": {},
-              "uuid": "0f06a3b8-39ac-41c5-bf32-2a6b53610292",
-              "parentUUID": "0091cd25-5f75-418f-8ed7-224ad625a1e3",
+              "uuid": "2db3184c-61db-4f52-84fd-12c6be1a554c",
+              "parentUUID": "b6a9bc2a-f397-4b27-92c5-78f844a99fc2",
               "isHook": false,
               "skipped": false
             }
           ],
           "suites": [],
           "passes": [
-            "0f06a3b8-39ac-41c5-bf32-2a6b53610292"
+            "2db3184c-61db-4f52-84fd-12c6be1a554c"
           ],
           "failures": [],
           "pending": [],
           "skipped": [],
-          "duration": 2282,
+          "duration": 795,
           "root": false,
           "rootEmpty": false,
           "_timeout": 30000
         },
         {
-          "uuid": "80ed4800-cc96-4963-95be-2f85b1faa390",
+          "uuid": "09afe259-9279-42a0-923e-1f097bc762d8",
+          "title": "Header - Journal Navigation",
+          "fullFile": "C:\\Users\\ashut\\Desktop\\Personal\\github\\E-Commerce-Website\\Unit-Testing\\Frontend\\Tests\\HomePage\\Header\\journaI.test.js",
+          "file": "\\Tests\\HomePage\\Header\\journaI.test.js",
+          "beforeHooks": [],
+          "afterHooks": [],
+          "tests": [
+            {
+              "title": "navigates to blog and returns home",
+              "fullTitle": "Header - Journal Navigation navigates to blog and returns home",
+              "timedOut": false,
+              "duration": 601,
+              "state": "passed",
+              "speed": "slow",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "const { expect } = await import('chai');\nconst driver = await getDriver();\nconst journalLink = await driver.wait(\n  until.elementLocated(By.xpath(\"//a[contains(translate(text(), 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz'), 'journal')]\")),\n  10000\n);\nawait journalLink.click();\nawait driver.wait(until.urlContains('/blog'), 10000);\nexpect(await driver.getCurrentUrl()).to.include('/blog');\nawait driver.get('https://velvet.ritvik-sharma.com/');",
+              "err": {},
+              "uuid": "8dd1fc2b-c92c-4c8e-b07d-abc448f6f4a8",
+              "parentUUID": "09afe259-9279-42a0-923e-1f097bc762d8",
+              "isHook": false,
+              "skipped": false
+            }
+          ],
+          "suites": [],
+          "passes": [
+            "8dd1fc2b-c92c-4c8e-b07d-abc448f6f4a8"
+          ],
+          "failures": [],
+          "pending": [],
+          "skipped": [],
+          "duration": 601,
+          "root": false,
+          "rootEmpty": false,
+          "_timeout": 30000
+        },
+        {
+          "uuid": "da797a1c-ab56-4777-a4ad-e2680f9cf555",
           "title": "Header - Journal Navigation",
           "fullFile": "C:\\Users\\ashut\\Desktop\\Personal\\github\\E-Commerce-Website\\Unit-Testing\\Frontend\\Tests\\HomePage\\Header\\journal.test.js",
           "file": "\\Tests\\HomePage\\Header\\journal.test.js",
@@ -427,7 +505,7 @@
               "title": "navigates to blog and returns home",
               "fullTitle": "Header - Journal Navigation navigates to blog and returns home",
               "timedOut": false,
-              "duration": 603,
+              "duration": 328,
               "state": "passed",
               "speed": "slow",
               "pass": true,
@@ -436,26 +514,26 @@
               "context": null,
               "code": "const { expect } = await import('chai');\nconst driver = await getDriver();\nconst journalLink = await driver.wait(\n  until.elementLocated(By.xpath(\"//a[contains(translate(text(), 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz'), 'journal')]\")),\n  10000\n);\nawait journalLink.click();\nawait driver.wait(until.urlContains('/blog'), 10000);\nexpect(await driver.getCurrentUrl()).to.include('/blog');\nawait driver.get('https://velvet.ritvik-sharma.com/');",
               "err": {},
-              "uuid": "48a85597-7527-4457-a6f3-0b6cee27a893",
-              "parentUUID": "80ed4800-cc96-4963-95be-2f85b1faa390",
+              "uuid": "7eba2023-f1f3-49ae-9e4f-e0163f248449",
+              "parentUUID": "da797a1c-ab56-4777-a4ad-e2680f9cf555",
               "isHook": false,
               "skipped": false
             }
           ],
           "suites": [],
           "passes": [
-            "48a85597-7527-4457-a6f3-0b6cee27a893"
+            "7eba2023-f1f3-49ae-9e4f-e0163f248449"
           ],
           "failures": [],
           "pending": [],
           "skipped": [],
-          "duration": 603,
+          "duration": 328,
           "root": false,
           "rootEmpty": false,
           "_timeout": 30000
         },
         {
-          "uuid": "43ad00bd-5105-436c-904c-396f560d3002",
+          "uuid": "8d183899-1f78-4227-aec1-e4c391784be2",
           "title": "Header - Search Dropdown Interaction",
           "fullFile": "C:\\Users\\ashut\\Desktop\\Personal\\github\\E-Commerce-Website\\Unit-Testing\\Frontend\\Tests\\HomePage\\Header\\search.test.js",
           "file": "\\Tests\\HomePage\\Header\\search.test.js",
@@ -466,7 +544,7 @@
               "title": "opens and closes search dropdown",
               "fullTitle": "Header - Search Dropdown Interaction opens and closes search dropdown",
               "timedOut": false,
-              "duration": 1357,
+              "duration": 1400,
               "state": "passed",
               "speed": "slow",
               "pass": true,
@@ -475,26 +553,26 @@
               "context": null,
               "code": "const { expect } = await import('chai');\nconst driver = await getDriver();\nconst searchIcon = await driver.wait(\n  until.elementLocated(By.xpath(\"//button[@aria-label='Search']\")),\n  10000\n);\nawait searchIcon.click();\nconst searchTitle = await driver.wait(\n  until.elementLocated(By.xpath(\"//*[contains(text(), 'What are you looking for?')]\")),\n  10000\n);\nawait driver.wait(until.elementIsVisible(searchTitle), 10000);\nawait driver.sleep(1000);\nconst actualText = await searchTitle.getText();\nexpect(actualText).to.include('What are you looking for?');\nawait searchIcon.click();\nawait driver.wait(until.urlIs('https://velvet.ritvik-sharma.com/'), 10000);",
               "err": {},
-              "uuid": "801795c3-75c7-4152-bfc6-62de8c670e9b",
-              "parentUUID": "43ad00bd-5105-436c-904c-396f560d3002",
+              "uuid": "6ea74d82-aafb-4d37-8864-a6ff9c145a23",
+              "parentUUID": "8d183899-1f78-4227-aec1-e4c391784be2",
               "isHook": false,
               "skipped": false
             }
           ],
           "suites": [],
           "passes": [
-            "801795c3-75c7-4152-bfc6-62de8c670e9b"
+            "6ea74d82-aafb-4d37-8864-a6ff9c145a23"
           ],
           "failures": [],
           "pending": [],
           "skipped": [],
-          "duration": 1357,
+          "duration": 1400,
           "root": false,
           "rootEmpty": false,
           "_timeout": 30000
         },
         {
-          "uuid": "1cd2a9d7-b0e5-4c5b-94a3-4fc100683c48",
+          "uuid": "f88973f7-8cdb-43c9-85ce-8e04e3eb6899",
           "title": "Main - Navigate to Accessories Section",
           "fullFile": "C:\\Users\\ashut\\Desktop\\Personal\\github\\E-Commerce-Website\\Unit-Testing\\Frontend\\Tests\\HomePage\\Main\\accessories.test.js",
           "file": "\\Tests\\HomePage\\Main\\accessories.test.js",
@@ -505,7 +583,7 @@
               "title": "navigates to accessories page and returns home",
               "fullTitle": "Main - Navigate to Accessories Section navigates to accessories page and returns home",
               "timedOut": false,
-              "duration": 1480,
+              "duration": 672,
               "state": "passed",
               "speed": "slow",
               "pass": true,
@@ -514,26 +592,26 @@
               "context": null,
               "code": "const { expect } = await import('chai');\nconst driver = await getDriver();\nconst accessoriesLink = await driver.wait(\n  until.elementLocated(By.xpath(\"//span[text()='Accessories']/ancestor::div[contains(@class, 'ProductCollection-module--root')]\")),\n  10000\n);\nawait accessoriesLink.click();\nawait driver.wait(until.urlContains('/accessories'), 10000);\nexpect(await driver.getCurrentUrl()).to.include('/accessories');\nawait driver.get('https://velvet.ritvik-sharma.com/');\nawait waitForHomepage(driver);",
               "err": {},
-              "uuid": "66babd4f-0c62-47ce-8fce-0fc623bfc2c4",
-              "parentUUID": "1cd2a9d7-b0e5-4c5b-94a3-4fc100683c48",
+              "uuid": "ca33a989-74d6-40bc-95fc-17d2ac19bfb5",
+              "parentUUID": "f88973f7-8cdb-43c9-85ce-8e04e3eb6899",
               "isHook": false,
               "skipped": false
             }
           ],
           "suites": [],
           "passes": [
-            "66babd4f-0c62-47ce-8fce-0fc623bfc2c4"
+            "ca33a989-74d6-40bc-95fc-17d2ac19bfb5"
           ],
           "failures": [],
           "pending": [],
           "skipped": [],
-          "duration": 1480,
+          "duration": 672,
           "root": false,
           "rootEmpty": false,
           "_timeout": 30000
         },
         {
-          "uuid": "082b3a62-eb6a-4ed8-a7d6-727dd5c37003",
+          "uuid": "28015c99-3832-40a9-a76e-d0281eff5d46",
           "title": "Main - Navigate to Footwear Section",
           "fullFile": "C:\\Users\\ashut\\Desktop\\Personal\\github\\E-Commerce-Website\\Unit-Testing\\Frontend\\Tests\\HomePage\\Main\\footwear.test.js",
           "file": "\\Tests\\HomePage\\Main\\footwear.test.js",
@@ -544,7 +622,7 @@
               "title": "navigates to footwear page and returns home",
               "fullTitle": "Main - Navigate to Footwear Section navigates to footwear page and returns home",
               "timedOut": false,
-              "duration": 996,
+              "duration": 1220,
               "state": "passed",
               "speed": "slow",
               "pass": true,
@@ -553,26 +631,26 @@
               "context": null,
               "code": "const { expect } = await import('chai');\nconst driver = await getDriver();\nconst footwearLink = await driver.wait(\n  until.elementLocated(By.xpath(\"//span[text()='Footwear']/ancestor::div[contains(@class, 'ProductCollection-module--root')]\")),\n  10000\n);\nawait footwearLink.click();\nawait driver.wait(until.urlContains('/footwear'), 10000);\nexpect(await driver.getCurrentUrl()).to.include('/footwear');\nawait driver.get('https://velvet.ritvik-sharma.com/');\nawait waitForHomepage(driver);",
               "err": {},
-              "uuid": "dbbceac0-a2b8-450c-9198-9a1e600be002",
-              "parentUUID": "082b3a62-eb6a-4ed8-a7d6-727dd5c37003",
+              "uuid": "f185e857-b9b4-4968-a6f4-30c25ebbc4de",
+              "parentUUID": "28015c99-3832-40a9-a76e-d0281eff5d46",
               "isHook": false,
               "skipped": false
             }
           ],
           "suites": [],
           "passes": [
-            "dbbceac0-a2b8-450c-9198-9a1e600be002"
+            "f185e857-b9b4-4968-a6f4-30c25ebbc4de"
           ],
           "failures": [],
           "pending": [],
           "skipped": [],
-          "duration": 996,
+          "duration": 1220,
           "root": false,
           "rootEmpty": false,
           "_timeout": 30000
         },
         {
-          "uuid": "3f05a359-82ce-4b6e-a9dd-ee372bb2780d",
+          "uuid": "c36f4082-a6cc-4509-9d4c-df7dc667f033",
           "title": "Main - Navigate to Men Section",
           "fullFile": "C:\\Users\\ashut\\Desktop\\Personal\\github\\E-Commerce-Website\\Unit-Testing\\Frontend\\Tests\\HomePage\\Main\\men.test.js",
           "file": "\\Tests\\HomePage\\Main\\men.test.js",
@@ -583,7 +661,7 @@
               "title": "navigates to men page and returns home",
               "fullTitle": "Main - Navigate to Men Section navigates to men page and returns home",
               "timedOut": false,
-              "duration": 796,
+              "duration": 576,
               "state": "passed",
               "speed": "slow",
               "pass": true,
@@ -592,26 +670,26 @@
               "context": null,
               "code": "const { expect } = await import('chai');\nconst driver = await getDriver();\nconst menLink = await driver.wait(\n  until.elementLocated(By.xpath(\"//span[text()='Men']/ancestor::div[contains(@class, 'ProductCollection-module--root')]\")),\n  10000\n);\nawait menLink.click();\nawait driver.wait(until.urlContains('/men'), 10000);\nexpect(await driver.getCurrentUrl()).to.include('/men');\nawait driver.get('https://velvet.ritvik-sharma.com/');\nawait waitForHomepage(driver);",
               "err": {},
-              "uuid": "a2e47d6f-fbd2-4e9f-95f2-b0f668ec6fa9",
-              "parentUUID": "3f05a359-82ce-4b6e-a9dd-ee372bb2780d",
+              "uuid": "7919bb9e-e332-427e-97b9-9ffc2fd4d48c",
+              "parentUUID": "c36f4082-a6cc-4509-9d4c-df7dc667f033",
               "isHook": false,
               "skipped": false
             }
           ],
           "suites": [],
           "passes": [
-            "a2e47d6f-fbd2-4e9f-95f2-b0f668ec6fa9"
+            "7919bb9e-e332-427e-97b9-9ffc2fd4d48c"
           ],
           "failures": [],
           "pending": [],
           "skipped": [],
-          "duration": 796,
+          "duration": 576,
           "root": false,
           "rootEmpty": false,
           "_timeout": 30000
         },
         {
-          "uuid": "92ced544-0b94-4c65-8b75-f424c4db7b07",
+          "uuid": "c2c727a6-bda1-41ef-a1c1-f6417609f14f",
           "title": "Main - Navigate to Women Section",
           "fullFile": "C:\\Users\\ashut\\Desktop\\Personal\\github\\E-Commerce-Website\\Unit-Testing\\Frontend\\Tests\\HomePage\\Main\\women.test.js",
           "file": "\\Tests\\HomePage\\Main\\women.test.js",
@@ -622,7 +700,7 @@
               "title": "navigates to women page and returns home",
               "fullTitle": "Main - Navigate to Women Section navigates to women page and returns home",
               "timedOut": false,
-              "duration": 802,
+              "duration": 584,
               "state": "passed",
               "speed": "slow",
               "pass": true,
@@ -631,26 +709,26 @@
               "context": null,
               "code": "const { expect } = await import('chai');\nconst driver = await getDriver();\nconst womenLink = await driver.wait(\n  until.elementLocated(By.xpath(\"//span[text()='Women']/ancestor::div[contains(@class, 'ProductCollection-module--root')]\")),\n  10000\n);\nawait womenLink.click();\nawait driver.wait(until.urlContains('/women'), 10000);\nexpect(await driver.getCurrentUrl()).to.include('/women');\nawait driver.get('https://velvet.ritvik-sharma.com/');\nawait waitForHomepage(driver);",
               "err": {},
-              "uuid": "82fe199a-ff9e-4a0c-8e06-912e8bfa8035",
-              "parentUUID": "92ced544-0b94-4c65-8b75-f424c4db7b07",
+              "uuid": "11600aa0-e714-41b3-ad7d-e19ba36a673c",
+              "parentUUID": "c2c727a6-bda1-41ef-a1c1-f6417609f14f",
               "isHook": false,
               "skipped": false
             }
           ],
           "suites": [],
           "passes": [
-            "82fe199a-ff9e-4a0c-8e06-912e8bfa8035"
+            "11600aa0-e714-41b3-ad7d-e19ba36a673c"
           ],
           "failures": [],
           "pending": [],
           "skipped": [],
-          "duration": 802,
+          "duration": 584,
           "root": false,
           "rootEmpty": false,
           "_timeout": 30000
         },
         {
-          "uuid": "691f0470-bd44-470c-a782-23cf9a24d822",
+          "uuid": "abd85834-7a18-4d1a-afa0-f06509953160",
           "title": "Velvet E-Commerce - Missing Email and Password",
           "fullFile": "C:\\Users\\ashut\\Desktop\\Personal\\github\\E-Commerce-Website\\Unit-Testing\\Frontend\\Tests\\LoginTests\\emptyLogin.test.js",
           "file": "\\Tests\\LoginTests\\emptyLogin.test.js",
@@ -659,7 +737,7 @@
               "title": "\"before all\" hook in \"Velvet E-Commerce - Missing Email and Password\"",
               "fullTitle": "Velvet E-Commerce - Missing Email and Password \"before all\" hook in \"Velvet E-Commerce - Missing Email and Password\"",
               "timedOut": false,
-              "duration": 627,
+              "duration": 701,
               "state": null,
               "speed": null,
               "pass": false,
@@ -668,8 +746,8 @@
               "context": null,
               "code": "driver = await new Builder().forBrowser('chrome').build();",
               "err": {},
-              "uuid": "ef86d81a-15e8-4a2d-a829-954684cc0b78",
-              "parentUUID": "691f0470-bd44-470c-a782-23cf9a24d822",
+              "uuid": "8f46da5e-eb08-4986-af61-28e57fb795b4",
+              "parentUUID": "abd85834-7a18-4d1a-afa0-f06509953160",
               "isHook": true,
               "skipped": false
             }
@@ -679,7 +757,7 @@
               "title": "\"after all\" hook in \"Velvet E-Commerce - Missing Email and Password\"",
               "fullTitle": "Velvet E-Commerce - Missing Email and Password \"after all\" hook in \"Velvet E-Commerce - Missing Email and Password\"",
               "timedOut": false,
-              "duration": 54,
+              "duration": 50,
               "state": null,
               "speed": null,
               "pass": false,
@@ -688,8 +766,8 @@
               "context": null,
               "code": "await driver.quit();",
               "err": {},
-              "uuid": "b4770606-178f-4e10-8688-3ae4b75b2309",
-              "parentUUID": "691f0470-bd44-470c-a782-23cf9a24d822",
+              "uuid": "41e1bc74-0f9f-4dda-9fdb-eae464b9f350",
+              "parentUUID": "abd85834-7a18-4d1a-afa0-f06509953160",
               "isHook": true,
               "skipped": false
             }
@@ -699,7 +777,7 @@
               "title": "should show both email and password error messages when both fields are empty",
               "fullTitle": "Velvet E-Commerce - Missing Email and Password should show both email and password error messages when both fields are empty",
               "timedOut": false,
-              "duration": 2446,
+              "duration": 1231,
               "state": "passed",
               "speed": "slow",
               "pass": true,
@@ -708,26 +786,26 @@
               "context": null,
               "code": "const { expect } = await import('chai');\nawait driver.get('https://velvet.ritvik-sharma.com/login/');\nconst emailInput = await driver.wait(\n  until.elementLocated(By.css('input[type=\"email\"]')),\n  10000\n);\nconst passwordInput = await driver.wait(\n  until.elementLocated(By.css('input[type=\"password\"]')),\n  10000\n);\n// Ensure both fields are empty\nawait emailInput.clear();\nawait passwordInput.clear();\n// Click \"LOG IN\"\nconst loginButton = await driver.findElement(\n  By.xpath(\"//button[contains(text(), 'LOG IN')]\")\n);\nawait loginButton.click();\n// Wait for both error messages\nconst emailError = await driver.wait(\n  until.elementLocated(By.xpath(\"//*[contains(text(),'Please use a valid email address')]\")),\n  10000\n);\nconst passwordError = await driver.wait(\n  until.elementLocated(By.xpath(\"//*[contains(text(),'Field required')]\")),\n  10000\n);\nconst emailErrorText = await emailError.getText();\nconst passwordErrorText = await passwordError.getText();\nexpect(emailErrorText).to.include(\"Please use a valid email address\");\nexpect(passwordErrorText).to.equal(\"Field required\");",
               "err": {},
-              "uuid": "4675fa16-57dc-4ace-b9ef-8b90ff5a3229",
-              "parentUUID": "691f0470-bd44-470c-a782-23cf9a24d822",
+              "uuid": "157c58d0-b9ff-4b88-8b72-ca8ea6d4a668",
+              "parentUUID": "abd85834-7a18-4d1a-afa0-f06509953160",
               "isHook": false,
               "skipped": false
             }
           ],
           "suites": [],
           "passes": [
-            "4675fa16-57dc-4ace-b9ef-8b90ff5a3229"
+            "157c58d0-b9ff-4b88-8b72-ca8ea6d4a668"
           ],
           "failures": [],
           "pending": [],
           "skipped": [],
-          "duration": 2446,
+          "duration": 1231,
           "root": false,
           "rootEmpty": false,
           "_timeout": 30000
         },
         {
-          "uuid": "431e5b52-152d-4d04-9ba5-142f91a575a2",
+          "uuid": "74de64f1-c307-459a-a684-231fd3c3208a",
           "title": "Velvet E-Commerce - Missing Password",
           "fullFile": "C:\\Users\\ashut\\Desktop\\Personal\\github\\E-Commerce-Website\\Unit-Testing\\Frontend\\Tests\\LoginTests\\noPasswordLogin.test.js",
           "file": "\\Tests\\LoginTests\\noPasswordLogin.test.js",
@@ -736,7 +814,7 @@
               "title": "\"before all\" hook in \"Velvet E-Commerce - Missing Password\"",
               "fullTitle": "Velvet E-Commerce - Missing Password \"before all\" hook in \"Velvet E-Commerce - Missing Password\"",
               "timedOut": false,
-              "duration": 919,
+              "duration": 664,
               "state": null,
               "speed": null,
               "pass": false,
@@ -745,8 +823,8 @@
               "context": null,
               "code": "driver = await new Builder().forBrowser('chrome').build();",
               "err": {},
-              "uuid": "457317e4-5e16-431b-b2dd-f79ed4644eb3",
-              "parentUUID": "431e5b52-152d-4d04-9ba5-142f91a575a2",
+              "uuid": "844c6a9b-d541-4593-9d42-283a4d7060ca",
+              "parentUUID": "74de64f1-c307-459a-a684-231fd3c3208a",
               "isHook": true,
               "skipped": false
             }
@@ -756,7 +834,7 @@
               "title": "\"after all\" hook in \"Velvet E-Commerce - Missing Password\"",
               "fullTitle": "Velvet E-Commerce - Missing Password \"after all\" hook in \"Velvet E-Commerce - Missing Password\"",
               "timedOut": false,
-              "duration": 91,
+              "duration": 50,
               "state": null,
               "speed": null,
               "pass": false,
@@ -765,8 +843,8 @@
               "context": null,
               "code": "await driver.quit();",
               "err": {},
-              "uuid": "77d0e268-d41b-46c7-8b72-6ee05c020e33",
-              "parentUUID": "431e5b52-152d-4d04-9ba5-142f91a575a2",
+              "uuid": "01f7aaa0-331f-4d64-82ab-e14bfc0d1e57",
+              "parentUUID": "74de64f1-c307-459a-a684-231fd3c3208a",
               "isHook": true,
               "skipped": false
             }
@@ -776,7 +854,7 @@
               "title": "should show error when password is missing but email is entered",
               "fullTitle": "Velvet E-Commerce - Missing Password should show error when password is missing but email is entered",
               "timedOut": false,
-              "duration": 1047,
+              "duration": 954,
               "state": "passed",
               "speed": "slow",
               "pass": true,
@@ -785,26 +863,26 @@
               "context": null,
               "code": "const { expect } = await import('chai');\nawait driver.get('https://velvet.ritvik-sharma.com/login/');\n// Wait for input fields\nconst emailInput = await driver.wait(\n  until.elementLocated(By.css('input[type=\"email\"]')),\n  10000\n);\nconst passwordInput = await driver.wait(\n  until.elementLocated(By.css('input[type=\"password\"]')),\n  10000\n);\n// Enter valid email\nawait emailInput.sendKeys('ritvik.sharma1@velvet.com');\n// Leave password empty\nawait passwordInput.clear();\n// Click \"LOG IN\"\nconst loginButton = await driver.findElement(\n  By.xpath(\"//button[contains(text(), 'LOG IN')]\")\n);\nawait loginButton.click();\n// Wait for \"Field required\" message under password input\nconst errorMessageElement = await driver.wait(\n  until.elementLocated(By.xpath(\"//*[contains(text(),'Field required')]\")),\n  10000\n);\nconst errorText = await errorMessageElement.getText();\nexpect(errorText).to.equal('Field required');",
               "err": {},
-              "uuid": "42a0a055-f8e9-4f60-b757-e758cd1c66bd",
-              "parentUUID": "431e5b52-152d-4d04-9ba5-142f91a575a2",
+              "uuid": "73587a71-734f-4235-b7f5-8ebce837282a",
+              "parentUUID": "74de64f1-c307-459a-a684-231fd3c3208a",
               "isHook": false,
               "skipped": false
             }
           ],
           "suites": [],
           "passes": [
-            "42a0a055-f8e9-4f60-b757-e758cd1c66bd"
+            "73587a71-734f-4235-b7f5-8ebce837282a"
           ],
           "failures": [],
           "pending": [],
           "skipped": [],
-          "duration": 1047,
+          "duration": 954,
           "root": false,
           "rootEmpty": false,
           "_timeout": 30000
         },
         {
-          "uuid": "5efa589b-4ed1-4246-9643-d9fbf9f65483",
+          "uuid": "0b5d8972-2029-4514-95dd-55363311c5a6",
           "title": "Velvet E-Commerce - Invalid Email Login",
           "fullFile": "C:\\Users\\ashut\\Desktop\\Personal\\github\\E-Commerce-Website\\Unit-Testing\\Frontend\\Tests\\LoginTests\\noUserNameLogin.test.js",
           "file": "\\Tests\\LoginTests\\noUserNameLogin.test.js",
@@ -813,7 +891,7 @@
               "title": "\"before all\" hook in \"Velvet E-Commerce - Invalid Email Login\"",
               "fullTitle": "Velvet E-Commerce - Invalid Email Login \"before all\" hook in \"Velvet E-Commerce - Invalid Email Login\"",
               "timedOut": false,
-              "duration": 654,
+              "duration": 644,
               "state": null,
               "speed": null,
               "pass": false,
@@ -822,8 +900,8 @@
               "context": null,
               "code": "driver = await new Builder().forBrowser('chrome').build();",
               "err": {},
-              "uuid": "142d9b53-8350-4249-8f23-7937f36a20ac",
-              "parentUUID": "5efa589b-4ed1-4246-9643-d9fbf9f65483",
+              "uuid": "3e1259c2-c730-4c23-91f1-97766185c50b",
+              "parentUUID": "0b5d8972-2029-4514-95dd-55363311c5a6",
               "isHook": true,
               "skipped": false
             }
@@ -833,7 +911,7 @@
               "title": "\"after all\" hook in \"Velvet E-Commerce - Invalid Email Login\"",
               "fullTitle": "Velvet E-Commerce - Invalid Email Login \"after all\" hook in \"Velvet E-Commerce - Invalid Email Login\"",
               "timedOut": false,
-              "duration": 41,
+              "duration": 50,
               "state": null,
               "speed": null,
               "pass": false,
@@ -842,8 +920,8 @@
               "context": null,
               "code": "await driver.quit();",
               "err": {},
-              "uuid": "85f0c186-f157-48b4-acb0-851516d513c9",
-              "parentUUID": "5efa589b-4ed1-4246-9643-d9fbf9f65483",
+              "uuid": "27af3520-e542-4ad6-8de9-bd6403d73342",
+              "parentUUID": "0b5d8972-2029-4514-95dd-55363311c5a6",
               "isHook": true,
               "skipped": false
             }
@@ -853,7 +931,7 @@
               "title": "should show error when email is missing but password is entered",
               "fullTitle": "Velvet E-Commerce - Invalid Email Login should show error when email is missing but password is entered",
               "timedOut": false,
-              "duration": 1128,
+              "duration": 765,
               "state": "passed",
               "speed": "slow",
               "pass": true,
@@ -862,26 +940,26 @@
               "context": null,
               "code": "const { expect } = await import('chai');\nawait driver.get('https://velvet.ritvik-sharma.com/login/');\n// Wait for email and password fields\nconst emailInput = await driver.wait(\n  until.elementLocated(By.css('input[type=\"email\"]')),\n  10000\n);\nconst passwordInput = await driver.wait(\n  until.elementLocated(By.css('input[type=\"password\"]')),\n  10000\n);\n// Clear and leave email blank\nawait emailInput.clear();\n// Type in some password\nawait passwordInput.sendKeys('dummy-password');\n// Click \"LOG IN\"\nconst loginButton = await driver.findElement(\n  By.xpath(\"//button[contains(text(), 'LOG IN')]\")\n);\nawait loginButton.click();\n// Wait for error message to appear under email field\nconst errorMessageElement = await driver.wait(\n  until.elementLocated(By.xpath(\"//*[contains(text(),'Please use a valid email address')]\")),\n  10000\n);\nconst errorText = await errorMessageElement.getText();\nexpect(errorText).to.include(\"Please use a valid email address\");",
               "err": {},
-              "uuid": "a49bca30-bf7d-437c-884a-59600d416205",
-              "parentUUID": "5efa589b-4ed1-4246-9643-d9fbf9f65483",
+              "uuid": "c68f0443-3d93-4357-b388-8e288710d678",
+              "parentUUID": "0b5d8972-2029-4514-95dd-55363311c5a6",
               "isHook": false,
               "skipped": false
             }
           ],
           "suites": [],
           "passes": [
-            "a49bca30-bf7d-437c-884a-59600d416205"
+            "c68f0443-3d93-4357-b388-8e288710d678"
           ],
           "failures": [],
           "pending": [],
           "skipped": [],
-          "duration": 1128,
+          "duration": 765,
           "root": false,
           "rootEmpty": false,
           "_timeout": 30000
         },
         {
-          "uuid": "7c874489-769d-480c-a518-b2b92f17af83",
+          "uuid": "3aab2747-5c5e-4d8d-85b7-9ab852bdb08f",
           "title": "Velvet E-Commerce - Guest Login",
           "fullFile": "C:\\Users\\ashut\\Desktop\\Personal\\github\\E-Commerce-Website\\Unit-Testing\\Frontend\\Tests\\LoginTests\\validLogin.test.js",
           "file": "\\Tests\\LoginTests\\validLogin.test.js",
@@ -890,7 +968,7 @@
               "title": "\"before all\" hook in \"Velvet E-Commerce - Guest Login\"",
               "fullTitle": "Velvet E-Commerce - Guest Login \"before all\" hook in \"Velvet E-Commerce - Guest Login\"",
               "timedOut": false,
-              "duration": 718,
+              "duration": 636,
               "state": null,
               "speed": null,
               "pass": false,
@@ -899,8 +977,8 @@
               "context": null,
               "code": "driver = await new Builder().forBrowser('chrome').build();",
               "err": {},
-              "uuid": "9a3f3f2d-d21b-497d-8add-ccf21cb2030e",
-              "parentUUID": "7c874489-769d-480c-a518-b2b92f17af83",
+              "uuid": "5f6e39a8-c917-4513-bd05-f80663ee25d5",
+              "parentUUID": "3aab2747-5c5e-4d8d-85b7-9ab852bdb08f",
               "isHook": true,
               "skipped": false
             }
@@ -910,7 +988,7 @@
               "title": "\"after all\" hook in \"Velvet E-Commerce - Guest Login\"",
               "fullTitle": "Velvet E-Commerce - Guest Login \"after all\" hook in \"Velvet E-Commerce - Guest Login\"",
               "timedOut": false,
-              "duration": 90,
+              "duration": 68,
               "state": null,
               "speed": null,
               "pass": false,
@@ -919,8 +997,8 @@
               "context": null,
               "code": "await driver.quit();",
               "err": {},
-              "uuid": "2e22a276-f634-40db-9548-896a58edbf48",
-              "parentUUID": "7c874489-769d-480c-a518-b2b92f17af83",
+              "uuid": "e98b9373-38cb-463e-ad3f-a58d9501b785",
+              "parentUUID": "3aab2747-5c5e-4d8d-85b7-9ab852bdb08f",
               "isHook": true,
               "skipped": false
             }
@@ -930,7 +1008,7 @@
               "title": "should log in successfully using guest credentials",
               "fullTitle": "Velvet E-Commerce - Guest Login should log in successfully using guest credentials",
               "timedOut": false,
-              "duration": 3230,
+              "duration": 2950,
               "state": "passed",
               "speed": "slow",
               "pass": true,
@@ -939,26 +1017,104 @@
               "context": null,
               "code": "const { expect } = await import('chai');\nawait driver.get('https://velvet.ritvik-sharma.com/login/');\nconst guestLoginButton = await driver.wait(\n  until.elementLocated(By.xpath(\"//button[contains(text(), 'Get Guest Login')]\")),\n  10000\n);\nawait guestLoginButton.click();\nconst emailInput = await driver.wait(\n  until.elementLocated(By.css('input[type=\"email\"]')),\n  10000\n);\nconst passwordInput = await driver.wait(\n  until.elementLocated(By.css('input[type=\"password\"]')),\n  10000\n);\nawait driver.sleep(2000); // Allow JS to populate values\nconst email = await emailInput.getAttribute('value');\nconst password = await passwordInput.getAttribute('value');\nexpect(email).to.match(/ritvik\\.sharma[1-5]@velvet\\.com/);\nexpect(password).to.have.length.above(0);\nconst loginButton = await driver.findElement(\n  By.xpath(\"//button[contains(text(), 'LOG IN')]\")\n);\nawait loginButton.click();\nawait driver.wait(until.urlIs('https://velvet.ritvik-sharma.com/'), 10000);\nconst currentUrl = await driver.getCurrentUrl();\nexpect(currentUrl).to.equal('https://velvet.ritvik-sharma.com/');",
               "err": {},
-              "uuid": "83a31fd4-3d1e-4334-917e-3ebb3449da88",
-              "parentUUID": "7c874489-769d-480c-a518-b2b92f17af83",
+              "uuid": "18293b31-3a82-40f4-a8f8-c43c138c6a56",
+              "parentUUID": "3aab2747-5c5e-4d8d-85b7-9ab852bdb08f",
               "isHook": false,
               "skipped": false
             }
           ],
           "suites": [],
           "passes": [
-            "83a31fd4-3d1e-4334-917e-3ebb3449da88"
+            "18293b31-3a82-40f4-a8f8-c43c138c6a56"
           ],
           "failures": [],
           "pending": [],
           "skipped": [],
-          "duration": 3230,
+          "duration": 2950,
           "root": false,
           "rootEmpty": false,
           "_timeout": 30000
         },
         {
-          "uuid": "43e016c7-a041-4585-8517-387c3a892807",
+          "uuid": "80491d93-0315-46cc-87ba-85940d0cfc51",
+          "title": "Search - Product Discovery",
+          "fullFile": "C:\\Users\\ashut\\Desktop\\Personal\\github\\E-Commerce-Website\\Unit-Testing\\Frontend\\Tests\\SearchingProducts\\searchProducts.test.js",
+          "file": "\\Tests\\SearchingProducts\\searchProducts.test.js",
+          "beforeHooks": [],
+          "afterHooks": [],
+          "tests": [
+            {
+              "title": "searches for \"Large Green Trousers Men\" and validates product results",
+              "fullTitle": "Search - Product Discovery searches for \"Large Green Trousers Men\" and validates product results",
+              "timedOut": false,
+              "duration": 2528,
+              "state": "passed",
+              "speed": "slow",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "const { expect } = await import('chai');\nconst driver = await getDriver();\nawait driver.get('https://velvet.ritvik-sharma.com/');\nconst searchIcon = await driver.wait(\n  until.elementLocated(By.xpath(\"//button[@aria-label='Search']\")),\n  10000\n);\nawait searchIcon.click();\nconst searchInput = await driver.wait(\n  until.elementLocated(By.id('searchInput')),\n  10000\n);\nawait driver.wait(until.elementIsVisible(searchInput), 10000);\nawait searchInput.sendKeys('Large Green Trousers Men', Key.ENTER);\nawait driver.sleep(2000);\nconst allResultElements = await driver.wait(\n    until.elementsLocated(By.xpath(\"//span[contains(., 'results')]\")),\n    10000\n);\nlet correctText = null;\nfor (const el of allResultElements) {\n    const text = await driver.executeScript(\"return arguments[0].textContent;\", el);\n    const cleanedText = text.replace(/\\s+/g, ' ').trim(); // normalize spacing\n    if (/^\\d+ results$/.test(cleanedText)) {\n        correctText = cleanedText;\n        break;\n    }\n}\nif (!correctText) {\n    throw new Error(\"Could not find element matching pattern '[0-9]+ results'\");\n}\nexpect(correctText).to.equal('2 results');\nconst productImage1 = await driver.wait(\n  until.elementLocated(By.css('img[src*=\"M-TRS-RS004\"]')),\n  10000\n);\nawait driver.wait(until.elementIsVisible(productImage1), 5000);\nconst productImage2 = await driver.wait(\n  until.elementLocated(By.css('img[src*=\"M-TRS-RS008\"]')),\n  10000\n);\nawait driver.wait(until.elementIsVisible(productImage2), 5000);\nawait driver.get('https://velvet.ritvik-sharma.com/');",
+              "err": {},
+              "uuid": "d11089f7-7103-4642-be50-a48dbe93a0ca",
+              "parentUUID": "80491d93-0315-46cc-87ba-85940d0cfc51",
+              "isHook": false,
+              "skipped": false
+            }
+          ],
+          "suites": [],
+          "passes": [
+            "d11089f7-7103-4642-be50-a48dbe93a0ca"
+          ],
+          "failures": [],
+          "pending": [],
+          "skipped": [],
+          "duration": 2528,
+          "root": false,
+          "rootEmpty": false,
+          "_timeout": 30000
+        },
+        {
+          "uuid": "b887fd81-3bb9-4189-a55f-2469fbd75702",
+          "title": "Shop > Men > All Clothings",
+          "fullFile": "C:\\Users\\ashut\\Desktop\\Personal\\github\\E-Commerce-Website\\Unit-Testing\\Frontend\\Tests\\Shop\\Men\\aIlClothings.test.js",
+          "file": "\\Tests\\Shop\\Men\\aIlClothings.test.js",
+          "beforeHooks": [],
+          "afterHooks": [],
+          "tests": [
+            {
+              "title": "navigates to All Clothings under Men and returns home",
+              "fullTitle": "Shop > Men > All Clothings navigates to All Clothings under Men and returns home",
+              "timedOut": false,
+              "duration": 553,
+              "state": "passed",
+              "speed": "slow",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "const { expect } = await import('chai');\nconst driver = await getDriver();\nawait driver.get('https://velvet.ritvik-sharma.com/');\nconst shopMenu = await driver.wait(\n  until.elementLocated(By.xpath(\"//a[contains(translate(text(), 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz'), 'shop')]\")),\n  10000\n);\nconst actions = driver.actions({ async: true });\nawait actions.move({ origin: shopMenu }).perform();\nconst allClothings = await driver.wait(\n  until.elementLocated(By.xpath(\"//a[@href='/shop/men/']\")),\n  10000\n);\nawait allClothings.click();\nawait driver.wait(until.urlContains('/shop/men'), 10000);\nexpect(await driver.getCurrentUrl()).to.include('/shop/men');\nawait driver.get('https://velvet.ritvik-sharma.com/');",
+              "err": {},
+              "uuid": "4c64d97d-4aef-4cc8-a85c-6e632126e823",
+              "parentUUID": "b887fd81-3bb9-4189-a55f-2469fbd75702",
+              "isHook": false,
+              "skipped": false
+            }
+          ],
+          "suites": [],
+          "passes": [
+            "4c64d97d-4aef-4cc8-a85c-6e632126e823"
+          ],
+          "failures": [],
+          "pending": [],
+          "skipped": [],
+          "duration": 553,
+          "root": false,
+          "rootEmpty": false,
+          "_timeout": 30000
+        },
+        {
+          "uuid": "23a7ba55-8e94-433c-930e-1503c1319f81",
           "title": "Shop > Men > All Clothings",
           "fullFile": "C:\\Users\\ashut\\Desktop\\Personal\\github\\E-Commerce-Website\\Unit-Testing\\Frontend\\Tests\\Shop\\Men\\allClothings.test.js",
           "file": "\\Tests\\Shop\\Men\\allClothings.test.js",
@@ -969,7 +1125,7 @@
               "title": "navigates to All Clothings under Men and returns home",
               "fullTitle": "Shop > Men > All Clothings navigates to All Clothings under Men and returns home",
               "timedOut": false,
-              "duration": 314,
+              "duration": 528,
               "state": "passed",
               "speed": "slow",
               "pass": true,
@@ -978,26 +1134,65 @@
               "context": null,
               "code": "const { expect } = await import('chai');\nconst driver = await getDriver();\nawait driver.get('https://velvet.ritvik-sharma.com/');\nconst shopMenu = await driver.wait(\n  until.elementLocated(By.xpath(\"//a[contains(translate(text(), 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz'), 'shop')]\")),\n  10000\n);\nconst actions = driver.actions({ async: true });\nawait actions.move({ origin: shopMenu }).perform();\nconst allClothings = await driver.wait(\n  until.elementLocated(By.xpath(\"//a[@href='/shop/men/']\")),\n  10000\n);\nawait allClothings.click();\nawait driver.wait(until.urlContains('/shop/men'), 10000);\nexpect(await driver.getCurrentUrl()).to.include('/shop/men');\nawait driver.get('https://velvet.ritvik-sharma.com/');",
               "err": {},
-              "uuid": "eef77a45-049d-41bc-a65d-9c5aa592830b",
-              "parentUUID": "43e016c7-a041-4585-8517-387c3a892807",
+              "uuid": "d32c8d3e-57ba-4a4e-afc2-eed350dafac4",
+              "parentUUID": "23a7ba55-8e94-433c-930e-1503c1319f81",
               "isHook": false,
               "skipped": false
             }
           ],
           "suites": [],
           "passes": [
-            "eef77a45-049d-41bc-a65d-9c5aa592830b"
+            "d32c8d3e-57ba-4a4e-afc2-eed350dafac4"
           ],
           "failures": [],
           "pending": [],
           "skipped": [],
-          "duration": 314,
+          "duration": 528,
           "root": false,
           "rootEmpty": false,
           "_timeout": 30000
         },
         {
-          "uuid": "d38b7ff9-4666-47ff-a739-8e0d218ead58",
+          "uuid": "065a3c5c-4e65-416a-99d3-a15dc181d518",
+          "title": "All Clothings - Filtering Test",
+          "fullFile": "C:\\Users\\ashut\\Desktop\\Personal\\github\\E-Commerce-Website\\Unit-Testing\\Frontend\\Tests\\Shop\\Men\\AllClothings\\fiItering.test.js",
+          "file": "\\Tests\\Shop\\Men\\AllClothings\\fiItering.test.js",
+          "beforeHooks": [],
+          "afterHooks": [],
+          "tests": [
+            {
+              "title": "applies and clears Black color filter",
+              "fullTitle": "All Clothings - Filtering Test applies and clears Black color filter",
+              "timedOut": false,
+              "duration": 3582,
+              "state": "passed",
+              "speed": "slow",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "const { expect } = await import('chai');\nconst driver = await getDriver();\nawait driver.get('https://velvet.ritvik-sharma.com/shop/men');\nconst filtersToggle = await driver.wait(\n  until.elementLocated(By.xpath(\"//span[text()='Filters']\")),\n  10000\n);\nawait filtersToggle.click();\nconst blackCheckbox = await driver.wait(\n  until.elementLocated(By.css('input#Black')),\n  10000\n);\nawait blackCheckbox.click();\nconst viewItemsBtn = await driver.wait(\n  until.elementLocated(By.xpath(\"//button[text()='view items']\")),\n  10000\n);\nawait viewItemsBtn.click();\nawait driver.wait(async () => {\n  const countElement = await driver.findElement(By.css('span.men-module--itemCount--4f0cd'));\n  const text = await countElement.getText();\n  return text.includes('6/16');\n}, 10000);\nconst chip = await driver.wait(\n  until.elementLocated(By.xpath(\"//div[@class='Chip-module--root--b4116']//span[text()='Black']\")),\n  10000\n);\nawait chip.click();\nawait driver.wait(async () => {\n  const countElement = await driver.findElement(By.css('span.men-module--itemCount--4f0cd'));\n  const text = await countElement.getText();\n  return text.includes('6/87');\n}, 10000);",
+              "err": {},
+              "uuid": "d599f580-793a-4afd-a9df-b7ebfb35a885",
+              "parentUUID": "065a3c5c-4e65-416a-99d3-a15dc181d518",
+              "isHook": false,
+              "skipped": false
+            }
+          ],
+          "suites": [],
+          "passes": [
+            "d599f580-793a-4afd-a9df-b7ebfb35a885"
+          ],
+          "failures": [],
+          "pending": [],
+          "skipped": [],
+          "duration": 3582,
+          "root": false,
+          "rootEmpty": false,
+          "_timeout": 60000
+        },
+        {
+          "uuid": "1f9a96cb-f955-4710-8d46-40b30ab53190",
           "title": "All Clothings - Filtering Test",
           "fullFile": "C:\\Users\\ashut\\Desktop\\Personal\\github\\E-Commerce-Website\\Unit-Testing\\Frontend\\Tests\\Shop\\Men\\AllClothings\\filtering.test.js",
           "file": "\\Tests\\Shop\\Men\\AllClothings\\filtering.test.js",
@@ -1008,7 +1203,7 @@
               "title": "applies and clears Black color filter",
               "fullTitle": "All Clothings - Filtering Test applies and clears Black color filter",
               "timedOut": false,
-              "duration": 3274,
+              "duration": 2975,
               "state": "passed",
               "speed": "slow",
               "pass": true,
@@ -1017,26 +1212,26 @@
               "context": null,
               "code": "const { expect } = await import('chai');\nconst driver = await getDriver();\nawait driver.get('https://velvet.ritvik-sharma.com/shop/men');\nconst filtersToggle = await driver.wait(\n  until.elementLocated(By.xpath(\"//span[text()='Filters']\")),\n  10000\n);\nawait filtersToggle.click();\nconst blackCheckbox = await driver.wait(\n  until.elementLocated(By.css('input#Black')),\n  10000\n);\nawait blackCheckbox.click();\nconst viewItemsBtn = await driver.wait(\n  until.elementLocated(By.xpath(\"//button[text()='view items']\")),\n  10000\n);\nawait viewItemsBtn.click();\nawait driver.wait(async () => {\n  const countElement = await driver.findElement(By.css('span.men-module--itemCount--4f0cd'));\n  const text = await countElement.getText();\n  return text.includes('6/16');\n}, 10000);\nconst chip = await driver.wait(\n  until.elementLocated(By.xpath(\"//div[@class='Chip-module--root--b4116']//span[text()='Black']\")),\n  10000\n);\nawait chip.click();\nawait driver.wait(async () => {\n  const countElement = await driver.findElement(By.css('span.men-module--itemCount--4f0cd'));\n  const text = await countElement.getText();\n  return text.includes('6/87');\n}, 10000);",
               "err": {},
-              "uuid": "7359a0bf-5ac0-4b4e-a498-0b278ab9f24b",
-              "parentUUID": "d38b7ff9-4666-47ff-a739-8e0d218ead58",
+              "uuid": "9901d047-6c00-40ec-84d0-362d8062aa85",
+              "parentUUID": "1f9a96cb-f955-4710-8d46-40b30ab53190",
               "isHook": false,
               "skipped": false
             }
           ],
           "suites": [],
           "passes": [
-            "7359a0bf-5ac0-4b4e-a498-0b278ab9f24b"
+            "9901d047-6c00-40ec-84d0-362d8062aa85"
           ],
           "failures": [],
           "pending": [],
           "skipped": [],
-          "duration": 3274,
+          "duration": 2975,
           "root": false,
           "rootEmpty": false,
           "_timeout": 60000
         },
         {
-          "uuid": "65002b74-9fc5-4c0b-b903-d9eef84bf6c1",
+          "uuid": "3b80d363-1660-446d-85e8-9c68f52b702d",
           "title": "All Clothings - Quick View Modal Test",
           "fullFile": "C:\\Users\\ashut\\Desktop\\Personal\\github\\E-Commerce-Website\\Unit-Testing\\Frontend\\Tests\\Shop\\Men\\AllClothings\\quickView.test.js",
           "file": "\\Tests\\Shop\\Men\\AllClothings\\quickView.test.js",
@@ -1047,7 +1242,7 @@
               "title": "opens and closes quick view modal",
               "fullTitle": "All Clothings - Quick View Modal Test opens and closes quick view modal",
               "timedOut": false,
-              "duration": 4543,
+              "duration": 3884,
               "state": "passed",
               "speed": "slow",
               "pass": true,
@@ -1056,26 +1251,26 @@
               "context": null,
               "code": "const { expect } = await import('chai');\nconst driver = await getDriver();\nawait driver.get('https://velvet.ritvik-sharma.com/shop/men');\nconst imageContainer = await driver.wait(\n  until.elementLocated(By.css('div.ProductCard-module--imageContainer--00924')),\n  10000\n);\nconst actions = driver.actions({ bridge: true });\nawait actions.move({ origin: imageContainer }).perform();\nconst quickViewBtn = await driver.wait(\n  until.elementLocated(By.css('div.ProductCard-module--bagContainer--39254')),\n  10000\n);\nawait quickViewBtn.click();\nawait driver.sleep(1000);\nconst quickViewModal = await driver.wait(\n  until.elementLocated(By.css('div.QuickView-module--root--41109')),\n  10000\n);\nexpect(await quickViewModal.getText()).to.include('Select Options');\nconst closeBtn = await driver.wait(\nuntil.elementLocated(By.css('div.Drawer-module--iconContainer--250fe')),\n10000\n  );\n\n  await driver.sleep(1000);\n\n  await driver.executeScript(\"arguments[0].click();\", closeBtn);\nawait driver.wait(until.urlContains('/shop/men'), 10000);\nexpect(await driver.getCurrentUrl()).to.include('/shop/men');",
               "err": {},
-              "uuid": "bb003138-0730-4967-930d-fa5c83f301e4",
-              "parentUUID": "65002b74-9fc5-4c0b-b903-d9eef84bf6c1",
+              "uuid": "46d2fa38-159c-4273-a824-bbb2dacae4c5",
+              "parentUUID": "3b80d363-1660-446d-85e8-9c68f52b702d",
               "isHook": false,
               "skipped": false
             }
           ],
           "suites": [],
           "passes": [
-            "bb003138-0730-4967-930d-fa5c83f301e4"
+            "46d2fa38-159c-4273-a824-bbb2dacae4c5"
           ],
           "failures": [],
           "pending": [],
           "skipped": [],
-          "duration": 4543,
+          "duration": 3884,
           "root": false,
           "rootEmpty": false,
           "_timeout": 60000
         },
         {
-          "uuid": "f01caa12-592f-440d-82e8-ab698b225f64",
+          "uuid": "ba7edbcc-fd60-42e0-b277-822e01adc088",
           "title": "All Clothings - Sorting Test",
           "fullFile": "C:\\Users\\ashut\\Desktop\\Personal\\github\\E-Commerce-Website\\Unit-Testing\\Frontend\\Tests\\Shop\\Men\\AllClothings\\sorting.test.js",
           "file": "\\Tests\\Shop\\Men\\AllClothings\\sorting.test.js",
@@ -1086,7 +1281,7 @@
               "title": "sorts products by price high to low and validates top price",
               "fullTitle": "All Clothings - Sorting Test sorts products by price high to low and validates top price",
               "timedOut": false,
-              "duration": 1734,
+              "duration": 1788,
               "state": "passed",
               "speed": "slow",
               "pass": true,
@@ -1095,26 +1290,26 @@
               "context": null,
               "code": "const { expect } = await import('chai');\nconst driver = await getDriver();\nawait driver.get('https://velvet.ritvik-sharma.com/shop/men');\nconst sortToggle = await driver.wait(\n  until.elementLocated(By.xpath(\"//span[text()='Sort by']\")),\n  10000\n);\nawait sortToggle.click();\nconst sortOption = await driver.wait(\n  until.elementLocated(By.xpath(\"//div[text()='Price: High → Low']\")),\n  10000\n);\nawait sortOption.click();\nconst topPrice = await driver.wait(\n  until.elementLocated(By.xpath(\"//span[text()='122.99']\")),\n  10000\n);\nexpect(await topPrice.getText()).to.equal('122.99');",
               "err": {},
-              "uuid": "9cba47d1-a0fd-4343-b40e-bb02af4480f8",
-              "parentUUID": "f01caa12-592f-440d-82e8-ab698b225f64",
+              "uuid": "042ea1ac-3d2f-4fff-8734-47bfb9e48343",
+              "parentUUID": "ba7edbcc-fd60-42e0-b277-822e01adc088",
               "isHook": false,
               "skipped": false
             }
           ],
           "suites": [],
           "passes": [
-            "9cba47d1-a0fd-4343-b40e-bb02af4480f8"
+            "042ea1ac-3d2f-4fff-8734-47bfb9e48343"
           ],
           "failures": [],
           "pending": [],
           "skipped": [],
-          "duration": 1734,
+          "duration": 1788,
           "root": false,
           "rootEmpty": false,
           "_timeout": 50000
         },
         {
-          "uuid": "f31315c4-7282-4bcc-80a3-7e7ea3273fc0",
+          "uuid": "06bf5c3b-0a88-4066-bc80-d1ac4da58fbc",
           "title": "Shop > Men > Jackets",
           "fullFile": "C:\\Users\\ashut\\Desktop\\Personal\\github\\E-Commerce-Website\\Unit-Testing\\Frontend\\Tests\\Shop\\Men\\jackets.test.js",
           "file": "\\Tests\\Shop\\Men\\jackets.test.js",
@@ -1125,7 +1320,7 @@
               "title": "navigates to Jackets under Men and returns home",
               "fullTitle": "Shop > Men > Jackets navigates to Jackets under Men and returns home",
               "timedOut": false,
-              "duration": 756,
+              "duration": 551,
               "state": "passed",
               "speed": "slow",
               "pass": true,
@@ -1134,26 +1329,26 @@
               "context": null,
               "code": "const { expect } = await import('chai');\nconst driver = await getDriver();\nawait driver.get('https://velvet.ritvik-sharma.com/');\nconst shopMenu = await driver.wait(\n  until.elementLocated(By.xpath(\"//a[contains(translate(text(), 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz'), 'shop')]\")),\n  10000\n);\nconst actions = driver.actions({ async: true });\nawait actions.move({ origin: shopMenu }).perform();\nconst jackets = await driver.wait(\n  until.elementLocated(By.xpath(\"//a[@href='/shop/men/jackets/']\")),\n  10000\n);\nawait jackets.click();\nawait driver.wait(until.urlContains('/shop/men/jackets'), 10000);\nexpect(await driver.getCurrentUrl()).to.include('/shop/men/jackets');\nawait driver.get('https://velvet.ritvik-sharma.com/');",
               "err": {},
-              "uuid": "b79ddaae-8c13-4336-82dc-19b6006a8db5",
-              "parentUUID": "f31315c4-7282-4bcc-80a3-7e7ea3273fc0",
+              "uuid": "1e41c126-fbdc-4c5b-88ee-1e603d2f26ef",
+              "parentUUID": "06bf5c3b-0a88-4066-bc80-d1ac4da58fbc",
               "isHook": false,
               "skipped": false
             }
           ],
           "suites": [],
           "passes": [
-            "b79ddaae-8c13-4336-82dc-19b6006a8db5"
+            "1e41c126-fbdc-4c5b-88ee-1e603d2f26ef"
           ],
           "failures": [],
           "pending": [],
           "skipped": [],
-          "duration": 756,
+          "duration": 551,
           "root": false,
           "rootEmpty": false,
           "_timeout": 30000
         },
         {
-          "uuid": "14c78564-980c-4da9-a89d-4af883bb9557",
+          "uuid": "73778905-fa76-4901-bc04-c6e23dfba4dc",
           "title": "Shop > Men > Sweatshirts & Hoodies",
           "fullFile": "C:\\Users\\ashut\\Desktop\\Personal\\github\\E-Commerce-Website\\Unit-Testing\\Frontend\\Tests\\Shop\\Men\\sweatshirtsHoodies.test.js",
           "file": "\\Tests\\Shop\\Men\\sweatshirtsHoodies.test.js",
@@ -1164,7 +1359,7 @@
               "title": "navigates to Sweatshirts & Hoodies under Men and returns home",
               "fullTitle": "Shop > Men > Sweatshirts & Hoodies navigates to Sweatshirts & Hoodies under Men and returns home",
               "timedOut": false,
-              "duration": 729,
+              "duration": 554,
               "state": "passed",
               "speed": "slow",
               "pass": true,
@@ -1173,26 +1368,26 @@
               "context": null,
               "code": "const { expect } = await import('chai');\nconst driver = await getDriver();\nawait driver.get('https://velvet.ritvik-sharma.com/');\nconst shopMenu = await driver.wait(\n  until.elementLocated(By.xpath(\"//a[contains(translate(text(), 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz'), 'shop')]\")),\n  10000\n);\nconst actions = driver.actions({ async: true });\nawait actions.move({ origin: shopMenu }).perform();\nconst sweatshirts = await driver.wait(\n  until.elementLocated(By.xpath(\"//a[@href='/shop/men/sweatshirts-and-hoodies/']\")),\n  10000\n);\nawait sweatshirts.click();\nawait driver.wait(until.urlContains('/shop/men/sweatshirts-and-hoodies'), 10000);\nexpect(await driver.getCurrentUrl()).to.include('/shop/men/sweatshirts-and-hoodies');\nawait driver.get('https://velvet.ritvik-sharma.com/');",
               "err": {},
-              "uuid": "b73efcf5-fcc9-453c-a5c1-74a883f2878b",
-              "parentUUID": "14c78564-980c-4da9-a89d-4af883bb9557",
+              "uuid": "ada24060-e1fa-4eeb-aca0-94beb92bdbc7",
+              "parentUUID": "73778905-fa76-4901-bc04-c6e23dfba4dc",
               "isHook": false,
               "skipped": false
             }
           ],
           "suites": [],
           "passes": [
-            "b73efcf5-fcc9-453c-a5c1-74a883f2878b"
+            "ada24060-e1fa-4eeb-aca0-94beb92bdbc7"
           ],
           "failures": [],
           "pending": [],
           "skipped": [],
-          "duration": 729,
+          "duration": 554,
           "root": false,
           "rootEmpty": false,
           "_timeout": 30000
         },
         {
-          "uuid": "792fe050-767b-4500-aba5-a56304dfa64b",
+          "uuid": "de4486a5-2157-47db-b974-b660f4e1605d",
           "title": "Shop > Men > Trousers",
           "fullFile": "C:\\Users\\ashut\\Desktop\\Personal\\github\\E-Commerce-Website\\Unit-Testing\\Frontend\\Tests\\Shop\\Men\\trousers.test.js",
           "file": "\\Tests\\Shop\\Men\\trousers.test.js",
@@ -1203,7 +1398,7 @@
               "title": "navigates to Trousers under Men and returns home",
               "fullTitle": "Shop > Men > Trousers navigates to Trousers under Men and returns home",
               "timedOut": false,
-              "duration": 764,
+              "duration": 508,
               "state": "passed",
               "speed": "slow",
               "pass": true,
@@ -1212,26 +1407,26 @@
               "context": null,
               "code": "const { expect } = await import('chai');\nconst driver = await getDriver();\nawait driver.get('https://velvet.ritvik-sharma.com/');\nconst shopMenu = await driver.wait(\n  until.elementLocated(By.xpath(\"//a[contains(translate(text(), 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz'), 'shop')]\")),\n  10000\n);\nconst actions = driver.actions({ async: true });\nawait actions.move({ origin: shopMenu }).perform();\nconst trousers = await driver.wait(\n  until.elementLocated(By.xpath(\"//a[@href='/shop/men/trousers/']\")),\n  10000\n);\nawait trousers.click();\nawait driver.wait(until.urlContains('/shop/men/trousers'), 10000);\nexpect(await driver.getCurrentUrl()).to.include('/shop/men/trousers');\nawait driver.get('https://velvet.ritvik-sharma.com/');",
               "err": {},
-              "uuid": "74007ee7-a7a8-4a00-ac07-2f7943253854",
-              "parentUUID": "792fe050-767b-4500-aba5-a56304dfa64b",
+              "uuid": "7a001fd9-0743-431b-aa11-784bb5c8a5b6",
+              "parentUUID": "de4486a5-2157-47db-b974-b660f4e1605d",
               "isHook": false,
               "skipped": false
             }
           ],
           "suites": [],
           "passes": [
-            "74007ee7-a7a8-4a00-ac07-2f7943253854"
+            "7a001fd9-0743-431b-aa11-784bb5c8a5b6"
           ],
           "failures": [],
           "pending": [],
           "skipped": [],
-          "duration": 764,
+          "duration": 508,
           "root": false,
           "rootEmpty": false,
           "_timeout": 30000
         },
         {
-          "uuid": "aad2ade7-7905-4146-bfe6-1ece9029d42c",
+          "uuid": "e1a17a6f-2224-4cd9-a6e1-3f0cec8d0720",
           "title": "Shop > Men > T-Shirts & Shirts",
           "fullFile": "C:\\Users\\ashut\\Desktop\\Personal\\github\\E-Commerce-Website\\Unit-Testing\\Frontend\\Tests\\Shop\\Men\\tshirtsAndShirts.test.js",
           "file": "\\Tests\\Shop\\Men\\tshirtsAndShirts.test.js",
@@ -1242,7 +1437,7 @@
               "title": "navigates to T-Shirts & Shirts under Men and returns home",
               "fullTitle": "Shop > Men > T-Shirts & Shirts navigates to T-Shirts & Shirts under Men and returns home",
               "timedOut": false,
-              "duration": 515,
+              "duration": 510,
               "state": "passed",
               "speed": "slow",
               "pass": true,
@@ -1251,20 +1446,20 @@
               "context": null,
               "code": "const { expect } = await import('chai');\nconst driver = await getDriver();\nawait driver.get('https://velvet.ritvik-sharma.com/');\nconst shopMenu = await driver.wait(\n  until.elementLocated(By.xpath(\"//a[contains(translate(text(), 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz'), 'shop')]\")),\n  10000\n);\nconst actions = driver.actions({ async: true });\nawait actions.move({ origin: shopMenu }).perform();\nconst tshirts = await driver.wait(\n  until.elementLocated(By.xpath(\"//a[@href='/shop/men/t-shirts-and-shirts/']\")),\n  10000\n);\nawait tshirts.click();\nawait driver.wait(until.urlContains('/shop/men/t-shirts-and-shirts'), 10000);\nexpect(await driver.getCurrentUrl()).to.include('/shop/men/t-shirts-and-shirts');\nawait driver.get('https://velvet.ritvik-sharma.com/');",
               "err": {},
-              "uuid": "0217c71a-2c15-4ece-b85f-40ab42156528",
-              "parentUUID": "aad2ade7-7905-4146-bfe6-1ece9029d42c",
+              "uuid": "dddad99d-eec1-4bd3-b0ad-4923fc63ee75",
+              "parentUUID": "e1a17a6f-2224-4cd9-a6e1-3f0cec8d0720",
               "isHook": false,
               "skipped": false
             }
           ],
           "suites": [],
           "passes": [
-            "0217c71a-2c15-4ece-b85f-40ab42156528"
+            "dddad99d-eec1-4bd3-b0ad-4923fc63ee75"
           ],
           "failures": [],
           "pending": [],
           "skipped": [],
-          "duration": 515,
+          "duration": 510,
           "root": false,
           "rootEmpty": false,
           "_timeout": 30000
