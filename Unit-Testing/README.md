@@ -63,6 +63,9 @@ Tests/
 │   ├── addQuickView.test.js
 │   ├── deleteItem.test.js
 │   ├── placeOrder.test.js
+|
+├── SearchProducts/
+│   ├── searchProducts.test.js
 ```
 
 ---
