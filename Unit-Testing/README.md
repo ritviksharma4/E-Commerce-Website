@@ -346,7 +346,7 @@ Tests/
 
 All tests generate clean and interactive **Mochawesome HTML reports**.
 
-### ➤ To View Report:
+### ➤ To View Report: [View My Report Here](https://html-preview.github.io/?url=https://github.com/ritviksharma4/E-Commerce-Website/blob/main/Unit-Testing/Frontend/mochawesome-report/mochawesome.html)
 
 After running tests, open:
 ```
