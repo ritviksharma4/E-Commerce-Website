@@ -64,7 +64,7 @@ Tests/
 │   ├── deleteItem.test.js
 │   ├── placeOrder.test.js
 |
-├── SearchProducts/
+├── SearchingProducts/
 │   ├── searchProducts.test.js
 ```
 
