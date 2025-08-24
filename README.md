@@ -4,6 +4,9 @@ A fully-featured, luxury-themed E-Commerce platform built with modern technologi
 
 ---
 
+## Architeture Diagram
+![Architecture Diagram](architecture-diagram.png)
+
 ## 🚀 Features
 
 ### 🛍️ Shopping Experience
