@@ -1,4 +1,4 @@
-# ✨ Velvét Threads – E-commerce Web Application
+# Velvét Threads – E-commerce Web Application [Click here for Live Demo!](https://velvet.ritvik-sharma.com/)
 
 A fully-featured, luxury-themed E-Commerce platform built with modern technologies and hosted entirely on AWS infrastructure. Built for high performance, user-centric design, and scalable cloud integration.
 
@@ -7,9 +7,9 @@ A fully-featured, luxury-themed E-Commerce platform built with modern technologi
 ## Architeture Diagram
 ![Architecture Diagram](architecture-diagram.png)
 
-## 🚀 Features
+## Features
 
-### 🛍️ Shopping Experience
+### Shopping Experience
 - Full product catalog with category and subcategory navigation (Men, Women, Accessories)
 - Dynamically generated **Product Detail Pages** using product code.
 - **Luxury-style Quick View** modal with product summary.
@@ -18,26 +18,26 @@ A fully-featured, luxury-themed E-Commerce platform built with modern technologi
 - **MiniCart** and full **Cart Page** with real-time quantity updates and removal.
 - Responsive layout for All Devices.
 
-### 🔍 Smart Suggestions
+### Smart Suggestions
 - Recommended products on each product page.
 - Priority-based suggestion logic (subcategory → category fallback).
 
-### 🧠 Personalization
+### Personalization
 - `Wishlist-Items`, `Recently-Viewed`, and `Cart-Items` data stored per User.
 - Fetched and updated using secure AWS Lambda Endpoints.
 
-### 🔐 Authentication & Protection
+### Authentication & Protection
 - Route protection for favorites and cart using AWS Cognito.
 - Dynamic login-based experience across the site.
 
-### ⚙️ Admin-Friendly Structure
+### Admin-Friendly Structure
 - Configuration-driven navigation and filters via `src/config.json`.
 - Centralized product metadata from DynamoDB.
 - Modular and reusable components (e.g., `BoxOption`, `FavoriteCard`, `LuxuryLoader`).
 
 ---
 
-## 🧰 Tech Stack
+## Tech Stack
 
 | Layer             | Technology |
 |------------------|------------|
@@ -54,7 +54,7 @@ A fully-featured, luxury-themed E-Commerce platform built with modern technologi
 
 ---
 
-## 🌐 Deployment
+## Deployment
 
 This project is **fully hosted on AWS**:
 
@@ -65,7 +65,7 @@ This project is **fully hosted on AWS**:
 
 ---
 
-## 🔐 Environment Variables
+## Environment Variables
 
 The following variables are required in your `.env`:
 
@@ -79,13 +79,13 @@ GATSBY_APP_GET_SHOPPING_HISTORY_FOR_USER=https://your-lambda-url
 GATSBY_APP_UPDATE_SHOPPING_HISTORY_FOR_USER=https://your-lambda-url
 ```
 
-# 📈 Future Improvements for Velvét Threads E-commerce Platform
+# Future Improvements for Velvét Threads E-commerce Platform
 
 This document outlines upcoming features and enhancements to be added to the Luxe Threads e-commerce platform to further elevate user experience, administrative control, and business intelligence.
 
 ---
 
-## 💳 1. Payment Gateway Integration
+## 1. Payment Gateway Integration
 
 ### Objective
 Enable secure, seamless checkout and online payment for users globally.
@@ -105,7 +105,7 @@ Enable secure, seamless checkout and online payment for users globally.
 
 ---
 
-## 🚚 2. Order Tracking Dashboard
+## 2. Order Tracking Dashboard
 
 ### Objective
 Give users the ability to track the status of their orders post-purchase.
@@ -121,7 +121,7 @@ Give users the ability to track the status of their orders post-purchase.
 
 ---
 
-## 🛠️ 3. Admin Panel for Product Uploads
+## 3. Admin Panel for Product Uploads
 
 ### Objective
 Create a secure admin dashboard for managing product listings and media.
@@ -140,7 +140,7 @@ Create a secure admin dashboard for managing product listings and media.
 
 ---
 
-## 📊 4. Inventory Management and Analytics
+## 4. Inventory Management and Analytics
 
 ### Objective
 Provide a dashboard for product performance and stock level monitoring.
@@ -158,7 +158,7 @@ Provide a dashboard for product performance and stock level monitoring.
 
 ---
 
-## 📅 Timeline (Tentative)
+## Timeline (Tentative)
 
 | Feature                     | Target Phase |
 |----------------------------|--------------|
@@ -169,7 +169,7 @@ Provide a dashboard for product performance and stock level monitoring.
 
 ---
 
-## 💼 Business Value
+## Business Value
 
 | Feature                     | Benefit                                     |
 |----------------------------|---------------------------------------------|
@@ -180,7 +180,7 @@ Provide a dashboard for product performance and stock level monitoring.
 
 ---
 
-## 👨‍💻 Author
+## Author
 
 Built with ❤️ by **Ritvik Sharma**
 
@@ -189,7 +189,7 @@ I love to fiddle with technology which I have never heard of before and build th
 
 ---
 
-### 🔗 Connect with Me
+### Connect with Me
 
 | Platform       | Link                                                                 |
 |----------------|----------------------------------------------------------------------|
